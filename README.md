@@ -1,27 +1,121 @@
-# CrudAngularDemoApp
+# CRUD Angular Demo Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.2.
+Table of Contents
+=================
 
-## Development server
+* [Prerequisites](#prerequisites)
+* [Install](#install)
+* [Run](#run)
+* [Build](#build)
+* [Test](#test)
+* [Lint](#lint)
+* [Debug](#debug)
+* [TODO](#todo)
+* [Resources](#resources)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Prerequisites
 
-## Code scaffolding
+You need to have the following programs installed on your machine:
+- [Node.js](https://nodejs.org/) (>= 8.11.3)
+- [Yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+You have to use _docker-compose_ in order to build and run the multi-container server application which includes a test PostgreSQL database and a Node.js server which provides the API. The provided `docker-compose.yml` relies on 2 environment files which have to be configured the following way:
+
+_.env.db_:
+```sh
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=pw
+POSTGRES_DB=testdb
+```
+
+_.env.server_:
+```sh
+# Must match the service name of the database in docker-compose.yml
+DATABASE_HOST=db
+
+# Must match POSTGRES_USER in .env.db if other than postgres
+DATABASE_USER=
+
+# Must match POSTGRES_PASSWORD in .env.db if other than pw
+DATABASE_PASSWORD=
+
+# Must match POSTGRES_DB in .env.db if other than testdb
+DATABASE_DB=
+
+# If you have an OAuth GitHub Application then you can provide its client id and secret. The callback URL of your app must be set to: http://localhost:3000/api/v1/auth/github/callback
+# GITHUB_CLIENT_ID=g17hu8cl13n71d
+# GITHUB_CLIENT_SECRET=g17hu8cl13n753cr37
+
+# URL to redirect to after a successful authentication
+REDIRECT_URL=/
+
+# If you want to use a fake authentication
+NODE_ENV=test
+```
+
+_Note_: If you're interested in the implementation details of the backend application then you can find it [here](https://github.com/SuNR0N/crud-server-demo-app)
+
+## Install
+
+```sh
+yarn
+```
+
+## Run
+
+```sh
+yarn start
+```
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```sh
+# Development build
+yarn build
 
-## Running unit tests
+# Production build
+yarn build --prod
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Test
 
-## Running end-to-end tests
+```sh
+# Unit tests
+yarn test
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+# Unit tests with coverage report
+yarn test:coverage
 
-## Further help
+# Integration tests
+yarn e2e
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Lint
+
+```sh
+yarn lint
+
+# With an attempt to fix selected rules
+yarn lint:fix
+```
+
+## Debug
+
+TODO
+
+## TODO
+
+TODO
+
+## Resources
+
+- [Angular](https://angular.io/)
+- [Angular CLI](https://cli.angular.io/)
+- [Bootstrap](https://getbootstrap.com/docs/4.1/getting-started/introduction/)
+- [Google Fonts](https://fonts.google.com/)
+- [google-webfonts-helper](https://google-webfonts-helper.herokuapp.com/fonts)
+- [Jasmine](https://jasmine.github.io/)
+- [Karma](https://karma-runner.github.io/)
+- [Protractor](https://www.protractortest.org/)
+- [RxJS](https://rxjs-dev.firebaseapp.com/)

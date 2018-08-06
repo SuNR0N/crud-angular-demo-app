@@ -6,7 +6,13 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test:coverage": "ng test --code-coverage",
     "lint": "ng lint",
+    "lint:fix": "yarn lint:app:fix && yarn lint:e2e:fix",
+    "lint:app": "ng lint crud-angular-demo-app",
+    "lint:app:fix": "ng lint crud-angular-demo-app --fix",
+    "lint:e2e": "ng lint crud-angular-demo-app-e2e",
+    "lint:e2e:fix": "ng lint crud-angular-demo-app-e2e --fix",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -20,6 +26,7 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
     "zone.js": "~0.8.26"
