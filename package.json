@@ -2,18 +2,20 @@
   "name": "crud-angular-demo-app",
   "version": "0.0.0",
   "scripts": {
+    "build": "ng build",
+    "e2e": "ng e2e",
+    "icons:clear": "rm src/assets/icons/sprite.svg",
+    "icons:generate": "svg-sprite-generate -d src/assets/icons -o src/assets/icons/sprite.svg",
+    "lint:app:fix": "ng lint crud-angular-demo-app --fix",
+    "lint:app": "ng lint crud-angular-demo-app",
+    "lint:e2e:fix": "ng lint crud-angular-demo-app-e2e --fix",
+    "lint:e2e": "ng lint crud-angular-demo-app-e2e",
+    "lint:fix": "yarn lint:app:fix && yarn lint:e2e:fix",
+    "lint": "ng lint",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
     "test:coverage": "ng test --code-coverage",
-    "lint": "ng lint",
-    "lint:fix": "yarn lint:app:fix && yarn lint:e2e:fix",
-    "lint:app": "ng lint crud-angular-demo-app",
-    "lint:app:fix": "ng lint crud-angular-demo-app --fix",
-    "lint:e2e": "ng lint crud-angular-demo-app-e2e",
-    "lint:e2e:fix": "ng lint crud-angular-demo-app-e2e --fix",
-    "e2e": "ng e2e"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -26,9 +28,11 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^2.2.2",
     "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
+    "svg-sprite-generator": "^0.0.7",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

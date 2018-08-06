@@ -36,6 +36,9 @@ testem.log
 .env.db
 .env.server
 
+# sprite
+/src/assets/icons/sprite.svg
+
 # System Files
 .DS_Store
 Thumbs.db
