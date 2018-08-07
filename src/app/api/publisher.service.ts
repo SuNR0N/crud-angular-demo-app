@@ -33,9 +33,9 @@ export class PublisherService extends BaseService {
   }
 
   getPublishers(query?: string): Observable<IPublisherDTO[]> {
-    const params = new HttpParams();
+    let params = new HttpParams();
     if (query) {
-      params.set('q', query);
+      params = params.set('q', query);
     }
     return this.http.get<IPublisherDTO[]>(this.publishersUrl, { params })
       .pipe(

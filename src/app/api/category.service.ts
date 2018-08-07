@@ -33,9 +33,9 @@ export class CategoryService extends BaseService {
   }
 
   getCategories(query?: string): Observable<ICategoryDTO[]> {
-    const params = new HttpParams();
+    let params = new HttpParams();
     if (query) {
-      params.set('q', query);
+      params = params.set('q', query);
     }
     return this.http.get<ICategoryDTO[]>(this.categoriesUrl, { params })
       .pipe(

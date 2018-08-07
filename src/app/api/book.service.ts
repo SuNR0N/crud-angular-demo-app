@@ -34,9 +34,9 @@ export class BookService extends BaseService {
   }
 
   getBooks(query?: string): Observable<IPageableCollectionDTO<IBookDTO>> {
-    const params = new HttpParams();
+    let params = new HttpParams();
     if (query) {
-      params.set('q', query);
+      params = params.set('q', query);
     }
     return this.http.get<IPageableCollectionDTO<IBookDTO>>(this.booksUrl, { params })
       .pipe(

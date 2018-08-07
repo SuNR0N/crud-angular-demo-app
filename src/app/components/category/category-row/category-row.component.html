@@ -5,24 +5,24 @@
   class="col-lg-2 col-md-3 col-sm-4 col-5"
 >
   <button
+    appIconButton
     *ngIf="category._links.self"
-    class="btn btn-sm btn-outline-primary"
     (click)="viewCategory(category)"
-  >
-    <app-icon symbol="eye-regular"></app-icon>
-  </button>
+    class="btn btn-sm btn-outline-primary"
+    symbol="eye-regular"
+  ></button>
   <button
+    appIconButton
     *ngIf="category._links.update"
-    class="btn btn-sm btn-outline-secondary"
     (click)="editCategory(category)"
-  >
-    <app-icon symbol="edit-regular"></app-icon>
-  </button>
+    class="btn btn-sm btn-outline-secondary"
+    symbol="edit-regular"
+  ></button>
   <button
+    appIconButton
     *ngIf="category._links.delete"
-    class="btn btn-sm btn-outline-danger"
     (click)="deleteCategory(category)"
-  >
-    <app-icon symbol="trash-alt-regular"></app-icon>
-  </button>
+    class="btn btn-sm btn-outline-danger"
+    symbol="trash-alt-regular"
+  ></button>
 </td>

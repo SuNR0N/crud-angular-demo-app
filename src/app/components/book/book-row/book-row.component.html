@@ -9,24 +9,24 @@
   class="col-lg-2 col-sm-3 col-4"
 >
   <button
+    appIconButton
     *ngIf="book._links.self"
-    class="btn btn-sm btn-outline-primary"
     (click)="viewBook(book)"
-  >
-    <app-icon symbol="eye-regular"></app-icon>
-  </button>
+    class="btn btn-sm btn-outline-primary"
+    symbol="eye-regular"
+  ></button>
   <button
+    appIconButton
     *ngIf="book._links.update"
-    class="btn btn-sm btn-outline-secondary"
     (click)="editBook(book)"
-  >
-    <app-icon symbol="edit-regular"></app-icon>
-  </button>
+    class="btn btn-sm btn-outline-secondary"
+    symbol="edit-regular"
+  ></button>
   <button
+    appIconButton
     *ngIf="book._links.delete"
-    class="btn btn-sm btn-outline-danger"
     (click)="deleteBook(book)"
-  >
-    <app-icon symbol="trash-alt-regular"></app-icon>
-  </button>
+    class="btn btn-sm btn-outline-danger"
+    symbol="trash-alt-regular"
+  ></button>
 </td>

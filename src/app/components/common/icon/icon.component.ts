@@ -3,7 +3,7 @@ import {
   Input,
 } from '@angular/core';
 
-type IconSymbol =
+export type IconSymbol =
   'angle-double-left-solid' |
   'angle-double-right-solid' |
   'angle-left-solid' |

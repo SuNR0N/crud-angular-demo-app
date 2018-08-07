@@ -33,9 +33,9 @@ export class AuthorService extends BaseService {
   }
 
   getAuthors(query?: string): Observable<IAuthorDTO[]> {
-    const params = new HttpParams();
+    let params = new HttpParams();
     if (query) {
-      params.set('q', query);
+      params = params.set('q', query);
     }
     return this.http.get<IAuthorDTO[]>(this.authorsUrl, { params })
       .pipe(
