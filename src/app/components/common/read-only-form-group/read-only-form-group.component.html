@@ -1,0 +1,27 @@
+<label
+  id="{{id}}Label"
+  for="{{id}}"
+  class="col-form-label"
+  [ngClass]="labelClass"
+>
+  {{ label }}
+</label>
+<div [ngClass]="valueClass">
+  <input
+    *ngIf="value"
+    attr.aria-labelledby="{{id}}Label"
+    type="text"
+    readonly
+    class="form-control-plaintext"
+    [id]="id"
+    [value]="value"
+  />
+  <input
+    *ngFor="let value of values"
+    attr.aria-labelledby="{{id}}Label"
+    type="text"
+    readonly
+    class="form-control-plaintext"
+    [value]="value"
+  />
+</div>

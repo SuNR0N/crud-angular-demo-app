@@ -1,3 +1,35 @@
-<p>
-  view-category works!
-</p>
+<div class="container-fluid">
+  <h2>View Category</h2>
+  <form>
+    <app-read-only-form-group
+      id="id"
+      label="ID"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+      [value]="category?.id"
+    ></app-read-only-form-group>
+    <app-read-only-form-group
+      id="name"
+      label="Name"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+      [value]="category?.name"
+    ></app-read-only-form-group>
+  </form>
+  <app-action-bar>
+    <button
+      *ngIf="category?._links.update"
+      class="btn btn-default btn-outline-secondary"
+      (click)="editCategory(category)"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="category?._links.delete"
+      class="btn btn-default btn-outline-danger"
+      (click)="deleteCategory(category)"
+    >
+      Delete
+    </button>
+  </app-action-bar>
+</div>

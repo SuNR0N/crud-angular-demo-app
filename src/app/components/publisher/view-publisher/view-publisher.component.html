@@ -1,3 +1,35 @@
-<p>
-  view-publisher works!
-</p>
+<div class="container-fluid">
+  <h2>View Publisher</h2>
+  <form>
+    <app-read-only-form-group
+      id="id"
+      label="ID"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+      [value]="publisher?.id"
+    ></app-read-only-form-group>
+    <app-read-only-form-group
+      id="name"
+      label="Name"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+      [value]="publisher?.name"
+    ></app-read-only-form-group>
+  </form>
+  <app-action-bar>
+    <button
+      *ngIf="publisher?._links.update"
+      class="btn btn-default btn-outline-secondary"
+      (click)="editPublisher(publisher)"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="publisher?._links.delete"
+      class="btn btn-default btn-outline-danger"
+      (click)="deletePublisher(publisher)"
+    >
+      Delete
+    </button>
+  </app-action-bar>
+</div>

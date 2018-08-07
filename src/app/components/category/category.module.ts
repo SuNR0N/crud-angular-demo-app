@@ -6,13 +6,17 @@ import { ListCategoriesComponent } from './list-categories/list-categories.compo
 import { ViewCategoryComponent } from './view-category/view-category.component';
 import { EditCategoryComponent } from './edit-category/edit-category.component';
 import { CreateCategoryComponent } from './create-category/create-category.component';
+import { CommonComponentsModule } from '../common/common-components.module';
+import { CategoryRowComponent } from './category-row/category-row.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    CategoryRoutingModule
+    CategoryRoutingModule,
+    CommonComponentsModule,
   ],
   declarations: [
+    CategoryRowComponent,
     CreateCategoryComponent,
     EditCategoryComponent,
     ListCategoriesComponent,

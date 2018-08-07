@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
+
+import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
+import { CategoryService } from '../../../api/category.service';
 
 @Component({
   selector: 'app-list-categories',
@@ -6,10 +12,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-categories.component.scss']
 })
 export class ListCategoriesComponent implements OnInit {
+  categories: ICategoryDTO[] = [];
 
-  constructor() { }
+  constructor(private categoryService: CategoryService) { }
 
   ngOnInit() {
+    this.getCategories();
   }
 
+  getCategories(query?: string) {
+    this.categoryService.getCategories(query)
+      .subscribe((categories) => this.categories = categories);
+  }
 }

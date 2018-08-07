@@ -1,0 +1,28 @@
+<td class="col-1">{{ publisher.id }}</td>
+<td class="col-lg-9 col-md-8 col-sm-7 col-6">{{ publisher.name }}</td>
+<td
+  appActionCell
+  class="col-lg-2 col-md-3 col-sm-4 col-5"
+>
+  <button
+    *ngIf="publisher._links.self"
+    class="btn btn-sm btn-outline-primary"
+    (click)="viewPublisher(publisher)"
+  >
+    <app-icon symbol="eye-regular"></app-icon>
+  </button>
+  <button
+    *ngIf="publisher._links.update"
+    class="btn btn-sm btn-outline-secondary"
+    (click)="editPublisher(publisher)"
+  >
+    <app-icon symbol="edit-regular"></app-icon>
+  </button>
+  <button
+    *ngIf="publisher._links.delete"
+    class="btn btn-sm btn-outline-danger"
+    (click)="deletePublisher(publisher)"
+  >
+    <app-icon symbol="trash-alt-regular"></app-icon>
+  </button>
+</td>

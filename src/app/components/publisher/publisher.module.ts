@@ -6,16 +6,20 @@ import { ListPublishersComponent } from './list-publishers/list-publishers.compo
 import { ViewPublisherComponent } from './view-publisher/view-publisher.component';
 import { EditPublisherComponent } from './edit-publisher/edit-publisher.component';
 import { CreatePublisherComponent } from './create-publisher/create-publisher.component';
+import { CommonComponentsModule } from '../common/common-components.module';
+import { PublisherRowComponent } from './publisher-row/publisher-row.component';
 
 @NgModule({
   imports: [
+    CommonComponentsModule,
     CommonModule,
-    PublisherRoutingModule
+    PublisherRoutingModule,
   ],
   declarations: [
     CreatePublisherComponent,
     EditPublisherComponent,
     ListPublishersComponent,
+    PublisherRowComponent,
     ViewPublisherComponent,
   ],
 })

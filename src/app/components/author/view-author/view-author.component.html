@@ -1,3 +1,49 @@
-<p>
-  view-author works!
-</p>
+<div class="container-fluid">
+  <h2>View Author</h2>
+  <form>
+    <app-read-only-form-group
+      id="id"
+      label="ID"
+      labelClass="col-md-2 col-sm-3"
+      valueClass="col-md-10 col-sm-9"
+      [value]="author?.id"
+    ></app-read-only-form-group>
+    <app-read-only-form-group
+      id="firstName"
+      label="First Name"
+      labelClass="col-md-2 col-sm-3"
+      valueClass="col-md-10 col-sm-9"
+      [value]="author?.firstName"
+    ></app-read-only-form-group>
+    <app-read-only-form-group
+      id="middleName"
+      label="Middle Name"
+      labelClass="col-md-2 col-sm-3"
+      valueClass="col-md-10 col-sm-9"
+      [value]="author?.middleName"
+    ></app-read-only-form-group>
+    <app-read-only-form-group
+      id="lastName"
+      label="Last Name"
+      labelClass="col-md-2 col-sm-3"
+      valueClass="col-md-10 col-sm-9"
+      [value]="author?.lastName"
+    ></app-read-only-form-group>
+  </form>
+  <app-action-bar>
+    <button
+      *ngIf="author?._links.update"
+      class="btn btn-default btn-outline-secondary"
+      (click)="editAuthor(author)"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="author?._links.delete"
+      class="btn btn-default btn-outline-danger"
+      (click)="deleteAuthor(author)"
+    >
+      Delete
+    </button>
+  </app-action-bar>
+</div>

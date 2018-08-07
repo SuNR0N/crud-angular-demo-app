@@ -1,3 +1,31 @@
-<p>
-  list-books works!
-</p>
+<div class="container-fluid">
+  <div class="row flex-column-reverse flex-sm-row no-gutters my-3 d-flex align-items-center">
+    <div class="col-sm-6">
+    </div>
+    <div class="col-sm-6 d-flex justify-content-sm-end justify-content-center mb-3 mb-sm-0">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-borderless">
+      <thead class="thead-dark">
+        <tr class="d-flex">
+          <th class="col-1">ID</th>
+          <th class="col-lg-3 col-md-5 col-sm-8 col-7">Title</th>
+          <th class="col-lg-2 col-md-3 d-none d-md-block">Category</th>
+          <th class="col-lg-2 d-none d-lg-block">Author</th>
+          <th class="col-xl-1 col-lg-2 d-none d-lg-block">Publisher</th>
+          <th class="col-xl-1 d-none d-xl-block">Publication Date</th>
+          <th class="col-lg-2 col-sm-3 col-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          appBookRow
+          class="d-flex align-items-center"
+          *ngFor="let book of collection.content"
+          [book]="book"
+        ></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
