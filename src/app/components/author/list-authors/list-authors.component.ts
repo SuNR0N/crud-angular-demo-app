@@ -15,6 +15,7 @@ import {
 
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
 import { AuthorService } from '../../../api/author.service';
+import { ProfileService } from '../../../services/profile.service';
 
 @Component({
   selector: 'app-list-authors',
@@ -26,9 +27,10 @@ export class ListAuthorsComponent implements OnInit {
   private searchTerm = new Subject<string>();
 
   constructor(
+    private authorService: AuthorService,
+    private profileService: ProfileService,
     private route: ActivatedRoute,
     private router: Router,
-    private authorService: AuthorService,
   ) { }
 
   ngOnInit() {
@@ -51,5 +53,9 @@ export class ListAuthorsComponent implements OnInit {
 
   onSearchTextChange(text: string) {
     this.searchTerm.next(text);
+  }
+
+  get profile$() {
+    return this.profileService.getProfile();
   }
 }

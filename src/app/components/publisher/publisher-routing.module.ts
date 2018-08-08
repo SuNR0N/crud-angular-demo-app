@@ -4,10 +4,12 @@ import {
   RouterModule,
 } from '@angular/router';
 
-import { ListPublishersComponent } from './list-publishers/list-publishers.component';
-import { CreatePublisherComponent } from './create-publisher/create-publisher.component';
-import { ViewPublisherComponent } from './view-publisher/view-publisher.component';
-import { EditPublisherComponent } from './edit-publisher/edit-publisher.component';
+import {
+  CreatePublisherComponent,
+  EditPublisherComponent,
+  ListPublishersComponent,
+  ViewPublisherComponent,
+} from '.';
 
 const publisherRoutes: Routes = [
   {

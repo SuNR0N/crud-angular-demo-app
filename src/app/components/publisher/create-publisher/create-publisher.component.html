@@ -1,3 +1,33 @@
-<p>
-  create-publisher works!
-</p>
+<div class="container-fluid">
+  <h2>Create New Publisher</h2>
+  <form
+    [formGroup]="createPublisherForm"
+    (ngSubmit)="onSubmit()"
+    id="createPublisherForm"
+  >
+    <app-text-field
+      [control]="createPublisherForm.get('name')"
+      formControlName="name"
+      id="name"
+      label="Name"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+    ></app-text-field>
+  </form>
+  <app-action-bar>
+    <button
+      class="btn btn-default btn-outline-secondary"
+      (click)="listPublishers()"
+    >
+      Cancel
+    </button>
+    <button
+      [disabled]="!createPublisherForm.valid"
+      class="btn btn-default btn-outline-success"
+      form="createPublisherForm"
+      type="submit"
+    >
+      Save
+    </button>
+  </app-action-bar>
+</div>

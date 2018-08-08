@@ -1,0 +1,23 @@
+<label
+  [for]="id"
+  [ngClass]="labelClass"
+  id="{{id}}Label"
+  class="col-form-label"
+>
+  {{ label }}
+</label>
+<div [ngClass]="valueClass">
+  <input
+    [id]="id"
+    [ngClass]="{ 'is-valid': isValid, 'is-invalid': isInvalid }"
+    [value]="value"
+    (change)="onChange($event)"
+    (keyup)="onKeyUp($event)"
+    attr.aria-labelledby="{{id}}Label"
+    type="text"
+    class="form-control"
+  >
+  <div class="invalid-feedback">
+    {{ errorMessage }}
+  </div>
+</div>

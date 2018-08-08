@@ -1,24 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { NavigationBarComponent } from './components/common/navigation-bar/navigation-bar.component';
-import { CommonComponentsModule } from './components/common/common-components.module';
+import {
+  NavigationBarComponent,
+  ProfileComponent,
+  SignInComponent,
+} from './components/common';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
+    SignInComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     HttpClientModule,
-    CommonComponentsModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [ AppComponent ]

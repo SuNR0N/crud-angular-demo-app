@@ -1,0 +1,24 @@
+<div
+  ngbDropdown
+  class="sign-in"
+>
+  <button
+    ngbDropdownToggle
+    id="signIn"
+    class="btn btn-outline-success"
+  >
+    Sign In
+  </button>
+  <div
+    ngbDropdownMenu
+    aria-labelledby="signIn"
+  >
+    <a
+      [href]="authLink"
+      class="dropdown-item"
+    >
+      <app-icon symbol="github-brands"></app-icon>
+      GitHub
+    </a>
+  </div>
+</div>

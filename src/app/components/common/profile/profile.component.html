@@ -1,0 +1,29 @@
+<div
+  ngbDropdown
+  class="profile"
+>
+  <button
+    ngbDropdownToggle
+    id="profile"
+    class="btn btn-outline-light"
+  >
+    {{ (profile$ | async)?.name }}
+    <img
+      *ngIf="profile$ | async"
+      [src]="(profile$ | async)?.avatarUrl"
+      class="rounded-circle"
+    />
+  </button>
+  <div
+    ngbDropdownMenu
+    aria-labelledby="profile"
+  >
+    <a
+      (click)="logOut()"
+      class="dropdown-item"
+    >
+      Log Out
+    </a>
+  </div>
+</div>
+

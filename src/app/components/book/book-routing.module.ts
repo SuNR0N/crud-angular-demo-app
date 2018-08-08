@@ -4,10 +4,12 @@ import {
   RouterModule,
 } from '@angular/router';
 
-import { ListBooksComponent } from './list-books/list-books.component';
-import { CreateBookComponent } from './create-book/create-book.component';
-import { ViewBookComponent } from './view-book/view-book.component';
-import { EditBookComponent } from './edit-book/edit-book.component';
+import {
+  CreateBookComponent,
+  EditBookComponent,
+  ListBooksComponent,
+  ViewBookComponent,
+} from '.';
 
 const bookRoutes: Routes = [
   {

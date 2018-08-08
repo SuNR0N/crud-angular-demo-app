@@ -1,3 +1,33 @@
-<p>
-  create-category works!
-</p>
+<div class="container-fluid">
+  <h2>Create New Category</h2>
+  <form
+    [formGroup]="createCategoryForm"
+    (ngSubmit)="onSubmit()"
+    id="createCategoryForm"
+  >
+    <app-text-field
+      [control]="createCategoryForm.get('name')"
+      formControlName="name"
+      id="name"
+      label="Name"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+    ></app-text-field>
+  </form>
+  <app-action-bar>
+    <button
+      class="btn btn-default btn-outline-secondary"
+      (click)="listCategories()"
+    >
+      Cancel
+    </button>
+    <button
+      [disabled]="!createCategoryForm.valid"
+      class="btn btn-default btn-outline-success"
+      form="createCategoryForm"
+      type="submit"
+    >
+      Save
+    </button>
+  </app-action-bar>
+</div>

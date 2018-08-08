@@ -4,10 +4,12 @@ import {
   RouterModule,
 } from '@angular/router';
 
-import { ListAuthorsComponent } from './list-authors/list-authors.component';
-import { CreateAuthorComponent } from './create-author/create-author.component';
-import { ViewAuthorComponent } from './view-author/view-author.component';
-import { EditAuthorComponent } from './edit-author/edit-author.component';
+import {
+  CreateAuthorComponent,
+  EditAuthorComponent,
+  ListAuthorsComponent,
+  ViewAuthorComponent,
+} from '.';
 
 const authorRoutes: Routes = [
   {

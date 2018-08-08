@@ -15,6 +15,7 @@ import {
 
 import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import { PublisherService } from '../../../api/publisher.service';
+import { ProfileService } from '../../../services/profile.service';
 
 @Component({
   selector: 'app-list-publishers',
@@ -26,9 +27,10 @@ export class ListPublishersComponent implements OnInit {
   private searchTerm = new Subject<string>();
 
   constructor(
+    private profileService: ProfileService,
+    private publisherService: PublisherService,
     private route: ActivatedRoute,
     private router: Router,
-    private publisherService: PublisherService,
   ) { }
 
   ngOnInit() {
@@ -51,5 +53,9 @@ export class ListPublishersComponent implements OnInit {
 
   onSearchTextChange(text: string) {
     this.searchTerm.next(text);
+  }
+
+  get profile$() {
+    return this.profileService.getProfile();
   }
 }

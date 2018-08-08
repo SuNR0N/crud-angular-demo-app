@@ -1,3 +1,49 @@
-<p>
-  create-author works!
-</p>
+<div class="container-fluid">
+  <h2>Create New Author</h2>
+  <form
+    [formGroup]="createAuthorForm"
+    (ngSubmit)="onSubmit()"
+    id="createAuthorForm"
+  >
+    <app-text-field
+      [control]="createAuthorForm.get('firstName')"
+      formControlName="firstName"
+      id="firstName"
+      label="First Name"
+      labelClass="col-md-2 col-sm-3"
+      valueClass="col-md-10 col-sm-9"
+    ></app-text-field>
+    <app-text-field
+      [control]="createAuthorForm.get('middleName')"
+      formControlName="middleName"
+      id="middleName"
+      label="Middle Name"
+      labelClass="col-md-2 col-sm-3"
+      valueClass="col-md-10 col-sm-9"
+    ></app-text-field>
+    <app-text-field
+      [control]="createAuthorForm.get('lastName')"
+      formControlName="lastName"
+      id="lastName"
+      label="Last Name"
+      labelClass="col-md-2 col-sm-3"
+      valueClass="col-md-10 col-sm-9"
+    ></app-text-field>
+  </form>
+  <app-action-bar>
+    <button
+      class="btn btn-default btn-outline-secondary"
+      (click)="listAuthors()"
+    >
+      Cancel
+    </button>
+    <button
+      [disabled]="!createAuthorForm.valid"
+      class="btn btn-default btn-outline-success"
+      form="createAuthorForm"
+      type="submit"
+    >
+      Save
+    </button>
+  </app-action-bar>
+</div>

@@ -15,6 +15,7 @@ import {
 
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
 import { CategoryService } from '../../../api/category.service';
+import { ProfileService } from '../../../services/profile.service';
 
 @Component({
   selector: 'app-list-categories',
@@ -26,9 +27,10 @@ export class ListCategoriesComponent implements OnInit {
   private searchTerm = new Subject<string>();
 
   constructor(
+    private categoryService: CategoryService,
+    private profileService: ProfileService,
     private route: ActivatedRoute,
     private router: Router,
-    private categoryService: CategoryService,
   ) { }
 
   ngOnInit() {
@@ -51,5 +53,9 @@ export class ListCategoriesComponent implements OnInit {
 
   onSearchTextChange(text: string) {
     this.searchTerm.next(text);
+  }
+
+  get profile$() {
+    return this.profileService.getProfile();
   }
 }

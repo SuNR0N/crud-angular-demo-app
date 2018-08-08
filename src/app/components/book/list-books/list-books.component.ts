@@ -1,8 +1,12 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import {
+  Subject,
+  Subscription,
+} from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -11,6 +15,7 @@ import {
 import {
   Router,
   ActivatedRoute,
+  NavigationEnd,
 } from '@angular/router';
 
 import { BookService } from '../../../api/book.service';
@@ -18,13 +23,14 @@ import {
   IPageableCollectionDTO,
   IBookDTO,
 } from '../../../interfaces/dtos';
+import { ProfileService } from '../../../services/profile.service';
 
 @Component({
   selector: 'app-list-books',
   templateUrl: './list-books.component.html',
   styleUrls: ['./list-books.component.scss']
 })
-export class ListBooksComponent implements OnInit {
+export class ListBooksComponent implements OnInit, OnDestroy {
   public collection: IPageableCollectionDTO<IBookDTO> = {
     content: [],
     currentPage: 0,
@@ -32,12 +38,21 @@ export class ListBooksComponent implements OnInit {
     totalPages: 0,
   };
   private searchTerm = new Subject<string>();
+  private navigationSubscription: Subscription;
 
   constructor(
+    private bookService: BookService,
+    private profileService: ProfileService,
     private route: ActivatedRoute,
     private router: Router,
-    private bookService: BookService,
-  ) { }
+  ) {
+    this.navigationSubscription = this.router.events
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.getBooks();
+        }
+      });
+  }
 
   ngOnInit() {
     this.getBooks();
@@ -46,6 +61,12 @@ export class ListBooksComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((term: string) => this.bookService.getBooks(term)),
     ).subscribe((collection) => this.collection = collection);
+  }
+
+  ngOnDestroy() {
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
 
   createBook() {
@@ -59,5 +80,9 @@ export class ListBooksComponent implements OnInit {
 
   onSearchTextChange(text: string) {
     this.searchTerm.next(text);
+  }
+
+  get profile$() {
+    return this.profileService.getProfile();
   }
 }

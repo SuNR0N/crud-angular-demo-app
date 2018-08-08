@@ -4,10 +4,12 @@ import {
   RouterModule,
 } from '@angular/router';
 
-import { ListCategoriesComponent } from './list-categories/list-categories.component';
-import { CreateCategoryComponent } from './create-category/create-category.component';
-import { ViewCategoryComponent } from './view-category/view-category.component';
-import { EditCategoryComponent } from './edit-category/edit-category.component';
+import {
+  CreateCategoryComponent,
+  EditCategoryComponent,
+  ListCategoriesComponent,
+  ViewCategoryComponent,
+} from '.';
 
 const categoryRoutes: Routes = [
   {

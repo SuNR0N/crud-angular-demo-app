@@ -1,15 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { CategoryService } from '../../../api/category.service';
+import { INewCategoryDTO } from '../../../interfaces/dtos/NewCategoryDTO';
 
 @Component({
   selector: 'app-create-category',
   templateUrl: './create-category.component.html',
   styleUrls: ['./create-category.component.scss']
 })
-export class CreateCategoryComponent implements OnInit {
+export class CreateCategoryComponent {
+  public createCategoryForm = this.fb.group({
+    name: [
+      '',
+      Validators.required,
+    ],
+  });
 
-  constructor() { }
+  constructor(
+    private categoryService: CategoryService,
+    private fb: FormBuilder,
+    private router: Router,
+  ) { }
 
-  ngOnInit() {
+  listCategories() {
+    this.router.navigate([ 'categories' ]);
   }
 
+  onSubmit() {
+    const newCategory: INewCategoryDTO = {
+      ...this.createCategoryForm.value,
+    };
+    this.categoryService.createCategory(newCategory)
+      .subscribe(() => this.router.navigate([ 'categories' ]));
+  }
 }
