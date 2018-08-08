@@ -10,6 +10,7 @@ import {
   ListAuthorsComponent,
   ViewAuthorComponent,
 } from '.';
+import { AuthorResolve } from './author.resolve';
 
 const authorRoutes: Routes = [
   {
@@ -23,10 +24,16 @@ const authorRoutes: Routes = [
   {
     path: ':id',
     component: ViewAuthorComponent,
+    resolve: {
+      author: AuthorResolve,
+    },
   },
   {
     path: ':id/edit',
     component: EditAuthorComponent,
+    resolve: {
+      author: AuthorResolve,
+    },
   },
 ];
 

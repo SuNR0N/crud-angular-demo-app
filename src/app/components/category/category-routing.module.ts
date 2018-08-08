@@ -10,6 +10,7 @@ import {
   ListCategoriesComponent,
   ViewCategoryComponent,
 } from '.';
+import { CategoryResolve } from './category.resolve';
 
 const categoryRoutes: Routes = [
   {
@@ -23,10 +24,16 @@ const categoryRoutes: Routes = [
   {
     path: ':id',
     component: ViewCategoryComponent,
+    resolve: {
+      category: CategoryResolve,
+    },
   },
   {
     path: ':id/edit',
     component: EditCategoryComponent,
+    resolve: {
+      category: CategoryResolve,
+    },
   },
 ];
 

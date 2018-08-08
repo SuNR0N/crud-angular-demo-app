@@ -4,12 +4,9 @@ import {
 } from '@angular/core';
 import {
   ActivatedRoute,
-  ParamMap,
   Router,
 } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
 
-import { CategoryService } from '../../../api/category.service';
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
 
 @Component({
@@ -18,18 +15,15 @@ import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
   styleUrls: ['./view-category.component.scss']
 })
 export class ViewCategoryComponent implements OnInit {
-  category: ICategoryDTO;
+  public category: ICategoryDTO;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private categoryService: CategoryService,
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => this.categoryService.getCategory(Number(params.get('id'))))
-    ).subscribe((category) => this.category = category);
+    this.category = this.route.snapshot.data['category'];
   }
 
   deleteCategory() {

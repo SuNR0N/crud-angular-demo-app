@@ -10,6 +10,7 @@ import {
   ListPublishersComponent,
   ViewPublisherComponent,
 } from '.';
+import { PublisherResolve } from './publisher.resolve';
 
 const publisherRoutes: Routes = [
   {
@@ -23,10 +24,16 @@ const publisherRoutes: Routes = [
   {
     path: ':id',
     component: ViewPublisherComponent,
+    resolve: {
+      publisher: PublisherResolve,
+    },
   },
   {
     path: ':id/edit',
     component: EditPublisherComponent,
+    resolve: {
+      publisher: PublisherResolve,
+    },
   },
 ];
 

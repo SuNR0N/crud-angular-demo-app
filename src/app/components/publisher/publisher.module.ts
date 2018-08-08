@@ -8,6 +8,7 @@ import {
   PublisherRowComponent,
   ViewPublisherComponent,
 } from '.';
+import { PublisherResolve } from './publisher.resolve';
 import { PublisherRoutingModule } from './publisher-routing.module';
 import { SharedModule } from '../../shared.module';
 
@@ -23,6 +24,9 @@ import { SharedModule } from '../../shared.module';
     ListPublishersComponent,
     PublisherRowComponent,
     ViewPublisherComponent,
+  ],
+  providers: [
+    PublisherResolve,
   ],
 })
 export class PublisherModule { }

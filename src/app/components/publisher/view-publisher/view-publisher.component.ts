@@ -4,12 +4,9 @@ import {
 } from '@angular/core';
 import {
   ActivatedRoute,
-  ParamMap,
   Router,
 } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
 
-import { PublisherService } from '../../../api/publisher.service';
 import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 
 @Component({
@@ -18,18 +15,15 @@ import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
   styleUrls: ['./view-publisher.component.scss']
 })
 export class ViewPublisherComponent implements OnInit {
-  publisher: IPublisherDTO;
+  public publisher: IPublisherDTO;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private publisherService: PublisherService,
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => this.publisherService.getPublisher(Number(params.get('id'))))
-    ).subscribe((publisher) => this.publisher = publisher);
+    this.publisher = this.route.snapshot.data['publisher'];
   }
 
   deletePublisher() {

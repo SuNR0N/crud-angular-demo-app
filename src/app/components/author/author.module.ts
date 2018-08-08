@@ -8,6 +8,7 @@ import {
   ListAuthorsComponent,
   ViewAuthorComponent,
 } from '.';
+import { AuthorResolve } from './author.resolve';
 import { AuthorRoutingModule } from './author-routing.module';
 import { SharedModule } from '../../shared.module';
 
@@ -23,6 +24,9 @@ import { SharedModule } from '../../shared.module';
     EditAuthorComponent,
     ListAuthorsComponent,
     ViewAuthorComponent,
-  ]
+  ],
+  providers: [
+    AuthorResolve,
+  ],
 })
 export class AuthorModule { }

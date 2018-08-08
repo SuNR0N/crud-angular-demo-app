@@ -1,3 +1,40 @@
-<p>
-  edit-category works!
-</p>
+<div class="container-fluid">
+  <h2>Edit Category</h2>
+  <form
+    [formGroup]="editCategoryForm"
+    (ngSubmit)="onSubmit()"
+    id="editCategoryForm"
+  >
+    <app-read-only-form-group
+      id="id"
+      label="ID"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+      [value]="category?.id"
+    ></app-read-only-form-group>
+    <app-text-field
+      [control]="editCategoryForm.get('name')"
+      formControlName="name"
+      id="name"
+      label="Name"
+      labelClass="col-md-1 col-sm-2"
+      valueClass="col-md-11 col-sm-10"
+    ></app-text-field>
+  </form>
+  <app-action-bar>
+    <button
+      class="btn btn-default btn-outline-secondary"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+    <button
+      [disabled]="!editCategoryForm.valid"
+      class="btn btn-default btn-outline-success"
+      form="editCategoryForm"
+      type="submit"
+    >
+      Save
+    </button>
+  </app-action-bar>
+</div>
