@@ -14,7 +14,10 @@ import {
 } from '@angular/router';
 
 import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
-import { PublisherService } from '../../../api/publisher.service';
+import {
+  PublisherService,
+  ResourceService,
+} from '../../../api';
 import { ProfileService } from '../../../services/profile.service';
 
 @Component({
@@ -29,6 +32,7 @@ export class ListPublishersComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private publisherService: PublisherService,
+    private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -46,9 +50,14 @@ export class ListPublishersComponent implements OnInit {
     this.router.navigate([ 'create' ], { relativeTo: this.route });
   }
 
-  getPublishers(query?: string) {
-    this.publisherService.getPublishers(query)
-      .subscribe((publishers) => this.publishers = publishers);
+  onDelete(publisher: IPublisherDTO) {
+    this.resourceService.request(publisher._links.delete)
+      .subscribe(() => {
+        const publisherIndex = this.publishers.findIndex((existingPublisher) => existingPublisher === publisher);
+        if (publisherIndex !== -1) {
+          this.publishers.splice(publisherIndex, 1);
+        }
+      });
   }
 
   onSearchTextChange(text: string) {
@@ -57,5 +66,10 @@ export class ListPublishersComponent implements OnInit {
 
   get profile$() {
     return this.profileService.getProfile();
+  }
+
+  private getPublishers(query?: string) {
+    this.publisherService.getPublishers(query)
+      .subscribe((publishers) => this.publishers = publishers);
   }
 }

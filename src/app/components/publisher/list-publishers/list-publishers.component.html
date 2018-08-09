@@ -32,9 +32,10 @@
       <tbody>
         <tr
           appPublisherRow
-          class="d-flex align-items-center"
           *ngFor="let publisher of publishers"
           [publisher]="publisher"
+          (delete)="onDelete($event)"
+          class="d-flex align-items-center"
         ></tr>
       </tbody>
     </table>

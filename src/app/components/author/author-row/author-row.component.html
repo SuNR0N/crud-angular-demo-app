@@ -10,22 +10,26 @@
   <button
     appIconButton
     *ngIf="author._links.self"
-    (click)="viewAuthor(author)"
+    (click)="viewAuthor()"
     class="btn btn-sm btn-outline-primary"
     symbol="eye-regular"
   ></button>
   <button
     appIconButton
     *ngIf="author._links.update"
-    (click)="editAuthor(author)"
+    (click)="editAuthor()"
     class="btn btn-sm btn-outline-secondary"
     symbol="edit-regular"
   ></button>
   <button
     appIconButton
     *ngIf="author._links.delete"
-    (click)="deleteAuthor(author)"
+    (click)="showConfirmation()"
     class="btn btn-sm btn-outline-danger"
     symbol="trash-alt-regular"
   ></button>
 </td>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ author.fullName }}</strong>&nbsp;<i>(ID: {{ author.id }})</i> ?
+</ng-template>

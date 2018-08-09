@@ -14,8 +14,11 @@ import {
 } from '@angular/router';
 
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
-import { CategoryService } from '../../../api/category.service';
 import { ProfileService } from '../../../services/profile.service';
+import {
+  CategoryService,
+  ResourceService,
+} from '../../../api';
 
 @Component({
   selector: 'app-list-categories',
@@ -29,6 +32,7 @@ export class ListCategoriesComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private profileService: ProfileService,
+    private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -46,9 +50,14 @@ export class ListCategoriesComponent implements OnInit {
     this.router.navigate([ 'create' ], { relativeTo: this.route });
   }
 
-  getCategories(query?: string) {
-    this.categoryService.getCategories(query)
-      .subscribe((categories) => this.categories = categories);
+  onDelete(category: ICategoryDTO) {
+    this.resourceService.request(category._links.delete)
+      .subscribe(() => {
+        const categoryIndex = this.categories.findIndex((existingCategory) => existingCategory === category);
+        if (categoryIndex !== -1) {
+          this.categories.splice(categoryIndex, 1);
+        }
+      });
   }
 
   onSearchTextChange(text: string) {
@@ -57,5 +66,10 @@ export class ListCategoriesComponent implements OnInit {
 
   get profile$() {
     return this.profileService.getProfile();
+  }
+
+  private getCategories(query?: string) {
+    this.categoryService.getCategories(query)
+      .subscribe((categories) => this.categories = categories);
   }
 }

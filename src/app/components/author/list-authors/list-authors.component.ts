@@ -14,7 +14,10 @@ import {
 } from '@angular/router';
 
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
-import { AuthorService } from '../../../api/author.service';
+import {
+  AuthorService,
+  ResourceService,
+} from '../../../api';
 import { ProfileService } from '../../../services/profile.service';
 
 @Component({
@@ -29,6 +32,7 @@ export class ListAuthorsComponent implements OnInit {
   constructor(
     private authorService: AuthorService,
     private profileService: ProfileService,
+    private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -46,9 +50,14 @@ export class ListAuthorsComponent implements OnInit {
     this.router.navigate([ 'create' ], { relativeTo: this.route });
   }
 
-  getAuthors(query?: string) {
-    this.authorService.getAuthors(query)
-      .subscribe((authors) => this.authors = authors);
+  onDelete(author: IAuthorDTO) {
+    this.resourceService.request(author._links.delete)
+      .subscribe(() => {
+        const authorIndex = this.authors.findIndex((existingAuthor) => existingAuthor === author);
+        if (authorIndex !== -1) {
+          this.authors.splice(authorIndex, 1);
+        }
+      });
   }
 
   onSearchTextChange(text: string) {
@@ -57,5 +66,10 @@ export class ListAuthorsComponent implements OnInit {
 
   get profile$() {
     return this.profileService.getProfile();
+  }
+
+  private getAuthors(query?: string) {
+    this.authorService.getAuthors(query)
+      .subscribe((authors) => this.authors = authors);
   }
 }

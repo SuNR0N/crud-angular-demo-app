@@ -1,10 +1,16 @@
 import {
   Component,
   Input,
+  ViewChild,
+  TemplateRef,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
+import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -14,18 +20,27 @@ import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
 })
 export class AuthorRowComponent {
   @Input() author: IAuthorDTO;
+  @Output() delete = new EventEmitter<IAuthorDTO>(null);
+  @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
 
-  constructor(private router: Router) { }
+  constructor(
+    private modalService: NgbModal,
+    private router: Router,
+  ) { }
 
-  deleteAuthor(author: IAuthorDTO) {
-    // TODO
+  editAuthor() {
+    this.router.navigate([ 'authors', this.author.id, 'edit' ]);
   }
 
-  editAuthor(author: IAuthorDTO) {
-    this.router.navigate([ 'authors', author.id, 'edit' ]);
+  showConfirmation() {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.body = this.confirmationText;
+    modalRef.result
+      .then(() => this.delete.emit(this.author))
+      .catch(() => {});
   }
 
-  viewAuthor(author: IAuthorDTO) {
-    this.router.navigate([ 'authors', author.id ]);
+  viewAuthor() {
+    this.router.navigate([ 'authors', this.author.id ]);
   }
 }

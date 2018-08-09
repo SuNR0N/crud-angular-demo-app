@@ -62,16 +62,20 @@
     <button
       *ngIf="book?._links.update"
       class="btn btn-default btn-outline-secondary"
-      (click)="editBook(book)"
+      (click)="editBook()"
     >
       Edit
     </button>
     <button
       *ngIf="book?._links.delete"
       class="btn btn-default btn-outline-danger"
-      (click)="deleteBook(book)"
+      (click)="showConfirmation()"
     >
       Delete
     </button>
   </app-action-bar>
 </div>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ book.title }}</strong>&nbsp;<i>(ID: {{ book.id }})</i> ?
+</ng-template>

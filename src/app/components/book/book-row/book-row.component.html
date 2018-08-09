@@ -11,22 +11,26 @@
   <button
     appIconButton
     *ngIf="book._links.self"
-    (click)="viewBook(book)"
+    (click)="viewBook()"
     class="btn btn-sm btn-outline-primary"
     symbol="eye-regular"
   ></button>
   <button
     appIconButton
     *ngIf="book._links.update"
-    (click)="editBook(book)"
+    (click)="editBook()"
     class="btn btn-sm btn-outline-secondary"
     symbol="edit-regular"
   ></button>
   <button
     appIconButton
     *ngIf="book._links.delete"
-    (click)="deleteBook(book)"
+    (click)="showConfirmation()"
     class="btn btn-sm btn-outline-danger"
     symbol="trash-alt-regular"
   ></button>
 </td>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ book.title }}</strong>&nbsp;<i>(ID: {{ book.id }})</i> ?
+</ng-template>

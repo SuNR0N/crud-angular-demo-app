@@ -32,9 +32,10 @@
       <tbody>
         <tr
           appCategoryRow
-          class="d-flex align-items-center"
           *ngFor="let category of categories"
           [category]="category"
+          (delete)="onDelete($event)"
+          class="d-flex align-items-center"
         ></tr>
       </tbody>
     </table>

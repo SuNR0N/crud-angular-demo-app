@@ -19,17 +19,21 @@
   <app-action-bar>
     <button
       *ngIf="category?._links.update"
+      (click)="editCategory()"
       class="btn btn-default btn-outline-secondary"
-      (click)="editCategory(category)"
     >
       Edit
     </button>
     <button
       *ngIf="category?._links.delete"
+      (click)="showConfirmation()"
       class="btn btn-default btn-outline-danger"
-      (click)="deleteCategory(category)"
     >
       Delete
     </button>
   </app-action-bar>
 </div>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ category.name }}</strong>&nbsp;<i>(ID: {{ category.id }})</i> ?
+</ng-template>

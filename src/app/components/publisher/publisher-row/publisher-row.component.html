@@ -7,22 +7,26 @@
   <button
     appIconButton
     *ngIf="publisher._links.self"
-    (click)="viewPublisher(publisher)"
+    (click)="viewPublisher()"
     class="btn btn-sm btn-outline-primary"
     symbol="eye-regular"
   ></button>
   <button
     appIconButton
     *ngIf="publisher._links.update"
-    (click)="editPublisher(publisher)"
+    (click)="editPublisher()"
     class="btn btn-sm btn-outline-secondary"
     symbol="edit-regular"
   ></button>
   <button
     appIconButton
     *ngIf="publisher._links.delete"
-    (click)="deletePublisher(publisher)"
+    (click)="showConfirmation()"
     class="btn btn-sm btn-outline-danger"
     symbol="trash-alt-regular"
   ></button>
 </td>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ publisher.name }}</strong>&nbsp;<i>(ID: {{ publisher.id }})</i> ?
+</ng-template>

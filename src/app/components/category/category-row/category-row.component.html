@@ -7,22 +7,26 @@
   <button
     appIconButton
     *ngIf="category._links.self"
-    (click)="viewCategory(category)"
+    (click)="viewCategory()"
     class="btn btn-sm btn-outline-primary"
     symbol="eye-regular"
   ></button>
   <button
     appIconButton
     *ngIf="category._links.update"
-    (click)="editCategory(category)"
+    (click)="editCategory()"
     class="btn btn-sm btn-outline-secondary"
     symbol="edit-regular"
   ></button>
   <button
     appIconButton
     *ngIf="category._links.delete"
-    (click)="deleteCategory(category)"
+    (click)="showConfirmation()"
     class="btn btn-sm btn-outline-danger"
     symbol="trash-alt-regular"
   ></button>
 </td>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ category.name }}</strong>&nbsp;<i>(ID: {{ category.id }})</i> ?
+</ng-template>

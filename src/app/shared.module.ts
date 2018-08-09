@@ -8,6 +8,7 @@ import {
 import {
   ActionBarComponent,
   ActionCellComponent,
+  ConfirmationModalComponent,
   IconButtonComponent,
   IconComponent,
   ReadOnlyFormGroupComponent,
@@ -33,10 +34,14 @@ import {
   declarations: [
     ActionBarComponent,
     ActionCellComponent,
+    ConfirmationModalComponent,
     IconButtonComponent,
     IconComponent,
     ReadOnlyFormGroupComponent,
     TextFieldComponent,
+  ],
+  entryComponents: [
+    ConfirmationModalComponent,
   ],
 })
 export class SharedModule { }

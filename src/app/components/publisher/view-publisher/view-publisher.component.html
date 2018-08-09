@@ -19,17 +19,21 @@
   <app-action-bar>
     <button
       *ngIf="publisher?._links.update"
+      (click)="editPublisher()"
       class="btn btn-default btn-outline-secondary"
-      (click)="editPublisher(publisher)"
     >
       Edit
     </button>
     <button
       *ngIf="publisher?._links.delete"
+      (click)="showConfirmation()"
       class="btn btn-default btn-outline-danger"
-      (click)="deletePublisher(publisher)"
     >
       Delete
     </button>
   </app-action-bar>
 </div>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ publisher.name }}</strong>&nbsp;<i>(ID: {{ publisher.id }})</i> ?
+</ng-template>

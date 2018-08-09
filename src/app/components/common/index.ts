@@ -1,5 +1,6 @@
 export * from './action-bar/action-bar.component';
 export * from './action-cell/action-cell.component';
+export * from './confirmation-modal/confirmation-modal.component';
 export * from './icon/icon.component';
 export * from './icon-button/icon-button.component';
 export * from './navigation-bar/navigation-bar.component';

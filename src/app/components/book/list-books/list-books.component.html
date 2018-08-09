@@ -36,9 +36,10 @@
       <tbody>
         <tr
           appBookRow
-          class="d-flex align-items-center"
           *ngFor="let book of collection.content"
           [book]="book"
+          (delete)="onDelete($event)"
+          class="d-flex align-items-center"
         ></tr>
       </tbody>
     </table>

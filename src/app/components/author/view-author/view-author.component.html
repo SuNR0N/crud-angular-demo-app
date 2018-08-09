@@ -34,16 +34,20 @@
     <button
       *ngIf="author?._links.update"
       class="btn btn-default btn-outline-secondary"
-      (click)="editAuthor(author)"
+      (click)="editAuthor()"
     >
       Edit
     </button>
     <button
       *ngIf="author?._links.delete"
+      (click)="showConfirmation()"
       class="btn btn-default btn-outline-danger"
-      (click)="deleteAuthor(author)"
     >
       Delete
     </button>
   </app-action-bar>
 </div>
+
+<ng-template #confirmationText>
+  Are you sure you want to delete <strong>{{ author.fullName }}</strong>&nbsp;<i>(ID: {{ author.id }})</i> ?
+</ng-template>

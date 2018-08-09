@@ -18,7 +18,10 @@ import {
   NavigationEnd,
 } from '@angular/router';
 
-import { BookService } from '../../../api/book.service';
+import {
+  BookService,
+  ResourceService,
+} from '../../../api';
 import {
   IPageableCollectionDTO,
   IBookDTO,
@@ -43,6 +46,7 @@ export class ListBooksComponent implements OnInit, OnDestroy {
   constructor(
     private bookService: BookService,
     private profileService: ProfileService,
+    private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -73,9 +77,14 @@ export class ListBooksComponent implements OnInit, OnDestroy {
     this.router.navigate([ 'create' ], { relativeTo: this.route });
   }
 
-  getBooks(query?: string) {
-    this.bookService.getBooks(query)
-      .subscribe((collection) => this.collection = collection);
+  onDelete(book: IBookDTO) {
+    this.resourceService.request(book._links.delete)
+      .subscribe(() => {
+        const bookIndex = this.collection.content.findIndex((existingBook) => existingBook === book);
+        if (bookIndex !== -1) {
+          this.collection.content.splice(bookIndex, 1);
+        }
+      });
   }
 
   onSearchTextChange(text: string) {
@@ -84,5 +93,10 @@ export class ListBooksComponent implements OnInit, OnDestroy {
 
   get profile$() {
     return this.profileService.getProfile();
+  }
+
+  private getBooks(query?: string) {
+    this.bookService.getBooks(query)
+      .subscribe((collection) => this.collection = collection);
   }
 }

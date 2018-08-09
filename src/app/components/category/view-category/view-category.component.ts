@@ -1,13 +1,18 @@
 import {
   Component,
   OnInit,
+  ViewChild,
+  TemplateRef,
 } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
+import { ResourceService } from '../../../api/resource.service';
+import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-view-category',
@@ -15,9 +20,12 @@ import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
   styleUrls: ['./view-category.component.scss']
 })
 export class ViewCategoryComponent implements OnInit {
+  @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   public category: ICategoryDTO;
 
   constructor(
+    private modalService: NgbModal,
+    private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -26,11 +34,20 @@ export class ViewCategoryComponent implements OnInit {
     this.category = this.route.snapshot.data['category'];
   }
 
-  deleteCategory() {
-    // TODO
+  editCategory() {
+    this.router.navigate([ 'edit' ], { relativeTo: this.route });
   }
 
-  editCategory(category: ICategoryDTO) {
-    this.router.navigate([ 'edit' ], { relativeTo: this.route });
+  showConfirmation() {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.body = this.confirmationText;
+    modalRef.result
+      .then(() => this.deleteCategory())
+      .catch(() => {});
+  }
+
+  private deleteCategory() {
+    this.resourceService.request(this.category._links.delete)
+      .subscribe(() => this.router.navigate([ 'categories' ]));
   }
 }
