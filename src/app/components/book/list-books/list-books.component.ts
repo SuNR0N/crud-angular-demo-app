@@ -23,9 +23,10 @@ import {
   ResourceService,
 } from '../../../api';
 import {
+  IHATEOASLink,
   IPageableCollectionDTO,
   IBookDTO,
-} from '../../../interfaces/dtos';
+} from '../../../interfaces';
 import { ProfileService } from '../../../services/profile.service';
 
 @Component({
@@ -84,6 +85,11 @@ export class ListBooksComponent implements OnInit, OnDestroy {
           this.collection.content.splice(bookIndex, 1);
         }
       });
+  }
+
+  onPaginate(link: IHATEOASLink) {
+    this.resourceService.request<IPageableCollectionDTO<IBookDTO>>(link)
+      .subscribe((collection) => this.collection = collection);
   }
 
   onSearchTextChange(text: string) {

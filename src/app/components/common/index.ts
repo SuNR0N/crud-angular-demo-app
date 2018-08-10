@@ -7,6 +7,7 @@ export * from './field/field.component';
 export * from './icon/icon.component';
 export * from './icon-button/icon-button.component';
 export * from './navigation-bar/navigation-bar.component';
+export * from './pagination/pagination.component';
 export * from './profile/profile.component';
 export * from './read-only-field/read-only-field.component';
 export * from './sign-in/sign-in.component';

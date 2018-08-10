@@ -44,4 +44,8 @@
       </tbody>
     </table>
   </div>
+  <app-pagination
+    [pageableCollection]="collection"
+    (paginate)="onPaginate($event)"
+  ></app-pagination>
 </div>
