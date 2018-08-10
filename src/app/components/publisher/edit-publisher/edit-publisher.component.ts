@@ -11,6 +11,7 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 import {
   IPublisherDTO,
@@ -39,6 +40,7 @@ export class EditPublisherComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -57,9 +59,12 @@ export class EditPublisherComponent implements OnInit {
       ...this.editPublisherForm.value,
     };
     this.resourceService.request<IPublisherDTO>(this.publisher._links.update, updatedPublisher)
-      .subscribe((publisher) => {
-        this.publisherResolve.setPublisher(publisher);
-        this.router.navigate([ '../' ], { relativeTo: this.route });
-      });
+      .subscribe(
+        (publisher) => {
+          this.publisherResolve.setPublisher(publisher);
+          this.router.navigate([ '../' ], { relativeTo: this.route });
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 }

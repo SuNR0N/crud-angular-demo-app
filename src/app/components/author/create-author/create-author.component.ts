@@ -4,6 +4,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthorService } from '../../../api/author.service';
 import { INewAuthorDTO } from '../../../interfaces/dtos/NewAuthorDTO';
@@ -29,6 +30,7 @@ export class CreateAuthorComponent {
     private authorSerive: AuthorService,
     private fb: FormBuilder,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   listAuthors() {
@@ -40,6 +42,9 @@ export class CreateAuthorComponent {
       ...this.createAuthorForm.value,
     };
     this.authorSerive.createAuthor(newAuthor)
-      .subscribe(() => this.router.navigate([ 'authors' ]));
+      .subscribe(
+        () => this.router.navigate([ 'authors' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 }

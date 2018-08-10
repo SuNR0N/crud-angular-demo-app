@@ -4,6 +4,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { CategoryService } from '../../../api/category.service';
 import { INewCategoryDTO } from '../../../interfaces/dtos/NewCategoryDTO';
@@ -24,6 +25,7 @@ export class CreateCategoryComponent {
     private categoryService: CategoryService,
     private fb: FormBuilder,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   listCategories() {
@@ -35,6 +37,9 @@ export class CreateCategoryComponent {
       ...this.createCategoryForm.value,
     };
     this.categoryService.createCategory(newCategory)
-      .subscribe(() => this.router.navigate([ 'categories' ]));
+      .subscribe(
+        () => this.router.navigate([ 'categories' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 }

@@ -11,6 +11,7 @@ import {
   ActivatedRoute,
 } from '@angular/router';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 import {
   AuthorService,
@@ -92,6 +93,7 @@ export class EditBookComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -150,10 +152,13 @@ export class EditBookComponent implements OnInit {
       ),
     };
     this.resourceService.request<IBookDTO>(this.book._links.update, updatedBook)
-      .subscribe((book) => {
-        this.bookResolve.setBook(book);
-        this.router.navigate([ '../' ], { relativeTo: this.route });
-      });
+      .subscribe(
+        (book) => {
+          this.bookResolve.setBook(book);
+          this.router.navigate([ '../' ], { relativeTo: this.route });
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 
   get isbn10ErrorDefinitions() {
@@ -174,37 +179,46 @@ export class EditBookComponent implements OnInit {
 
   private loadAuthors() {
     this.authorService.getAuthors()
-      .subscribe((authors) => {
-        this.authors = authors;
-        this.editBookForm.patchValue({
-          authors: authors
-            .filter((author) => this.book.authors.indexOf(author.fullName) !== -1)
-            .map((author) => author.id),
-        });
-      });
+      .subscribe(
+        (authors) => {
+          this.authors = authors;
+          this.editBookForm.patchValue({
+            authors: authors
+              .filter((author) => this.book.authors.indexOf(author.fullName) !== -1)
+              .map((author) => author.id),
+          });
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 
   private loadCategories() {
     this.categoryService.getCategories()
-      .subscribe((categories) => {
-        this.categories = categories;
-        this.editBookForm.patchValue({
-          categories: categories
-            .filter((category) => this.book.categories.indexOf(category.name) !== -1)
-            .map((category) => category.id),
-        });
-      });
+      .subscribe(
+        (categories) => {
+          this.categories = categories;
+          this.editBookForm.patchValue({
+            categories: categories
+              .filter((category) => this.book.categories.indexOf(category.name) !== -1)
+              .map((category) => category.id),
+          });
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 
   private loadPublishers() {
     this.publisherService.getPublishers()
-      .subscribe((publishers) => {
-        this.publishers = publishers;
-        this.editBookForm.patchValue({
-          publishers: publishers
-            .filter((publisher) => this.book.publishers.indexOf(publisher.name) !== -1)
-            .map((publisher) => publisher.id),
-        });
-      });
+      .subscribe(
+        (publishers) => {
+          this.publishers = publishers;
+          this.editBookForm.patchValue({
+            publishers: publishers
+              .filter((publisher) => this.book.publishers.indexOf(publisher.name) !== -1)
+              .map((publisher) => publisher.id),
+          });
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 }

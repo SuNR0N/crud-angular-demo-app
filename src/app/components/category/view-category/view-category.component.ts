@@ -9,6 +9,7 @@ import {
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
 import { ResourceService } from '../../../api/resource.service';
@@ -27,6 +28,7 @@ export class ViewCategoryComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,9 @@ export class ViewCategoryComponent implements OnInit {
 
   private deleteCategory() {
     this.resourceService.request(this.category._links.delete)
-      .subscribe(() => this.router.navigate([ 'categories' ]));
+      .subscribe(
+        () => this.router.navigate([ 'categories' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 }

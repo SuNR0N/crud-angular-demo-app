@@ -41,12 +41,7 @@ export class BookService extends BaseService {
     return this.http.get<IPageableCollectionDTO<IBookDTO>>(this.booksUrl, { params })
       .pipe(
         tap((_) => this.log('fetched books')),
-        catchError(this.handleError<IPageableCollectionDTO<IBookDTO>>('getBooks', {
-          content: [],
-          currentPage: 0,
-          totalPages: 0,
-          totalItems: 0,
-        }))
+        catchError(this.handleError('getBooks'))
       );
   }
 
@@ -54,7 +49,7 @@ export class BookService extends BaseService {
     return this.http.get<IBookDTO>(`${this.booksUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched book id=${id}`)),
-        catchError(this.handleError<IBookDTO>(`getBook id=${id}`))
+        catchError(this.handleError(`getBook id=${id}`))
       );
   }
 
@@ -70,7 +65,7 @@ export class BookService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError<IBookDTO>(`createBook book=${book}`))
+        catchError(this.handleError(`createBook book=${book}`))
       );
   }
 }

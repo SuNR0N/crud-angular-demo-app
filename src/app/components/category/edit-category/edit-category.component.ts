@@ -11,6 +11,7 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 import {
   ICategoryDTO,
@@ -39,6 +40,7 @@ export class EditCategoryComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -57,9 +59,12 @@ export class EditCategoryComponent implements OnInit {
       ...this.editCategoryForm.value,
     };
     this.resourceService.request<ICategoryDTO>(this.category._links.update, updatedCategory)
-      .subscribe((category) => {
-        this.categoryResolve.setCategory(category);
-        this.router.navigate([ '../' ], { relativeTo: this.route });
-      });
+      .subscribe(
+        (category) => {
+          this.categoryResolve.setCategory(category);
+          this.router.navigate([ '../' ], { relativeTo: this.route });
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 }

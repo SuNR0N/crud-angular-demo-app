@@ -17,6 +17,7 @@ import {
   ActivatedRoute,
   NavigationEnd,
 } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import {
   BookService,
@@ -49,6 +50,7 @@ export class ListBooksComponent implements OnInit, OnDestroy {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) {
     this.navigationSubscription = this.router.events
       .subscribe((e: any) => {
@@ -64,7 +66,10 @@ export class ListBooksComponent implements OnInit, OnDestroy {
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.bookService.getBooks(term)),
-    ).subscribe((collection) => this.collection = collection);
+    ).subscribe(
+      (collection) => this.collection = collection,
+      (err) => this.toastr.error(err),
+    );
   }
 
   ngOnDestroy() {
@@ -79,17 +84,23 @@ export class ListBooksComponent implements OnInit, OnDestroy {
 
   onDelete(book: IBookDTO) {
     this.resourceService.request(book._links.delete)
-      .subscribe(() => {
-        const bookIndex = this.collection.content.findIndex((existingBook) => existingBook === book);
-        if (bookIndex !== -1) {
-          this.collection.content.splice(bookIndex, 1);
-        }
-      });
+      .subscribe(
+        () => {
+          const bookIndex = this.collection.content.findIndex((existingBook) => existingBook === book);
+          if (bookIndex !== -1) {
+            this.collection.content.splice(bookIndex, 1);
+          }
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 
   onPaginate(link: IHATEOASLink) {
     this.resourceService.request<IPageableCollectionDTO<IBookDTO>>(link)
-      .subscribe((collection) => this.collection = collection);
+      .subscribe(
+        (collection) => this.collection = collection,
+        (err) => this.toastr.error(err),
+      );
   }
 
   onSearchTextChange(text: string) {
@@ -102,6 +113,9 @@ export class ListBooksComponent implements OnInit, OnDestroy {
 
   private getBooks(query?: string) {
     this.bookService.getBooks(query)
-      .subscribe((collection) => this.collection = collection);
+      .subscribe(
+        (collection) => this.collection = collection,
+        (err) => this.toastr.error(err),
+      );
   }
 }

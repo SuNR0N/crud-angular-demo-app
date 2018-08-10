@@ -28,7 +28,7 @@ export class AuthService extends BaseService {
     return this.http.get<IProfileDTO>(`${this.authUrl}/profile`)
       .pipe(
         tap((_) => this.log('fetched profile')),
-        catchError(this.handleError<IProfileDTO>('getProfile', null))
+        catchError(this.handleError('getProfile'))
       );
   }
 
@@ -36,7 +36,7 @@ export class AuthService extends BaseService {
     return this.http.post(`${this.authUrl}/logout`, null, { responseType: 'text' })
       .pipe(
         tap((_) => this.log('logged out')),
-        catchError(this.handleError<string>('logOut'))
+        catchError(this.handleError('logOut'))
       );
   }
 }

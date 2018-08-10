@@ -9,6 +9,7 @@ import {
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
 import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
@@ -27,6 +28,7 @@ export class ViewAuthorComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,9 @@ export class ViewAuthorComponent implements OnInit {
 
   private deleteAuthor() {
     this.resourceService.request(this.author._links.delete)
-      .subscribe(() => this.router.navigate([ 'authors' ]));
+      .subscribe(
+        () => this.router.navigate([ 'authors' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 }

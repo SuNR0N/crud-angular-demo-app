@@ -12,6 +12,7 @@ import {
   Router,
   ActivatedRoute,
 } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
 import { ProfileService } from '../../../services/profile.service';
@@ -34,6 +35,7 @@ export class ListCategoriesComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -42,7 +44,10 @@ export class ListCategoriesComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.categoryService.getCategories(term)),
-    ).subscribe((categories) => this.categories = categories);
+    ).subscribe(
+      (categories) => this.categories = categories,
+      (err) => this.toastr.error(err),
+    );
   }
 
   createCategory() {
@@ -51,12 +56,15 @@ export class ListCategoriesComponent implements OnInit {
 
   onDelete(category: ICategoryDTO) {
     this.resourceService.request(category._links.delete)
-      .subscribe(() => {
-        const categoryIndex = this.categories.findIndex((existingCategory) => existingCategory === category);
-        if (categoryIndex !== -1) {
-          this.categories.splice(categoryIndex, 1);
-        }
-      });
+      .subscribe(
+        () => {
+          const categoryIndex = this.categories.findIndex((existingCategory) => existingCategory === category);
+          if (categoryIndex !== -1) {
+            this.categories.splice(categoryIndex, 1);
+          }
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 
   onSearchTextChange(text: string) {
@@ -69,6 +77,9 @@ export class ListCategoriesComponent implements OnInit {
 
   private getCategories(query?: string) {
     this.categoryService.getCategories(query)
-      .subscribe((categories) => this.categories = categories);
+      .subscribe(
+        (categories) => this.categories = categories,
+        (err) => this.toastr.error(err),
+      );
   }
 }

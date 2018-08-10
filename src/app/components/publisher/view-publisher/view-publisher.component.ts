@@ -9,6 +9,7 @@ import {
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import { ResourceService } from '../../../api/resource.service';
@@ -27,6 +28,7 @@ export class ViewPublisherComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,9 @@ export class ViewPublisherComponent implements OnInit {
 
   private deletePublisher() {
     this.resourceService.request(this.publisher._links.delete)
-      .subscribe(() => this.router.navigate([ 'publishers' ]));
+      .subscribe(
+        () => this.router.navigate([ 'publishers' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 }

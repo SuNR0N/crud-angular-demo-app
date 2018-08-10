@@ -40,7 +40,7 @@ export class PublisherService extends BaseService {
     return this.http.get<IPublisherDTO[]>(this.publishersUrl, { params })
       .pipe(
         tap((_) => this.log('fetched publishers')),
-        catchError(this.handleError<IPublisherDTO[]>('getPublishers', []))
+        catchError(this.handleError('getPublishers'))
       );
   }
 
@@ -48,7 +48,7 @@ export class PublisherService extends BaseService {
     return this.http.get<IPublisherDTO>(`${this.publishersUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched publisher id=${id}`)),
-        catchError(this.handleError<IPublisherDTO>(`getPublisher id=${id}`))
+        catchError(this.handleError(`getPublisher id=${id}`))
       );
   }
 
@@ -64,7 +64,7 @@ export class PublisherService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError<IPublisherDTO>(`createPublisher publisher=${publisher}`))
+        catchError(this.handleError(`createPublisher publisher=${publisher}`))
       );
   }
 }

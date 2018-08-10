@@ -29,7 +29,7 @@ export class ResourceService extends BaseService {
     return this.http.request<T>(link.method, link.href, httpOptions)
       .pipe(
         tap((_) => this.log('request finished')),
-        catchError(this.handleError<T>('request'))
+        catchError(this.handleError('request'))
       );
   }
 }

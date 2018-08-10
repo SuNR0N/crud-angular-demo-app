@@ -9,11 +9,9 @@ import {
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
-import {
-  BookService,
-  ResourceService,
-} from '../../../api';
+import { ResourceService } from '../../../api/resource.service';
 import { IBookDTO } from '../../../interfaces/dtos/BookDTO';
 import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
 
@@ -30,6 +28,7 @@ export class ViewBookComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -50,6 +49,9 @@ export class ViewBookComponent implements OnInit {
 
   private deleteBook() {
     this.resourceService.request(this.book._links.delete)
-      .subscribe(() => this.router.navigate([ 'books' ]));
+      .subscribe(
+        () => this.router.navigate([ 'books' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 }

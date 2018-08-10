@@ -4,6 +4,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { PublisherService } from '../../../api/publisher.service';
 import { INewPublisherDTO } from '../../../interfaces/dtos/NewPublisherDTO';
@@ -24,6 +25,7 @@ export class CreatePublisherComponent {
     private fb: FormBuilder,
     private publisherService: PublisherService,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   listPublishers() {
@@ -35,6 +37,9 @@ export class CreatePublisherComponent {
       ...this.createPublisherForm.value,
     };
     this.publisherService.createPublisher(newPublisher)
-      .subscribe(() => this.router.navigate([ 'publishers' ]));
+      .subscribe(
+        () => this.router.navigate([ 'publishers' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 }

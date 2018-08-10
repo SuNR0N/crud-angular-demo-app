@@ -40,7 +40,7 @@ export class AuthorService extends BaseService {
     return this.http.get<IAuthorDTO[]>(this.authorsUrl, { params })
       .pipe(
         tap((_) => this.log('fetched authors')),
-        catchError(this.handleError<IAuthorDTO[]>('getAuthors', []))
+        catchError(this.handleError('getAuthors'))
       );
   }
 
@@ -48,7 +48,7 @@ export class AuthorService extends BaseService {
     return this.http.get<IAuthorDTO>(`${this.authorsUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched author id=${id}`)),
-        catchError(this.handleError<IAuthorDTO>(`getAuthor id=${id}`))
+        catchError(this.handleError(`getAuthor id=${id}`))
       );
   }
 
@@ -64,7 +64,7 @@ export class AuthorService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError<IAuthorDTO>(`createAuthor author=${author}`))
+        catchError(this.handleError(`createAuthor author=${author}`))
       );
   }
 }

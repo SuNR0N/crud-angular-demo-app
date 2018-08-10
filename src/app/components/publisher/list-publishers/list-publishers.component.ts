@@ -12,6 +12,7 @@ import {
   Router,
   ActivatedRoute,
 } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import {
@@ -34,6 +35,7 @@ export class ListPublishersComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -42,7 +44,10 @@ export class ListPublishersComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.publisherService.getPublishers(term)),
-    ).subscribe((publishers) => this.publishers = publishers);
+    ).subscribe(
+      (publishers) => this.publishers = publishers,
+      (err) => this.toastr.error(err),
+    );
   }
 
   createPublisher() {
@@ -51,12 +56,15 @@ export class ListPublishersComponent implements OnInit {
 
   onDelete(publisher: IPublisherDTO) {
     this.resourceService.request(publisher._links.delete)
-      .subscribe(() => {
-        const publisherIndex = this.publishers.findIndex((existingPublisher) => existingPublisher === publisher);
-        if (publisherIndex !== -1) {
-          this.publishers.splice(publisherIndex, 1);
-        }
-      });
+      .subscribe(
+        () => {
+          const publisherIndex = this.publishers.findIndex((existingPublisher) => existingPublisher === publisher);
+          if (publisherIndex !== -1) {
+            this.publishers.splice(publisherIndex, 1);
+          }
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 
   onSearchTextChange(text: string) {
@@ -69,6 +77,9 @@ export class ListPublishersComponent implements OnInit {
 
   private getPublishers(query?: string) {
     this.publisherService.getPublishers(query)
-      .subscribe((publishers) => this.publishers = publishers);
+      .subscribe(
+        (publishers) => this.publishers = publishers,
+        (err) => this.toastr.error(err),
+      );
   }
 }

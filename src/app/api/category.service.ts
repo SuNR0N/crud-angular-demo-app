@@ -40,7 +40,7 @@ export class CategoryService extends BaseService {
     return this.http.get<ICategoryDTO[]>(this.categoriesUrl, { params })
       .pipe(
         tap((_) => this.log('fetched categories')),
-        catchError(this.handleError<ICategoryDTO[]>('getCategories', []))
+        catchError(this.handleError('getCategories'))
       );
   }
 
@@ -48,7 +48,7 @@ export class CategoryService extends BaseService {
     return this.http.get<ICategoryDTO>(`${this.categoriesUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched category id=${id}`)),
-        catchError(this.handleError<ICategoryDTO>(`getCategory id=${id}`))
+        catchError(this.handleError(`getCategory id=${id}`))
       );
   }
 
@@ -64,7 +64,7 @@ export class CategoryService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError<ICategoryDTO>(`createCategory category=${category}`))
+        catchError(this.handleError(`createCategory category=${category}`))
       );
   }
 }

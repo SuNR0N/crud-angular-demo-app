@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import {
   AuthorService,
@@ -40,10 +41,10 @@ export class CreateBookComponent implements OnInit {
   public categories: ICategoryDTO[];
   public createBookForm = this.fb.group({
     authors: [
-      undefined,
+      [],
     ],
     categories: [
-      undefined,
+      [],
     ],
     isbn10: [
       '',
@@ -66,7 +67,7 @@ export class CreateBookComponent implements OnInit {
       null,
     ],
     publishers: [
-      undefined,
+      [],
     ],
     title: [
       '',
@@ -82,6 +83,7 @@ export class CreateBookComponent implements OnInit {
     private fb: FormBuilder,
     private publisherService: PublisherService,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -99,7 +101,10 @@ export class CreateBookComponent implements OnInit {
       ...this.createBookForm.value,
     };
     this.bookService.createBook(newBook)
-      .subscribe(() => this.router.navigate([ 'books' ]));
+      .subscribe(
+        () => this.router.navigate([ 'books' ]),
+        (err) => this.toastr.error(err),
+      );
   }
 
   get isbn10ErrorDefinitions() {
@@ -120,16 +125,25 @@ export class CreateBookComponent implements OnInit {
 
   private loadAuthors() {
     this.authorService.getAuthors()
-      .subscribe((authors) => this.authors = authors);
+      .subscribe(
+        (authors) => this.authors = authors,
+        (err) => this.toastr.error(err),
+      );
   }
 
   private loadCategories() {
     this.categoryService.getCategories()
-      .subscribe((categories) => this.categories = categories);
+      .subscribe(
+        (categories) => this.categories = categories,
+        (err) => this.toastr.error(err),
+      );
   }
 
   private loadPublishers() {
     this.publisherService.getPublishers()
-      .subscribe((publishers) => this.publishers = publishers);
+      .subscribe(
+        (publishers) => this.publishers = publishers,
+        (err) => this.toastr.error(err),
+      );
   }
 }

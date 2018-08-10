@@ -12,6 +12,7 @@ import {
   Router,
   ActivatedRoute,
 } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
 import {
@@ -34,6 +35,7 @@ export class ListAuthorsComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -42,7 +44,10 @@ export class ListAuthorsComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.authorService.getAuthors(term)),
-    ).subscribe((authors) => this.authors = authors);
+    ).subscribe(
+      (authors) => this.authors = authors,
+      (err) => this.toastr.error(err),
+    );
   }
 
   createAuthor() {
@@ -51,12 +56,15 @@ export class ListAuthorsComponent implements OnInit {
 
   onDelete(author: IAuthorDTO) {
     this.resourceService.request(author._links.delete)
-      .subscribe(() => {
-        const authorIndex = this.authors.findIndex((existingAuthor) => existingAuthor === author);
-        if (authorIndex !== -1) {
-          this.authors.splice(authorIndex, 1);
-        }
-      });
+      .subscribe(
+        () => {
+          const authorIndex = this.authors.findIndex((existingAuthor) => existingAuthor === author);
+          if (authorIndex !== -1) {
+            this.authors.splice(authorIndex, 1);
+          }
+        },
+        (err) => this.toastr.error(err),
+      );
   }
 
   onSearchTextChange(text: string) {
@@ -69,6 +77,9 @@ export class ListAuthorsComponent implements OnInit {
 
   private getAuthors(query?: string) {
     this.authorService.getAuthors(query)
-      .subscribe((authors) => this.authors = authors);
+      .subscribe(
+        (authors) => this.authors = authors,
+        (err) => this.toastr.error(err),
+      );
   }
 }
