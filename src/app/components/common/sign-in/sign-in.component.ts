@@ -6,7 +6,6 @@ import { GITHUB_OAUTH_URL } from '../../../config/config';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent {
   public authLink = GITHUB_OAUTH_URL;

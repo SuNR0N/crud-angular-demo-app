@@ -17,7 +17,6 @@ import { ConfirmationModalComponent } from '../../common/confirmation-modal/conf
 @Component({
   selector: 'app-view-publisher',
   templateUrl: './view-publisher.component.html',
-  styleUrls: ['./view-publisher.component.scss']
 })
 export class ViewPublisherComponent implements OnInit {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;

@@ -6,10 +6,8 @@ import {
 } from '@angular/core';
 import {
   ActivatedRoute,
-  ParamMap,
   Router,
 } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import {
@@ -22,14 +20,12 @@ import { ConfirmationModalComponent } from '../../common/confirmation-modal/conf
 @Component({
   selector: 'app-view-book',
   templateUrl: './view-book.component.html',
-  styleUrls: ['./view-book.component.scss']
 })
 export class ViewBookComponent implements OnInit {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   book: IBookDTO;
 
   constructor(
-    private bookService: BookService,
     private modalService: NgbModal,
     private resourceService: ResourceService,
     private route: ActivatedRoute,
@@ -37,9 +33,7 @@ export class ViewBookComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => this.bookService.getBook(Number(params.get('id'))))
-    ).subscribe((book) => this.book = book);
+    this.book = this.route.snapshot.data['book'];
   }
 
   editBook() {

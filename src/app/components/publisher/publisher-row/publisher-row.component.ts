@@ -16,7 +16,6 @@ import { ConfirmationModalComponent } from '../../common/confirmation-modal/conf
   // tslint:disable-next-line:component-selector
   selector: '[appPublisherRow]',
   templateUrl: './publisher-row.component.html',
-  styleUrls: ['./publisher-row.component.scss']
 })
 export class PublisherRowComponent {
   @Input() publisher: IPublisherDTO;

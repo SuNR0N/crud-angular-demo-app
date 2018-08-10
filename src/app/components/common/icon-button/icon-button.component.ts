@@ -13,7 +13,6 @@ import { IconSymbol } from '../icon/icon.component';
   // tslint:disable-next-line:component-selector
   selector: '[appIconButton]',
   templateUrl: './icon-button.component.html',
-  styleUrls: ['./icon-button.component.scss']
 })
 export class IconButtonComponent {
   @Input() symbol?: IconSymbol;

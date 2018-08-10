@@ -22,7 +22,6 @@ import { ResourceService } from '../../../api/resource.service';
 @Component({
   selector: 'app-edit-publisher',
   templateUrl: './edit-publisher.component.html',
-  styleUrls: ['./edit-publisher.component.scss']
 })
 export class EditPublisherComponent implements OnInit {
   public publisher: IPublisherDTO;

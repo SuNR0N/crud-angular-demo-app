@@ -4,14 +4,20 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import {
   ActionBarComponent,
   ActionCellComponent,
   ConfirmationModalComponent,
+  DateFieldComponent,
+  DropdownFieldComponent,
+  FieldComponent,
   IconButtonComponent,
   IconComponent,
-  ReadOnlyFormGroupComponent,
+  ReadOnlyFieldComponent,
+  TemplateFieldComponent,
   TextFieldComponent,
 } from './components/common';
 
@@ -20,13 +26,18 @@ import {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
+    NgbModule,
   ],
   exports: [
     ActionBarComponent,
     ActionCellComponent,
+    DateFieldComponent,
+    DropdownFieldComponent,
     IconButtonComponent,
     IconComponent,
-    ReadOnlyFormGroupComponent,
+    ReadOnlyFieldComponent,
+    TemplateFieldComponent,
     TextFieldComponent,
     FormsModule,
     ReactiveFormsModule,
@@ -35,9 +46,13 @@ import {
     ActionBarComponent,
     ActionCellComponent,
     ConfirmationModalComponent,
+    DateFieldComponent,
+    DropdownFieldComponent,
+    FieldComponent,
     IconButtonComponent,
     IconComponent,
-    ReadOnlyFormGroupComponent,
+    ReadOnlyFieldComponent,
+    TemplateFieldComponent,
     TextFieldComponent,
   ],
   entryComponents: [

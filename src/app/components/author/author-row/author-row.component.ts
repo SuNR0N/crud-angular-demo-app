@@ -16,7 +16,6 @@ import { ConfirmationModalComponent } from '../../common/confirmation-modal/conf
   // tslint:disable-next-line:component-selector
   selector: '[appAuthorRow]',
   templateUrl: './author-row.component.html',
-  styleUrls: ['./author-row.component.scss']
 })
 export class AuthorRowComponent {
   @Input() author: IAuthorDTO;

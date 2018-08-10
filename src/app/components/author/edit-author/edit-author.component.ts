@@ -22,7 +22,6 @@ import { AuthorResolve } from '../author.resolve';
 @Component({
   selector: 'app-edit-author',
   templateUrl: './edit-author.component.html',
-  styleUrls: ['./edit-author.component.scss']
 })
 export class EditAuthorComponent implements OnInit {
   public author: IAuthorDTO;
@@ -80,7 +79,6 @@ export class EditAuthorComponent implements OnInit {
     };
     this.resourceService.request<IAuthorDTO>(this.author._links.update, updatedAuthor)
       .subscribe((author) => {
-        console.log(author);
         this.authorResolve.setAuthor(author);
         this.router.navigate([ '../' ], { relativeTo: this.route });
       });

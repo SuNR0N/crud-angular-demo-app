@@ -8,6 +8,5 @@ import { Component } from '@angular/core';
   // tslint:disable-next-line:component-selector
   selector: '[appActionCell]',
   templateUrl: './action-cell.component.html',
-  styleUrls: ['./action-cell.component.scss']
 })
 export class ActionCellComponent { }

@@ -5,13 +5,13 @@
     (ngSubmit)="onSubmit()"
     id="editCategoryForm"
   >
-    <app-read-only-form-group
+    <app-read-only-field
       id="id"
       label="ID"
       labelClass="col-md-1 col-sm-2"
       valueClass="col-md-11 col-sm-10"
       [value]="category?.id"
-    ></app-read-only-form-group>
+    ></app-read-only-field>
     <app-text-field
       [control]="editCategoryForm.get('name')"
       formControlName="name"

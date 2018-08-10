@@ -31,7 +31,6 @@ import { ProfileService } from '../../../services/profile.service';
 @Component({
   selector: 'app-list-books',
   templateUrl: './list-books.component.html',
-  styleUrls: ['./list-books.component.scss']
 })
 export class ListBooksComponent implements OnInit, OnDestroy {
   public collection: IPageableCollectionDTO<IBookDTO> = {

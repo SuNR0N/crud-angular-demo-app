@@ -1,0 +1,26 @@
+<label
+  [for]="id"
+  [ngClass]="labelClass"
+  [id]="labelId"
+  class="col-form-label"
+>
+  {{ label }}
+</label>
+<div [ngClass]="valueClass">
+  <ng-select
+    (change)="onChange($event)"
+    [id]="id"
+    [items]="options"
+    [multiple]="true"
+    [bindLabel]="labelProperty"
+    [bindValue]="valueProperty"
+    [placeholder]="placeholder"
+    [clearAllText]="clearText"
+    [ngClass]="{ 'is-valid': isValid, 'is-invalid': isInvalid }"
+    [(ngModel)]="value"
+  >
+  </ng-select>
+  <div class="invalid-feedback">
+    {{ errorMessage }}
+  </div>
+</div>

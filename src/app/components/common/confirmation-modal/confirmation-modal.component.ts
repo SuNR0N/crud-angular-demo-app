@@ -15,7 +15,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   },
   selector: 'app-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
-  styleUrls: ['./confirmation-modal.component.scss']
 })
 export class ConfirmationModalComponent implements AfterViewInit {
   @ViewChild('vc', { read: ViewContainerRef }) private vc: ViewContainerRef;

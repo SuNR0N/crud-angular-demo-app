@@ -10,6 +10,7 @@ import {
   ListBooksComponent,
   ViewBookComponent,
 } from '.';
+import { BookResolve } from './book.resolve';
 
 const bookRoutes: Routes = [
   {
@@ -23,10 +24,16 @@ const bookRoutes: Routes = [
   {
     path: ':id',
     component: ViewBookComponent,
+    resolve: {
+      book: BookResolve,
+    },
   },
   {
     path: ':id/edit',
     component: EditBookComponent,
+    resolve: {
+      book: BookResolve,
+    },
   },
 ];
 

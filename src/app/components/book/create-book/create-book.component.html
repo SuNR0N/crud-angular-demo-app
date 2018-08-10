@@ -1,3 +1,87 @@
-<p>
-  create-book works!
-</p>
+<div class="container-fluid">
+  <h2>Create New Book</h2>
+  <form
+    [formGroup]="createBookForm"
+    (ngSubmit)="onSubmit()"
+    id="createBookForm"
+  >
+    <app-text-field
+      [control]="createBookForm.get('title')"
+      formControlName="title"
+      id="title"
+      label="Title"
+      labelClass="col-lg-2 col-md-3 col-sm-4"
+      valueClass="col-lg-9 col-md-9 col-sm-8"
+    ></app-text-field>
+    <app-dropdown-field
+      [control]="createBookForm.get('categories')"
+      [options]="categories"
+      formControlName="categories"
+      id="categories"
+      label="Categories"
+      labelClass="col-lg-2 col-md-3 col-sm-4"
+      valueClass="col-lg-9 col-md-9 col-sm-8"
+    ></app-dropdown-field>
+    <app-dropdown-field
+      [control]="createBookForm.get('authors')"
+      [options]="authors"
+      labelProperty="fullName"
+      formControlName="authors"
+      id="authors"
+      label="Authors"
+      labelClass="col-lg-2 col-md-3 col-sm-4"
+      valueClass="col-lg-9 col-md-9 col-sm-8"
+    ></app-dropdown-field>
+    <app-text-field
+      [control]="createBookForm.get('isbn10')"
+      [errorDefs]="isbn10ErrorDefinitions"
+      formControlName="isbn10"
+      id="isbn10"
+      label="ISBN-10"
+      labelClass="col-lg-2 col-md-3 col-sm-4"
+      valueClass="col-lg-9 col-md-9 col-sm-8"
+    ></app-text-field>
+    <app-text-field
+      [control]="createBookForm.get('isbn13')"
+      [errorDefs]="isbn13ErrorDefinitions"
+      formControlName="isbn13"
+      id="isbn13"
+      label="ISBN-13"
+      labelClass="col-lg-2 col-md-3 col-sm-4"
+      valueClass="col-lg-9 col-md-9 col-sm-8"
+    ></app-text-field>
+    <app-date-field
+      [control]="createBookForm.get('publicationDate')"
+      formControlName="publicationDate"
+      id="publicationDate"
+      label="Publication Date"
+      labelClass="col-lg-2 col-md-3 col-sm-4"
+      valueClass="col-lg-9 col-md-9 col-sm-8"
+    ></app-date-field>
+    <app-dropdown-field
+      [control]="createBookForm.get('publishers')"
+      [options]="publishers"
+      formControlName="publishers"
+      id="publishers"
+      label="Publishers"
+      labelClass="col-lg-2 col-md-3 col-sm-4"
+      valueClass="col-lg-9 col-md-9 col-sm-8"
+    ></app-dropdown-field>
+  </form>
+  <app-action-bar>
+    <button
+      class="btn btn-default btn-outline-secondary"
+      (click)="listBooks()"
+    >
+      Cancel
+    </button>
+    <button
+      [disabled]="!createBookForm.valid"
+      class="btn btn-default btn-outline-success"
+      form="createBookForm"
+      type="submit"
+    >
+      Save
+    </button>
+  </app-action-bar>
+</div>

@@ -1,0 +1,22 @@
+<label
+  [for]="id"
+  [ngClass]="labelClass"
+  [id]="labelId"
+  class="col-form-label"
+>
+  {{ label }}
+</label>
+<div [ngClass]="valueClass">
+  <ng-template
+    [ngTemplateOutlet]="templateRef"
+    [ngTemplateOutletContext]="{
+      id:id,
+      isValid:isValid,
+      isInvalid:isInvalid,
+      labelId:labelId
+    }"
+  ></ng-template>
+  <div class="invalid-feedback">
+    {{ errorMessage }}
+  </div>
+</div>

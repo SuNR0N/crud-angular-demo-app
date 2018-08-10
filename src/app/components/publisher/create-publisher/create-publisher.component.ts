@@ -11,7 +11,6 @@ import { INewPublisherDTO } from '../../../interfaces/dtos/NewPublisherDTO';
 @Component({
   selector: 'app-create-publisher',
   templateUrl: './create-publisher.component.html',
-  styleUrls: ['./create-publisher.component.scss']
 })
 export class CreatePublisherComponent {
   public createPublisherForm = this.fb.group({

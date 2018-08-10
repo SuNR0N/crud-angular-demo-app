@@ -23,7 +23,6 @@ import { ProfileService } from '../../../services/profile.service';
 @Component({
   selector: 'app-list-publishers',
   templateUrl: './list-publishers.component.html',
-  styleUrls: ['./list-publishers.component.scss']
 })
 export class ListPublishersComponent implements OnInit {
   public publishers: IPublisherDTO[] = [];

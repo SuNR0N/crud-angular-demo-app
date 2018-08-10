@@ -1,0 +1,37 @@
+<label
+  [for]="id"
+  [ngClass]="labelClass"
+  [id]="labelId"
+  class="col-form-label"
+>
+  {{ label }}
+</label>
+<div
+  [ngClass]="valueClass"
+  class="input-group"
+>
+  <input
+    ngbDatepicker
+    #d="ngbDatepicker"
+    [id]="id"
+    [attr.aria-labelledby]="labelId"
+    [ngClass]="{ 'is-valid': isValid, 'is-invalid': isInvalid }"
+    [minDate]="{year: 1970, month: 1, day: 1}"
+    [placeholder]="placeholder"
+    [value]="value"
+    (dateSelect)="onSelect($event)"
+    (keyup)=onKeyUp($event)
+    class="form-control"
+  >
+  <div class="input-group-append">
+    <button
+      appIconButton
+      (click)="d.toggle()"
+      type="button"
+      symbol="calendar-alt-regular"
+    ></button>
+  </div>
+  <div class="invalid-feedback">
+    {{ errorMessage }}
+  </div>
+</div>

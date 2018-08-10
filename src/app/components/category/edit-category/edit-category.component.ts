@@ -22,7 +22,6 @@ import { ResourceService } from '../../../api/resource.service';
 @Component({
   selector: 'app-edit-category',
   templateUrl: './edit-category.component.html',
-  styleUrls: ['./edit-category.component.scss']
 })
 export class EditCategoryComponent implements OnInit {
   public category: ICategoryDTO;

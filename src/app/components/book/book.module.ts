@@ -10,6 +10,7 @@ import {
 } from '.';
 import { BookRoutingModule } from './book-routing.module';
 import { SharedModule } from '../../shared.module';
+import { BookResolve } from './book.resolve';
 
 @NgModule({
   imports: [
@@ -23,6 +24,9 @@ import { SharedModule } from '../../shared.module';
     EditBookComponent,
     ListBooksComponent,
     ViewBookComponent,
+  ],
+  providers: [
+    BookResolve,
   ],
 })
 export class BookModule { }

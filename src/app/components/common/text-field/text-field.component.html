@@ -11,9 +11,9 @@
     [id]="id"
     [ngClass]="{ 'is-valid': isValid, 'is-invalid': isInvalid }"
     [value]="value"
+    [attr.aria-labelledby]="labelId"
     (change)="onChange($event)"
     (keyup)="onKeyUp($event)"
-    attr.aria-labelledby="{{id}}Label"
     type="text"
     class="form-control"
   >

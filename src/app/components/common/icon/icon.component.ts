@@ -20,7 +20,6 @@ export type IconSymbol =
 @Component({
   selector: 'app-icon',
   templateUrl: './icon.component.html',
-  styleUrls: ['./icon.component.scss']
 })
 export class IconComponent {
   @Input() flip = false;

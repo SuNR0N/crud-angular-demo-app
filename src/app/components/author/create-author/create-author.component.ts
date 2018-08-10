@@ -11,7 +11,6 @@ import { INewAuthorDTO } from '../../../interfaces/dtos/NewAuthorDTO';
 @Component({
   selector: 'app-create-author',
   templateUrl: './create-author.component.html',
-  styleUrls: ['./create-author.component.scss']
 })
 export class CreateAuthorComponent {
   public createAuthorForm = this.fb.group({

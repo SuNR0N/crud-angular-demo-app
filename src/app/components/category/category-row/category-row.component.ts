@@ -16,7 +16,6 @@ import { ConfirmationModalComponent } from '../../common/confirmation-modal/conf
   // tslint:disable-next-line:component-selector
   selector: '[appCategoryRow]',
   templateUrl: './category-row.component.html',
-  styleUrls: ['./category-row.component.scss']
 })
 export class CategoryRowComponent {
   @Input() category: ICategoryDTO;

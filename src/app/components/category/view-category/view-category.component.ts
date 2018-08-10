@@ -17,7 +17,6 @@ import { ConfirmationModalComponent } from '../../common/confirmation-modal/conf
 @Component({
   selector: 'app-view-category',
   templateUrl: './view-category.component.html',
-  styleUrls: ['./view-category.component.scss']
 })
 export class ViewCategoryComponent implements OnInit {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;

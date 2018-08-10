@@ -7,6 +7,5 @@ import { Component } from '@angular/core';
   },
   selector: 'app-action-bar',
   templateUrl: './action-bar.component.html',
-  styleUrls: ['./action-bar.component.scss']
 })
 export class ActionBarComponent {}

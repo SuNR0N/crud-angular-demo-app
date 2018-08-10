@@ -1,0 +1,44 @@
+.dropdown-field {
+  .ng-select {
+    .ng-select-container {
+      border-radius: $input-border-radius;
+      border: $input-border-width solid $input-border-color;
+      min-height: $input-height;
+
+      &:hover {
+        box-shadow: none;
+      }
+    }
+
+    &.ng-select-focused {
+      &.is-invalid {
+        .ng-select-container {
+          box-shadow: 0 0 0 $input-focus-width rgba($form-feedback-invalid-color, .25);
+        }
+      }
+
+      &.is-valid {
+        .ng-select-container {
+          box-shadow: 0 0 0 $input-focus-width rgba($form-feedback-valid-color, .25);
+        }
+      }
+
+      .ng-select-container {
+        border-color: $input-focus-border-color;
+        box-shadow: $input-focus-box-shadow;
+      }
+    }
+
+    &.is-valid {
+      .ng-select-container {
+        border-color: $form-feedback-valid-color;
+      }
+    }
+
+    &.is-invalid {
+      .ng-select-container {
+        border-color: $form-feedback-invalid-color;
+      }
+    }
+  }
+}

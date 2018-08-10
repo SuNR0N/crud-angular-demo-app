@@ -16,7 +16,6 @@ import { ConfirmationModalComponent } from '../../common/confirmation-modal/conf
   // tslint:disable-next-line:component-selector
   selector: '[appBookRow]',
   templateUrl: './book-row.component.html',
-  styleUrls: ['./book-row.component.scss']
 })
 export class BookRowComponent {
   @Input() book: IBookDTO;

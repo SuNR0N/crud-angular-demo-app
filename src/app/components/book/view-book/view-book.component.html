@@ -1,62 +1,62 @@
 <div class="container-fluid">
   <h2>View Book</h2>
   <form>
-    <app-read-only-form-group
+    <app-read-only-field
       id="id"
       label="ID"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [value]="book?.id"
-    ></app-read-only-form-group>
-    <app-read-only-form-group
+    ></app-read-only-field>
+    <app-read-only-field
       id="title"
       label="Title"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [value]="book?.title"
-    ></app-read-only-form-group>
-    <app-read-only-form-group
+    ></app-read-only-field>
+    <app-read-only-field
       id="categories"
       label="Categories"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [values]="book?.categories"
-    ></app-read-only-form-group>
-    <app-read-only-form-group
+    ></app-read-only-field>
+    <app-read-only-field
       id="authors"
       label="Authors"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [values]="book?.authors"
-    ></app-read-only-form-group>
-    <app-read-only-form-group
+    ></app-read-only-field>
+    <app-read-only-field
       id="isbn10"
       label="ISBN-10"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [value]="book?.isbn10"
-    ></app-read-only-form-group>
-    <app-read-only-form-group
+    ></app-read-only-field>
+    <app-read-only-field
       id="isbn13"
       label="ISBN-13"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [value]="book?.isbn13"
-    ></app-read-only-form-group>
-    <app-read-only-form-group
+    ></app-read-only-field>
+    <app-read-only-field
       id="publicationDate"
       label="Publication Date"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [value]="book?.publicationDate"
-    ></app-read-only-form-group>
-    <app-read-only-form-group
+    ></app-read-only-field>
+    <app-read-only-field
       id="publishers"
       label="Publishers"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
       [values]="book?.publishers"
-    ></app-read-only-form-group>
+    ></app-read-only-field>
   </form>
   <app-action-bar>
     <button
