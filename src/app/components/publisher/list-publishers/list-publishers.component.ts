@@ -7,6 +7,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
+  takeUntil,
 } from 'rxjs/operators';
 import {
   Router,
@@ -19,14 +20,19 @@ import {
   PublisherService,
   ResourceService,
 } from '../../../api';
-import { ProfileService } from '../../../services/profile.service';
+import {
+  ProfileService,
+  SpinnerService,
+} from '../../../services';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-list-publishers',
   templateUrl: './list-publishers.component.html',
 })
-export class ListPublishersComponent implements OnInit {
+export class ListPublishersComponent extends BaseComponent implements OnInit {
   public publishers: IPublisherDTO[] = [];
+  public queryString: string;
   private searchTerm = new Subject<string>();
 
   constructor(
@@ -35,12 +41,17 @@ export class ListPublishersComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private spinnerService: SpinnerService,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
-    this.getPublishers();
+    this.queryString = this.route.snapshot.queryParamMap.get('q');
+    this.getPublishers(this.queryString);
     this.searchTerm.pipe(
+      takeUntil(this.destroyed$),
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.publisherService.getPublishers(term)),
@@ -56,6 +67,7 @@ export class ListPublishersComponent implements OnInit {
 
   onDelete(publisher: IPublisherDTO) {
     this.resourceService.request(publisher._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => {
           const publisherIndex = this.publishers.findIndex((existingPublisher) => existingPublisher === publisher);
@@ -71,12 +83,17 @@ export class ListPublishersComponent implements OnInit {
     this.searchTerm.next(text);
   }
 
+  get isLoading() {
+    return this.spinnerService.matches(['GET', /\/api\/v1\/publishers/]);
+  }
+
   get profile$() {
     return this.profileService.getProfile();
   }
 
   private getPublishers(query?: string) {
     this.publisherService.getPublishers(query)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (publishers) => this.publishers = publishers,
         (err) => this.toastr.error(err),

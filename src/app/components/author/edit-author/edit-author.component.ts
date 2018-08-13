@@ -12,6 +12,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   IAuthorDTO,
@@ -19,12 +20,13 @@ import {
 } from '../../../interfaces/dtos';
 import { ResourceService } from '../../../api/resource.service';
 import { AuthorResolve } from '../author.resolve';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-edit-author',
   templateUrl: './edit-author.component.html',
 })
-export class EditAuthorComponent implements OnInit {
+export class EditAuthorComponent extends BaseComponent implements OnInit {
   public author: IAuthorDTO;
   public editAuthorForm = this.fb.group({
     firstName: [
@@ -46,7 +48,9 @@ export class EditAuthorComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.author = this.route.snapshot.data['author'];
@@ -80,6 +84,7 @@ export class EditAuthorComponent implements OnInit {
       ),
     };
     this.resourceService.request<IAuthorDTO>(this.author._links.update, updatedAuthor)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (author) => {
           this.authorResolve.setAuthor(author);

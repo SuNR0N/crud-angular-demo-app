@@ -5,15 +5,17 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import { CategoryService } from '../../../api/category.service';
 import { INewCategoryDTO } from '../../../interfaces/dtos/NewCategoryDTO';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-create-category',
   templateUrl: './create-category.component.html',
 })
-export class CreateCategoryComponent {
+export class CreateCategoryComponent extends BaseComponent {
   public createCategoryForm = this.fb.group({
     name: [
       '',
@@ -26,7 +28,9 @@ export class CreateCategoryComponent {
     private fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   listCategories() {
     this.router.navigate([ 'categories' ]);
@@ -37,6 +41,7 @@ export class CreateCategoryComponent {
       ...this.createCategoryForm.value,
     };
     this.categoryService.createCategory(newCategory)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => this.router.navigate([ 'categories' ]),
         (err) => this.toastr.error(err),

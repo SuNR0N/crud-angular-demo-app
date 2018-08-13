@@ -10,16 +10,20 @@ import {
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
-import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
 import { ResourceService } from '../../../api/resource.service';
+import {
+  BaseComponent,
+  ConfirmationModalComponent,
+} from '../../common';
 
 @Component({
   selector: 'app-view-author',
   templateUrl: './view-author.component.html',
 })
-export class ViewAuthorComponent implements OnInit {
+export class ViewAuthorComponent extends BaseComponent implements OnInit {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   public author: IAuthorDTO;
 
@@ -29,7 +33,9 @@ export class ViewAuthorComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.author = this.route.snapshot.data['author'];
@@ -49,6 +55,7 @@ export class ViewAuthorComponent implements OnInit {
 
   private deleteAuthor() {
     this.resourceService.request(this.author._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => this.router.navigate([ 'authors' ]),
         (err) => this.toastr.error(err),

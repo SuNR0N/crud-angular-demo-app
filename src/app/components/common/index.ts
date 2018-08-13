@@ -1,5 +1,6 @@
 export * from './action-bar/action-bar.component';
 export * from './action-cell/action-cell.component';
+export * from './base/base.component';
 export * from './confirmation-modal/confirmation-modal.component';
 export * from './date-field/date-field.component';
 export * from './dropdown-field/dropdown-field.component';
@@ -11,5 +12,6 @@ export * from './pagination/pagination.component';
 export * from './profile/profile.component';
 export * from './read-only-field/read-only-field.component';
 export * from './sign-in/sign-in.component';
+export * from './spinner/spinner.component';
 export * from './template-field/template-field.component';
 export * from './text-field/text-field.component';

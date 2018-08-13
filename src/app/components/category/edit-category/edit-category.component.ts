@@ -12,6 +12,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   ICategoryDTO,
@@ -19,12 +20,13 @@ import {
 } from '../../../interfaces/dtos';
 import { CategoryResolve } from '../category.resolve';
 import { ResourceService } from '../../../api/resource.service';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-edit-category',
   templateUrl: './edit-category.component.html',
 })
-export class EditCategoryComponent implements OnInit {
+export class EditCategoryComponent extends BaseComponent implements OnInit {
   public category: ICategoryDTO;
   public editCategoryForm = this.fb.group({
     name: [
@@ -41,7 +43,9 @@ export class EditCategoryComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.category = this.route.snapshot.data['category'];
@@ -59,6 +63,7 @@ export class EditCategoryComponent implements OnInit {
       ...this.editCategoryForm.value,
     };
     this.resourceService.request<ICategoryDTO>(this.category._links.update, updatedCategory)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (category) => {
           this.categoryResolve.setCategory(category);

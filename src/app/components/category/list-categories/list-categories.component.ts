@@ -7,6 +7,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
+  takeUntil,
 } from 'rxjs/operators';
 import {
   Router,
@@ -15,18 +16,23 @@ import {
 import { ToastrService } from 'ngx-toastr';
 
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
-import { ProfileService } from '../../../services/profile.service';
+import {
+  ProfileService,
+  SpinnerService,
+} from '../../../services';
 import {
   CategoryService,
   ResourceService,
 } from '../../../api';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-list-categories',
   templateUrl: './list-categories.component.html',
 })
-export class ListCategoriesComponent implements OnInit {
+export class ListCategoriesComponent extends BaseComponent implements OnInit {
   public categories: ICategoryDTO[] = [];
+  public queryString: string;
   private searchTerm = new Subject<string>();
 
   constructor(
@@ -35,12 +41,17 @@ export class ListCategoriesComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private spinnerService: SpinnerService,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
-    this.getCategories();
+    this.queryString = this.route.snapshot.queryParamMap.get('q');
+    this.getCategories(this.queryString);
     this.searchTerm.pipe(
+      takeUntil(this.destroyed$),
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.categoryService.getCategories(term)),
@@ -56,6 +67,7 @@ export class ListCategoriesComponent implements OnInit {
 
   onDelete(category: ICategoryDTO) {
     this.resourceService.request(category._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => {
           const categoryIndex = this.categories.findIndex((existingCategory) => existingCategory === category);
@@ -71,12 +83,17 @@ export class ListCategoriesComponent implements OnInit {
     this.searchTerm.next(text);
   }
 
+  get isLoading() {
+    return this.spinnerService.matches(['GET', /\/api\/v1\/categories/]);
+  }
+
   get profile$() {
     return this.profileService.getProfile();
   }
 
   private getCategories(query?: string) {
     this.categoryService.getCategories(query)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (categories) => this.categories = categories,
         (err) => this.toastr.error(err),

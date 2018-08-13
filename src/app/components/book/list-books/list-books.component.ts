@@ -1,21 +1,17 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
 } from '@angular/core';
-import {
-  Subject,
-  Subscription,
-} from 'rxjs';
+import { Subject } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
+  takeUntil,
 } from 'rxjs/operators';
 import {
   Router,
   ActivatedRoute,
-  NavigationEnd,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -28,21 +24,25 @@ import {
   IPageableCollectionDTO,
   IBookDTO,
 } from '../../../interfaces';
-import { ProfileService } from '../../../services/profile.service';
+import {
+  ProfileService,
+  SpinnerService,
+} from '../../../services';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-list-books',
   templateUrl: './list-books.component.html',
 })
-export class ListBooksComponent implements OnInit, OnDestroy {
+export class ListBooksComponent extends BaseComponent implements OnInit {
   public collection: IPageableCollectionDTO<IBookDTO> = {
     content: [],
     currentPage: 0,
     totalItems: 0,
     totalPages: 0,
   };
+  public queryString: string;
   private searchTerm = new Subject<string>();
-  private navigationSubscription: Subscription;
 
   constructor(
     private bookService: BookService,
@@ -50,19 +50,17 @@ export class ListBooksComponent implements OnInit, OnDestroy {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private spinnerService: SpinnerService,
     private toastr: ToastrService,
   ) {
-    this.navigationSubscription = this.router.events
-      .subscribe((e: any) => {
-        if (e instanceof NavigationEnd) {
-          this.getBooks();
-        }
-      });
+    super();
   }
 
   ngOnInit() {
-    this.getBooks();
+    this.queryString = this.route.snapshot.queryParamMap.get('q');
+    this.getBooks(this.queryString);
     this.searchTerm.pipe(
+      takeUntil(this.destroyed$),
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.bookService.getBooks(term)),
@@ -72,18 +70,13 @@ export class ListBooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    if (this.navigationSubscription) {
-      this.navigationSubscription.unsubscribe();
-    }
-  }
-
   createBook() {
     this.router.navigate([ 'create' ], { relativeTo: this.route });
   }
 
   onDelete(book: IBookDTO) {
     this.resourceService.request(book._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => {
           const bookIndex = this.collection.content.findIndex((existingBook) => existingBook === book);
@@ -97,6 +90,7 @@ export class ListBooksComponent implements OnInit, OnDestroy {
 
   onPaginate(link: IHATEOASLink) {
     this.resourceService.request<IPageableCollectionDTO<IBookDTO>>(link)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (collection) => this.collection = collection,
         (err) => this.toastr.error(err),
@@ -107,12 +101,17 @@ export class ListBooksComponent implements OnInit, OnDestroy {
     this.searchTerm.next(text);
   }
 
+  get isLoading() {
+    return this.spinnerService.matches(['GET', /\/api\/v1\/books/]);
+  }
+
   get profile$() {
     return this.profileService.getProfile();
   }
 
   private getBooks(query?: string) {
     this.bookService.getBooks(query)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (collection) => this.collection = collection,
         (err) => this.toastr.error(err),

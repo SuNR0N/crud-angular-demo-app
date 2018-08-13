@@ -10,16 +10,20 @@ import {
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import { ResourceService } from '../../../api/resource.service';
-import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
+import {
+  BaseComponent,
+  ConfirmationModalComponent,
+} from '../../common';
 
 @Component({
   selector: 'app-view-publisher',
   templateUrl: './view-publisher.component.html',
 })
-export class ViewPublisherComponent implements OnInit {
+export class ViewPublisherComponent extends BaseComponent implements OnInit {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   public publisher: IPublisherDTO;
 
@@ -29,7 +33,9 @@ export class ViewPublisherComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.publisher = this.route.snapshot.data['publisher'];
@@ -49,6 +55,7 @@ export class ViewPublisherComponent implements OnInit {
 
   private deletePublisher() {
     this.resourceService.request(this.publisher._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => this.router.navigate([ 'publishers' ]),
         (err) => this.toastr.error(err),

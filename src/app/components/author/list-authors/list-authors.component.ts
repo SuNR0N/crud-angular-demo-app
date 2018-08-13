@@ -7,6 +7,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
+  takeUntil,
 } from 'rxjs/operators';
 import {
   Router,
@@ -19,14 +20,19 @@ import {
   AuthorService,
   ResourceService,
 } from '../../../api';
-import { ProfileService } from '../../../services/profile.service';
+import {
+  ProfileService,
+  SpinnerService,
+} from '../../../services';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-list-authors',
   templateUrl: './list-authors.component.html',
 })
-export class ListAuthorsComponent implements OnInit {
+export class ListAuthorsComponent extends BaseComponent implements OnInit {
   public authors: IAuthorDTO[] = [];
+  public queryString: string;
   private searchTerm = new Subject<string>();
 
   constructor(
@@ -35,12 +41,17 @@ export class ListAuthorsComponent implements OnInit {
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
+    private spinnerService: SpinnerService,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
-    this.getAuthors();
+    this.queryString = this.route.snapshot.queryParamMap.get('q');
+    this.getAuthors(this.queryString);
     this.searchTerm.pipe(
+      takeUntil(this.destroyed$),
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term: string) => this.authorService.getAuthors(term)),
@@ -56,6 +67,7 @@ export class ListAuthorsComponent implements OnInit {
 
   onDelete(author: IAuthorDTO) {
     this.resourceService.request(author._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => {
           const authorIndex = this.authors.findIndex((existingAuthor) => existingAuthor === author);
@@ -71,12 +83,17 @@ export class ListAuthorsComponent implements OnInit {
     this.searchTerm.next(text);
   }
 
+  get isLoading() {
+    return this.spinnerService.matches(['GET', /\/api\/v1\/authors/]);
+  }
+
   get profile$() {
     return this.profileService.getProfile();
   }
 
   private getAuthors(query?: string) {
     this.authorService.getAuthors(query)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (authors) => this.authors = authors,
         (err) => this.toastr.error(err),

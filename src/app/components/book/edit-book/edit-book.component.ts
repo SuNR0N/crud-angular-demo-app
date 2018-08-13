@@ -12,6 +12,7 @@ import {
 } from '@angular/router';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   AuthorService,
@@ -37,12 +38,13 @@ import {
   isbn13Length,
 } from '../../../constants/validation-errors';
 import { BookResolve } from '../book.resolve';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-edit-book',
   templateUrl: './edit-book.component.html',
 })
-export class EditBookComponent implements OnInit {
+export class EditBookComponent extends BaseComponent implements OnInit {
   public authors: IAuthorDTO[];
   public book: IBookDTO;
   public categories: ICategoryDTO[];
@@ -94,7 +96,9 @@ export class EditBookComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.book = this.route.snapshot.data['book'];
@@ -152,6 +156,7 @@ export class EditBookComponent implements OnInit {
       ),
     };
     this.resourceService.request<IBookDTO>(this.book._links.update, updatedBook)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (book) => {
           this.bookResolve.setBook(book);
@@ -179,6 +184,7 @@ export class EditBookComponent implements OnInit {
 
   private loadAuthors() {
     this.authorService.getAuthors()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (authors) => {
           this.authors = authors;
@@ -194,6 +200,7 @@ export class EditBookComponent implements OnInit {
 
   private loadCategories() {
     this.categoryService.getCategories()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (categories) => {
           this.categories = categories;
@@ -209,6 +216,7 @@ export class EditBookComponent implements OnInit {
 
   private loadPublishers() {
     this.publisherService.getPublishers()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (publishers) => {
           this.publishers = publishers;

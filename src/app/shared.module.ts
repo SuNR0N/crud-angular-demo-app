@@ -18,6 +18,7 @@ import {
   IconComponent,
   PaginationComponent,
   ReadOnlyFieldComponent,
+  SpinnerComponent,
   TemplateFieldComponent,
   TextFieldComponent,
 } from './components/common';
@@ -39,6 +40,7 @@ import {
     IconComponent,
     PaginationComponent,
     ReadOnlyFieldComponent,
+    SpinnerComponent,
     TemplateFieldComponent,
     TextFieldComponent,
     FormsModule,
@@ -55,6 +57,7 @@ import {
     IconComponent,
     PaginationComponent,
     ReadOnlyFieldComponent,
+    SpinnerComponent,
     TemplateFieldComponent,
     TextFieldComponent,
   ],

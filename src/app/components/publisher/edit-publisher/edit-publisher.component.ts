@@ -12,6 +12,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   IPublisherDTO,
@@ -19,12 +20,13 @@ import {
 } from '../../../interfaces/dtos';
 import { PublisherResolve } from '../publisher.resolve';
 import { ResourceService } from '../../../api/resource.service';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-edit-publisher',
   templateUrl: './edit-publisher.component.html',
 })
-export class EditPublisherComponent implements OnInit {
+export class EditPublisherComponent extends BaseComponent implements OnInit {
   public publisher: IPublisherDTO;
   public editPublisherForm = this.fb.group({
     name: [
@@ -41,7 +43,9 @@ export class EditPublisherComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.publisher = this.route.snapshot.data['publisher'];
@@ -59,6 +63,7 @@ export class EditPublisherComponent implements OnInit {
       ...this.editPublisherForm.value,
     };
     this.resourceService.request<IPublisherDTO>(this.publisher._links.update, updatedPublisher)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (publisher) => {
           this.publisherResolve.setPublisher(publisher);

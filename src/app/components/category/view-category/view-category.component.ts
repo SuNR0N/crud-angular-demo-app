@@ -10,16 +10,20 @@ import {
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
 import { ResourceService } from '../../../api/resource.service';
-import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
+import {
+  BaseComponent,
+  ConfirmationModalComponent,
+} from '../../common';
 
 @Component({
   selector: 'app-view-category',
   templateUrl: './view-category.component.html',
 })
-export class ViewCategoryComponent implements OnInit {
+export class ViewCategoryComponent extends BaseComponent implements OnInit {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   public category: ICategoryDTO;
 
@@ -29,7 +33,9 @@ export class ViewCategoryComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.category = this.route.snapshot.data['category'];
@@ -49,6 +55,7 @@ export class ViewCategoryComponent implements OnInit {
 
   private deleteCategory() {
     this.resourceService.request(this.category._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => this.router.navigate([ 'categories' ]),
         (err) => this.toastr.error(err),

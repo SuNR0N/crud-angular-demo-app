@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   AuthorService,
@@ -31,12 +32,13 @@ import {
   isbn13Checksum,
   isbn13Length,
 } from '../../../constants/validation-errors';
+import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
   selector: 'app-create-book',
   templateUrl: './create-book.component.html',
 })
-export class CreateBookComponent implements OnInit {
+export class CreateBookComponent extends BaseComponent implements OnInit {
   public authors: IAuthorDTO[];
   public categories: ICategoryDTO[];
   public createBookForm = this.fb.group({
@@ -84,7 +86,9 @@ export class CreateBookComponent implements OnInit {
     private publisherService: PublisherService,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.loadAuthors();
@@ -101,6 +105,7 @@ export class CreateBookComponent implements OnInit {
       ...this.createBookForm.value,
     };
     this.bookService.createBook(newBook)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => this.router.navigate([ 'books' ]),
         (err) => this.toastr.error(err),
@@ -125,6 +130,7 @@ export class CreateBookComponent implements OnInit {
 
   private loadAuthors() {
     this.authorService.getAuthors()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (authors) => this.authors = authors,
         (err) => this.toastr.error(err),
@@ -133,6 +139,7 @@ export class CreateBookComponent implements OnInit {
 
   private loadCategories() {
     this.categoryService.getCategories()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (categories) => this.categories = categories,
         (err) => this.toastr.error(err),
@@ -141,6 +148,7 @@ export class CreateBookComponent implements OnInit {
 
   private loadPublishers() {
     this.publisherService.getPublishers()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (publishers) => this.publishers = publishers,
         (err) => this.toastr.error(err),

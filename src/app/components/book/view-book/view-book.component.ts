@@ -10,16 +10,20 @@ import {
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
 
 import { ResourceService } from '../../../api/resource.service';
 import { IBookDTO } from '../../../interfaces/dtos/BookDTO';
-import { ConfirmationModalComponent } from '../../common/confirmation-modal/confirmation-modal.component';
+import {
+  BaseComponent,
+  ConfirmationModalComponent,
+} from '../../common';
 
 @Component({
   selector: 'app-view-book',
   templateUrl: './view-book.component.html',
 })
-export class ViewBookComponent implements OnInit {
+export class ViewBookComponent extends BaseComponent implements OnInit {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   book: IBookDTO;
 
@@ -29,7 +33,9 @@ export class ViewBookComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.book = this.route.snapshot.data['book'];
@@ -49,6 +55,7 @@ export class ViewBookComponent implements OnInit {
 
   private deleteBook() {
     this.resourceService.request(this.book._links.delete)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => this.router.navigate([ 'books' ]),
         (err) => this.toastr.error(err),
