@@ -48,7 +48,7 @@
       label="Publication Date"
       labelClass="col-lg-2 col-md-3 col-sm-4"
       valueClass="col-lg-10 col-md-9 col-sm-8"
-      [value]="book?.publicationDate"
+      value="{{ book?.publicationDate | momentDate }}"
     ></app-read-only-field>
     <app-read-only-field
       id="publishers"

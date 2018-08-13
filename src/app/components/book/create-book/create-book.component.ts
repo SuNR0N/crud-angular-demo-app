@@ -102,7 +102,33 @@ export class CreateBookComponent extends BaseComponent implements OnInit {
 
   onSubmit() {
     const newBook: INewBookDTO = {
-      ...this.createBookForm.value,
+      ...(
+        this.createBookForm.value.authors.length > 0 ?
+        { authors: this.createBookForm.value.authors } :
+        {}
+      ),
+      ...(
+        this.createBookForm.value.categories.length > 0 ?
+        { categories: this.createBookForm.value.categories } :
+        {}
+      ),
+      ...(
+        this.createBookForm.value.isbn10 ?
+        { isbn10: this.createBookForm.value.isbn10 } :
+        {}
+      ),
+      ...(
+        this.createBookForm.value.publicationDate ?
+        { publicationDate: this.createBookForm.value.publicationDate } :
+        {}
+      ),
+      ...(
+        this.createBookForm.value.publishers.length > 0 ?
+        { publishers: this.createBookForm.value.publishers } :
+        {}
+      ),
+      isbn13: this.createBookForm.value.isbn13,
+      title: this.createBookForm.value.title,
     };
     this.bookService.createBook(newBook)
       .pipe(takeUntil(this.destroyed$))

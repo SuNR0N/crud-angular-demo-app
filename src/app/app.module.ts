@@ -15,6 +15,7 @@ import {
   ProfileComponent,
   SignInComponent,
 } from './components/common';
+import { TOASTR_TIMEOUT } from './config/config';
 import { PendingRequestInterceptor } from './interceptors/pending-request.interceptor';
 import { SharedModule } from './shared.module';
 
@@ -30,7 +31,9 @@ import { SharedModule } from './shared.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     NgbModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: TOASTR_TIMEOUT,
+    }),
     HttpClientModule,
     SharedModule,
   ],

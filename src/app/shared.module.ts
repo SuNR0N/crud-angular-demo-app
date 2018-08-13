@@ -23,6 +23,7 @@ import {
   TextFieldComponent,
 } from './components/common';
 import { AuthGuard } from './guards/auth-guard.service';
+import { DatePipe } from './pipes/date.pipe';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { AuthGuard } from './guards/auth-guard.service';
     ActionBarComponent,
     ActionCellComponent,
     DateFieldComponent,
+    DatePipe,
     DropdownFieldComponent,
     IconButtonComponent,
     IconComponent,
@@ -52,6 +54,7 @@ import { AuthGuard } from './guards/auth-guard.service';
     ActionCellComponent,
     ConfirmationModalComponent,
     DateFieldComponent,
+    DatePipe,
     DropdownFieldComponent,
     FieldComponent,
     IconButtonComponent,

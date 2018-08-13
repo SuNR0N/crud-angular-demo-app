@@ -3,7 +3,7 @@
 <td class="col-lg-2 col-md-3 d-none d-md-block">{{ book.categories.join(', ') }}</td>
 <td class="col-lg-2 d-none d-lg-block">{{ book.authors.join(', ') }}</td>
 <td class="col-xl-1 col-lg-2 d-none d-lg-block">{{ book.publishers.join(', ') }}</td>
-<td class="col-xl-1 d-none d-xl-block text-nowrap">{{ book.publicationDate }}</td>
+<td class="col-xl-1 d-none d-xl-block text-nowrap">{{ book.publicationDate | momentDate }}</td>
 <td
   appActionCell
   class="col-lg-2 col-sm-3 col-4"
