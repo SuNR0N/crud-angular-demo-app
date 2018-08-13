@@ -10,7 +10,7 @@ import {
   ListCategoriesComponent,
   ViewCategoryComponent,
 } from '.';
-import { CategoryResolve } from './category.resolve';
+import { CategoryResolver } from './guards/category-resolver.service';
 
 const categoryRoutes: Routes = [
   {
@@ -25,14 +25,14 @@ const categoryRoutes: Routes = [
     path: ':id',
     component: ViewCategoryComponent,
     resolve: {
-      category: CategoryResolve,
+      category: CategoryResolver,
     },
   },
   {
     path: ':id/edit',
     component: EditCategoryComponent,
     resolve: {
-      category: CategoryResolve,
+      category: CategoryResolver,
     },
   },
 ];

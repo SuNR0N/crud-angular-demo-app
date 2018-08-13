@@ -19,7 +19,7 @@ import {
   IAuthorUpdateDTO,
 } from '../../../interfaces/dtos';
 import { ResourceService } from '../../../api/resource.service';
-import { AuthorResolve } from '../author.resolve';
+import { AuthorResolver } from '../guards/author-resolver.service';
 import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
@@ -41,7 +41,7 @@ export class EditAuthorComponent extends BaseComponent implements OnInit {
   });
 
   constructor(
-    private authorResolve: AuthorResolve,
+    private authorResolver: AuthorResolver,
     private fb: FormBuilder,
     private location: Location,
     private resourceService: ResourceService,
@@ -87,7 +87,7 @@ export class EditAuthorComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (author) => {
-          this.authorResolve.setAuthor(author);
+          this.authorResolver.setAuthor(author);
           this.router.navigate([ '../' ], { relativeTo: this.route });
         },
         (err) => this.toastr.error(err),

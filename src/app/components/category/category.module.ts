@@ -8,7 +8,7 @@ import {
   ListCategoriesComponent,
   ViewCategoryComponent,
 } from '.';
-import { CategoryResolve } from './category.resolve';
+import { CategoryResolver } from './guards/category-resolver.service';
 import { CategoryRoutingModule } from './category-routing.module';
 import { SharedModule } from '../../shared.module';
 
@@ -26,7 +26,7 @@ import { SharedModule } from '../../shared.module';
     ViewCategoryComponent,
   ],
   providers: [
-    CategoryResolve,
+    CategoryResolver,
   ],
 })
 export class CategoryModule { }

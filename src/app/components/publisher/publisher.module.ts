@@ -8,7 +8,7 @@ import {
   PublisherRowComponent,
   ViewPublisherComponent,
 } from '.';
-import { PublisherResolve } from './publisher.resolve';
+import { PublisherResolver } from './guards/publisher-resolver.service';
 import { PublisherRoutingModule } from './publisher-routing.module';
 import { SharedModule } from '../../shared.module';
 
@@ -26,7 +26,7 @@ import { SharedModule } from '../../shared.module';
     ViewPublisherComponent,
   ],
   providers: [
-    PublisherResolve,
+    PublisherResolver,
   ],
 })
 export class PublisherModule { }

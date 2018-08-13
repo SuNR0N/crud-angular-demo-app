@@ -13,6 +13,7 @@
     "lint:fix": "yarn lint:app:fix && yarn lint:e2e:fix",
     "lint": "ng lint",
     "ng": "ng",
+    "postinstall": "yarn icons:generate",
     "start": "ng serve",
     "test:coverage": "ng test --code-coverage",
     "test": "ng test"

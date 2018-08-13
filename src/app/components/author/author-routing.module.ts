@@ -10,7 +10,7 @@ import {
   ListAuthorsComponent,
   ViewAuthorComponent,
 } from '.';
-import { AuthorResolve } from './author.resolve';
+import { AuthorResolver } from './guards/author-resolver.service';
 
 const authorRoutes: Routes = [
   {
@@ -25,14 +25,14 @@ const authorRoutes: Routes = [
     path: ':id',
     component: ViewAuthorComponent,
     resolve: {
-      author: AuthorResolve,
+      author: AuthorResolver,
     },
   },
   {
     path: ':id/edit',
     component: EditAuthorComponent,
     resolve: {
-      author: AuthorResolve,
+      author: AuthorResolver,
     },
   },
 ];

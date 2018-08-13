@@ -10,7 +10,7 @@ import {
   ListPublishersComponent,
   ViewPublisherComponent,
 } from '.';
-import { PublisherResolve } from './publisher.resolve';
+import { PublisherResolver } from './guards/publisher-resolver.service';
 
 const publisherRoutes: Routes = [
   {
@@ -25,14 +25,14 @@ const publisherRoutes: Routes = [
     path: ':id',
     component: ViewPublisherComponent,
     resolve: {
-      publisher: PublisherResolve,
+      publisher: PublisherResolver,
     },
   },
   {
     path: ':id/edit',
     component: EditPublisherComponent,
     resolve: {
-      publisher: PublisherResolve,
+      publisher: PublisherResolver,
     },
   },
 ];

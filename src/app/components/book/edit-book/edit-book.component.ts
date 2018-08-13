@@ -37,7 +37,7 @@ import {
   isbn13Checksum,
   isbn13Length,
 } from '../../../constants/validation-errors';
-import { BookResolve } from '../book.resolve';
+import { BookResolver } from '../guards/book-resolver.service';
 import { BaseComponent } from '../../common/base/base.component';
 
 @Component({
@@ -87,7 +87,7 @@ export class EditBookComponent extends BaseComponent implements OnInit {
 
   constructor(
     private authorService: AuthorService,
-    private bookResolve: BookResolve,
+    private bookResolver: BookResolver,
     private categoryService: CategoryService,
     private fb: FormBuilder,
     private location: Location,
@@ -159,7 +159,7 @@ export class EditBookComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (book) => {
-          this.bookResolve.setBook(book);
+          this.bookResolver.setBook(book);
           this.router.navigate([ '../' ], { relativeTo: this.route });
         },
         (err) => this.toastr.error(err),

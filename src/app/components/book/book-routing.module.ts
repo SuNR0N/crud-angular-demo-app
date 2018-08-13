@@ -10,7 +10,7 @@ import {
   ListBooksComponent,
   ViewBookComponent,
 } from '.';
-import { BookResolve } from './book.resolve';
+import { BookResolver } from './guards/book-resolver.service';
 
 const bookRoutes: Routes = [
   {
@@ -25,14 +25,14 @@ const bookRoutes: Routes = [
     path: ':id',
     component: ViewBookComponent,
     resolve: {
-      book: BookResolve,
+      book: BookResolver,
     },
   },
   {
     path: ':id/edit',
     component: EditBookComponent,
     resolve: {
-      book: BookResolve,
+      book: BookResolver,
     },
   },
 ];

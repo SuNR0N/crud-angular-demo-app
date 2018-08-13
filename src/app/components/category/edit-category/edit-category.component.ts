@@ -18,7 +18,7 @@ import {
   ICategoryDTO,
   INewCategoryDTO,
 } from '../../../interfaces/dtos';
-import { CategoryResolve } from '../category.resolve';
+import { CategoryResolver } from '../guards/category-resolver.service';
 import { ResourceService } from '../../../api/resource.service';
 import { BaseComponent } from '../../common/base/base.component';
 
@@ -36,7 +36,7 @@ export class EditCategoryComponent extends BaseComponent implements OnInit {
   });
 
   constructor(
-    private categoryResolve: CategoryResolve,
+    private categoryResolver: CategoryResolver,
     private fb: FormBuilder,
     private location: Location,
     private resourceService: ResourceService,
@@ -66,7 +66,7 @@ export class EditCategoryComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (category) => {
-          this.categoryResolve.setCategory(category);
+          this.categoryResolver.setCategory(category);
           this.router.navigate([ '../' ], { relativeTo: this.route });
         },
         (err) => this.toastr.error(err),

@@ -18,7 +18,7 @@ import {
   IPublisherDTO,
   INewPublisherDTO,
 } from '../../../interfaces/dtos';
-import { PublisherResolve } from '../publisher.resolve';
+import { PublisherResolver } from '../guards/publisher-resolver.service';
 import { ResourceService } from '../../../api/resource.service';
 import { BaseComponent } from '../../common/base/base.component';
 
@@ -38,7 +38,7 @@ export class EditPublisherComponent extends BaseComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private location: Location,
-    private publisherResolve: PublisherResolve,
+    private publisherResolver: PublisherResolver,
     private resourceService: ResourceService,
     private route: ActivatedRoute,
     private router: Router,
@@ -66,7 +66,7 @@ export class EditPublisherComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(
         (publisher) => {
-          this.publisherResolve.setPublisher(publisher);
+          this.publisherResolver.setPublisher(publisher);
           this.router.navigate([ '../' ], { relativeTo: this.route });
         },
         (err) => this.toastr.error(err),

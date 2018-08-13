@@ -8,7 +8,7 @@ import {
   ListAuthorsComponent,
   ViewAuthorComponent,
 } from '.';
-import { AuthorResolve } from './author.resolve';
+import { AuthorResolver } from './guards/author-resolver.service';
 import { AuthorRoutingModule } from './author-routing.module';
 import { SharedModule } from '../../shared.module';
 
@@ -26,7 +26,7 @@ import { SharedModule } from '../../shared.module';
     ViewAuthorComponent,
   ],
   providers: [
-    AuthorResolve,
+    AuthorResolver,
   ],
 })
 export class AuthorModule { }

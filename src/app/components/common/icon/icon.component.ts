@@ -25,5 +25,4 @@ export class IconComponent {
   @Input() flip = false;
   @Input() spin = false;
   @Input() symbol: IconSymbol;
-  spritePath = '../../../../assets/icons/sprite.svg';
 }
