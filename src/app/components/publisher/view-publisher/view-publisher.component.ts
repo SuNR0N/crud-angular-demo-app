@@ -1,11 +1,11 @@
 import {
   Component,
-  OnInit,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ import {
   selector: 'app-view-publisher',
   templateUrl: './view-publisher.component.html',
 })
-export class ViewPublisherComponent extends BaseComponent implements OnInit {
+export class ViewPublisherComponent extends BaseComponent {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   public publisher: IPublisherDTO;
 
@@ -35,10 +35,7 @@ export class ViewPublisherComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
-  }
-
-  ngOnInit() {
-    this.publisher = this.route.snapshot.data['publisher'];
+    this.initialiseRouterEvents();
   }
 
   editPublisher() {
@@ -60,5 +57,15 @@ export class ViewPublisherComponent extends BaseComponent implements OnInit {
         () => this.router.navigate([ 'publishers' ]),
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.publisher = this.route.snapshot.data['publisher'];
+        }
+      });
   }
 }

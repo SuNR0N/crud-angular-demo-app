@@ -11,15 +11,20 @@ import {
   ListBooksComponent,
   ViewBookComponent,
 } from '.';
+import { AuthGuard } from '../../guards/auth-guard.service';
 
 const bookRoutes: Routes = [
   {
     path: '',
     component: ListBooksComponent,
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'create',
     component: CreateBookComponent,
+    canActivate: [
+      AuthGuard,
+    ],
   },
   {
     path: ':id',
@@ -27,6 +32,7 @@ const bookRoutes: Routes = [
     resolve: {
       book: BookResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
   {
     path: ':id/edit',
@@ -34,6 +40,7 @@ const bookRoutes: Routes = [
     resolve: {
       book: BookResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];
 

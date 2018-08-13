@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -50,10 +51,10 @@ export class EditAuthorComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
+    this.initialiseRouterEvents();
   }
 
   ngOnInit() {
-    this.author = this.route.snapshot.data['author'];
     this.editAuthorForm.setValue({
       firstName: this.author.firstName,
       middleName: this.author.middleName,
@@ -92,5 +93,15 @@ export class EditAuthorComponent extends BaseComponent implements OnInit {
         },
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.author = this.route.snapshot.data['author'];
+        }
+      });
   }
 }

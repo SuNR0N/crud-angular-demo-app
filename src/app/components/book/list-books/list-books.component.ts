@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -54,11 +55,10 @@ export class ListBooksComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
+    this.initialiseRouterEvents();
   }
 
   ngOnInit() {
-    this.queryString = this.route.snapshot.queryParamMap.get('q');
-    this.getBooks(this.queryString);
     this.searchTerm.pipe(
       takeUntil(this.destroyed$),
       debounceTime(500),
@@ -116,5 +116,16 @@ export class ListBooksComponent extends BaseComponent implements OnInit {
         (collection) => this.collection = collection,
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.queryString = this.route.snapshot.queryParamMap.get('q');
+          this.getBooks(this.queryString);
+        }
+      });
   }
 }

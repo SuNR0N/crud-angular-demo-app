@@ -11,6 +11,7 @@ import {
 
 import { BookService } from '../../../api/book.service';
 import { IBookDTO } from '../../../interfaces/dtos/BookDTO';
+import { ProfileService } from '../../../services/profile.service';
 
 @Injectable()
 export class BookResolver implements Resolve<IBookDTO> {
@@ -18,8 +19,11 @@ export class BookResolver implements Resolve<IBookDTO> {
 
   constructor(
     private bookService: BookService,
+    private profileService: ProfileService,
     private router: Router,
-  ) {}
+  ) {
+    this.init();
+  }
 
   setBook(book: IBookDTO) {
     this.book = book;
@@ -39,10 +43,19 @@ export class BookResolver implements Resolve<IBookDTO> {
 
   private actionMapper(route: ActivatedRouteSnapshot, book: IBookDTO) {
     if (route.routeConfig.path.match(/edit$/) && book._links.update === undefined) {
-      this.router.navigate([ '/books' ]);
+      this.router.navigate([ '/books', route.params.id ]);
       return null;
     } else {
       return book;
     }
+  }
+
+  private init() {
+    this.profileService.getProfile()
+      .subscribe((profile) => {
+        if (!profile) {
+          this.book = null;
+        }
+      });
   }
 }

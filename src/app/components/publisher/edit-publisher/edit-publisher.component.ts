@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -45,10 +46,10 @@ export class EditPublisherComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
+    this.initialiseRouterEvents();
   }
 
   ngOnInit() {
-    this.publisher = this.route.snapshot.data['publisher'];
     this.editPublisherForm.setValue({
       name: this.publisher.name,
     });
@@ -71,5 +72,15 @@ export class EditPublisherComponent extends BaseComponent implements OnInit {
         },
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.publisher = this.route.snapshot.data['publisher'];
+        }
+      });
   }
 }

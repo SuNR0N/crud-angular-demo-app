@@ -11,15 +11,20 @@ import {
   ListCategoriesComponent,
   ViewCategoryComponent,
 } from '.';
+import { AuthGuard } from '../../guards/auth-guard.service';
 
 const categoryRoutes: Routes = [
   {
     path: '',
     component: ListCategoriesComponent,
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'create',
     component: CreateCategoryComponent,
+    canActivate: [
+      AuthGuard,
+    ],
   },
   {
     path: ':id',
@@ -27,6 +32,7 @@ const categoryRoutes: Routes = [
     resolve: {
       category: CategoryResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
   {
     path: ':id/edit',
@@ -34,6 +40,7 @@ const categoryRoutes: Routes = [
     resolve: {
       category: CategoryResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];
 

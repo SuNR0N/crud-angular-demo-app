@@ -1,11 +1,11 @@
 import {
   Component,
-  OnInit,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ import {
   selector: 'app-view-book',
   templateUrl: './view-book.component.html',
 })
-export class ViewBookComponent extends BaseComponent implements OnInit {
+export class ViewBookComponent extends BaseComponent {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   book: IBookDTO;
 
@@ -35,10 +35,7 @@ export class ViewBookComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
-  }
-
-  ngOnInit() {
-    this.book = this.route.snapshot.data['book'];
+    this.initialiseRouterEvents();
   }
 
   editBook() {
@@ -60,5 +57,15 @@ export class ViewBookComponent extends BaseComponent implements OnInit {
         () => this.router.navigate([ 'books' ]),
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.book = this.route.snapshot.data['book'];
+        }
+      });
   }
 }

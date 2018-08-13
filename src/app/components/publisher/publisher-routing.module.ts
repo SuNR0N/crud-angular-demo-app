@@ -11,15 +11,20 @@ import {
   PublisherResolver,
   ViewPublisherComponent,
 } from '.';
+import { AuthGuard } from '../../guards/auth-guard.service';
 
 const publisherRoutes: Routes = [
   {
     path: '',
     component: ListPublishersComponent,
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'create',
     component: CreatePublisherComponent,
+    canActivate: [
+      AuthGuard,
+    ],
   },
   {
     path: ':id',
@@ -27,6 +32,7 @@ const publisherRoutes: Routes = [
     resolve: {
       publisher: PublisherResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
   {
     path: ':id/edit',
@@ -34,6 +40,7 @@ const publisherRoutes: Routes = [
     resolve: {
       publisher: PublisherResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];
 

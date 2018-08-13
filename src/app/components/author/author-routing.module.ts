@@ -11,15 +11,20 @@ import {
   ListAuthorsComponent,
   ViewAuthorComponent,
 } from '.';
+import { AuthGuard } from '../../guards/auth-guard.service';
 
 const authorRoutes: Routes = [
   {
     path: '',
     component: ListAuthorsComponent,
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'create',
     component: CreateAuthorComponent,
+    canActivate: [
+      AuthGuard,
+    ],
   },
   {
     path: ':id',
@@ -27,6 +32,7 @@ const authorRoutes: Routes = [
     resolve: {
       author: AuthorResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
   {
     path: ':id/edit',
@@ -34,6 +40,7 @@ const authorRoutes: Routes = [
     resolve: {
       author: AuthorResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];
 

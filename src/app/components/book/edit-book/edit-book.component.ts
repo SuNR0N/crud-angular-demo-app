@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -98,10 +99,10 @@ export class EditBookComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
+    this.initialiseRouterEvents();
   }
 
   ngOnInit() {
-    this.book = this.route.snapshot.data['book'];
     this.loadAuthors();
     this.loadCategories();
     this.loadPublishers();
@@ -180,6 +181,16 @@ export class EditBookComponent extends BaseComponent implements OnInit {
       minlength: isbn13Length,
       maxlength: isbn13Length,
     };
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.book = this.route.snapshot.data['book'];
+        }
+      });
   }
 
   private loadAuthors() {

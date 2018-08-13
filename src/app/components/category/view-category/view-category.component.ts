@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -35,6 +36,7 @@ export class ViewCategoryComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
+    this.initialiseRouterEvents();
   }
 
   ngOnInit() {
@@ -60,5 +62,15 @@ export class ViewCategoryComponent extends BaseComponent implements OnInit {
         () => this.router.navigate([ 'categories' ]),
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.category = this.route.snapshot.data['category'];
+        }
+      });
   }
 }

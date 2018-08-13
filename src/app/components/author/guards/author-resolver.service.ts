@@ -11,6 +11,7 @@ import {
 
 import { AuthorService } from '../../../api/author.service';
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
+import { ProfileService } from '../../../services/profile.service';
 
 @Injectable()
 export class AuthorResolver implements Resolve<IAuthorDTO> {
@@ -18,8 +19,11 @@ export class AuthorResolver implements Resolve<IAuthorDTO> {
 
   constructor(
     private authorService: AuthorService,
+    private profileService: ProfileService,
     private router: Router,
-  ) {}
+  ) {
+    this.init();
+  }
 
   setAuthor(author: IAuthorDTO) {
     this.author = author;
@@ -39,10 +43,19 @@ export class AuthorResolver implements Resolve<IAuthorDTO> {
 
   private actionMapper(route: ActivatedRouteSnapshot, author: IAuthorDTO) {
     if (route.routeConfig.path.match(/edit$/) && author._links.update === undefined) {
-      this.router.navigate([ '/authors' ]);
+      this.router.navigate([ 'authors', route.params.id ]);
       return null;
     } else {
       return author;
     }
+  }
+
+  private init() {
+    this.profileService.getProfile()
+      .subscribe((profile) => {
+        if (!profile) {
+          this.author = null;
+        }
+      });
   }
 }

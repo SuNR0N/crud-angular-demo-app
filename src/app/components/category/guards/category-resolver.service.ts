@@ -11,6 +11,7 @@ import {
 
 import { CategoryService } from '../../../api/category.service';
 import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
+import { ProfileService } from '../../../services/profile.service';
 
 @Injectable()
 export class CategoryResolver implements Resolve<ICategoryDTO> {
@@ -18,8 +19,11 @@ export class CategoryResolver implements Resolve<ICategoryDTO> {
 
   constructor(
     private categoryService: CategoryService,
+    private profileService: ProfileService,
     private router: Router,
-  ) { }
+  ) {
+    this.init();
+  }
 
   setCategory(category: ICategoryDTO) {
     this.category = category;
@@ -39,10 +43,19 @@ export class CategoryResolver implements Resolve<ICategoryDTO> {
 
   private actionMapper(route: ActivatedRouteSnapshot, category: ICategoryDTO) {
     if (route.routeConfig.path.match(/edit$/) && category._links.update === undefined) {
-      this.router.navigate([ '/categories' ]);
+      this.router.navigate([ '/categories', route.params.id ]);
       return null;
     } else {
       return category;
     }
+  }
+
+  private init() {
+    this.profileService.getProfile()
+      .subscribe((profile) => {
+        if (!profile) {
+          this.category = null;
+        }
+      });
   }
 }

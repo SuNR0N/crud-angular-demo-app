@@ -11,15 +11,19 @@ import {
 
 import { PublisherService } from '../../../api/publisher.service';
 import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
+import { ProfileService } from '../../../services/profile.service';
 
 @Injectable()
 export class PublisherResolver implements Resolve<IPublisherDTO> {
   private publisher: IPublisherDTO;
 
   constructor(
+    private profileService: ProfileService,
     private publisherService: PublisherService,
     private router: Router,
-  ) { }
+  ) {
+    this.init();
+  }
 
   setPublisher(publisher: IPublisherDTO) {
     this.publisher = publisher;
@@ -39,10 +43,19 @@ export class PublisherResolver implements Resolve<IPublisherDTO> {
 
   private actionMapper(route: ActivatedRouteSnapshot, publisher: IPublisherDTO) {
     if (route.routeConfig.path.match(/edit$/) && publisher._links.update === undefined) {
-      this.router.navigate([ '/publishers' ]);
+      this.router.navigate([ '/publishers', route.params.id ]);
       return null;
     } else {
       return publisher;
     }
+  }
+
+  private init() {
+    this.profileService.getProfile()
+      .subscribe((profile) => {
+        if (!profile) {
+          this.publisher = null;
+        }
+      });
   }
 }

@@ -22,6 +22,7 @@ import {
   TemplateFieldComponent,
   TextFieldComponent,
 } from './components/common';
+import { AuthGuard } from './guards/auth-guard.service';
 
 @NgModule({
   imports: [
@@ -63,6 +64,9 @@ import {
   ],
   entryComponents: [
     ConfirmationModalComponent,
+  ],
+  providers: [
+    AuthGuard,
   ],
 })
 export class SharedModule { }

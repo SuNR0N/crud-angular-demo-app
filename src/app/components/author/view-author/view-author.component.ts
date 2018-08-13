@@ -1,11 +1,11 @@
 import {
   Component,
-  OnInit,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ import {
   selector: 'app-view-author',
   templateUrl: './view-author.component.html',
 })
-export class ViewAuthorComponent extends BaseComponent implements OnInit {
+export class ViewAuthorComponent extends BaseComponent {
   @ViewChild('confirmationText') private confirmationText: TemplateRef<any>;
   public author: IAuthorDTO;
 
@@ -35,10 +35,7 @@ export class ViewAuthorComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
-  }
-
-  ngOnInit() {
-    this.author = this.route.snapshot.data['author'];
+    this.initialiseRouterEvents();
   }
 
   editAuthor() {
@@ -60,5 +57,15 @@ export class ViewAuthorComponent extends BaseComponent implements OnInit {
         () => this.router.navigate([ 'authors' ]),
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.author = this.route.snapshot.data['author'];
+        }
+      });
   }
 }

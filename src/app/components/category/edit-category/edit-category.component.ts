@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import {
   ActivatedRoute,
+  NavigationEnd,
   Router,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -45,10 +46,10 @@ export class EditCategoryComponent extends BaseComponent implements OnInit {
     private toastr: ToastrService,
   ) {
     super();
+    this.initialiseRouterEvents();
   }
 
   ngOnInit() {
-    this.category = this.route.snapshot.data['category'];
     this.editCategoryForm.setValue({
       name: this.category.name,
     });
@@ -71,5 +72,15 @@ export class EditCategoryComponent extends BaseComponent implements OnInit {
         },
         (err) => this.toastr.error(err),
       );
+  }
+
+  private initialiseRouterEvents() {
+    this.router.events
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.category = this.route.snapshot.data['category'];
+        }
+      });
   }
 }
