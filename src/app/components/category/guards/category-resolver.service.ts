@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import {
-  Resolve,
   ActivatedRouteSnapshot,
+  Resolve,
   Router,
 } from '@angular/router';
 import {
-  tap,
   map,
+  tap,
 } from 'rxjs/operators';
 
-import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
 import { CategoryService } from '../../../api/category.service';
+import { ICategoryDTO } from '../../../interfaces/dtos/CategoryDTO';
 
 @Injectable()
 export class CategoryResolver implements Resolve<ICategoryDTO> {

@@ -8,7 +8,7 @@ describe('ActionBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActionBarComponent ]
+      declarations: [ ActionBarComponent ],
     })
     .compileComponents();
   }));

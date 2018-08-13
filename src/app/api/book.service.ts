@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   catchError,
@@ -11,17 +11,17 @@ import {
   tap,
 } from 'rxjs/operators';
 
+import { API_PREFIX } from '../config/config';
 import {
-  IPageableCollectionDTO,
   IBookDTO,
   INewBookDTO,
+  IPageableCollectionDTO,
 } from '../interfaces/dtos';
-import { API_PREFIX } from '../config/config';
 import { MessageService } from '../services/message.service';
 import { BaseService } from './base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BookService extends BaseService {
   private booksUrl = `${API_PREFIX}/books`;
@@ -41,7 +41,7 @@ export class BookService extends BaseService {
     return this.http.get<IPageableCollectionDTO<IBookDTO>>(this.booksUrl, { params })
       .pipe(
         tap((_) => this.log('fetched books')),
-        catchError(this.handleError('getBooks'))
+        catchError(this.handleError('getBooks')),
       );
   }
 
@@ -49,7 +49,7 @@ export class BookService extends BaseService {
     return this.http.get<IBookDTO>(`${this.booksUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched book id=${id}`)),
-        catchError(this.handleError(`getBook id=${id}`))
+        catchError(this.handleError(`getBook id=${id}`)),
       );
   }
 
@@ -65,7 +65,7 @@ export class BookService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createBook book=${book}`))
+        catchError(this.handleError(`createBook book=${book}`)),
       );
   }
 }

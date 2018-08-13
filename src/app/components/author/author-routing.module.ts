@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import {
-  Routes,
   RouterModule,
+  Routes,
 } from '@angular/router';
 
 import {
+  AuthorResolver,
   CreateAuthorComponent,
   EditAuthorComponent,
   ListAuthorsComponent,
   ViewAuthorComponent,
 } from '.';
-import { AuthorResolver } from './guards/author-resolver.service';
 
 const authorRoutes: Routes = [
   {
@@ -39,6 +39,6 @@ const authorRoutes: Routes = [
 
 @NgModule({
   imports: [ RouterModule.forChild(authorRoutes) ],
-  exports: [ RouterModule ]
+  exports: [ RouterModule ],
 })
 export class AuthorRoutingModule { }

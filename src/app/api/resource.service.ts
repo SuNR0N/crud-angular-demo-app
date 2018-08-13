@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   catchError,
   tap,
 } from 'rxjs/operators';
 
+import { IHATEOASLink } from '../interfaces/HATEOASLink';
 import { MessageService } from '../services/message.service';
 import { BaseService } from './base.service';
-import { IHATEOASLink } from '../interfaces/HATEOASLink';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ResourceService extends BaseService {
   constructor(
@@ -29,7 +29,7 @@ export class ResourceService extends BaseService {
     return this.http.request<T>(link.method, link.href, httpOptions)
       .pipe(
         tap((_) => this.log('request finished')),
-        catchError(this.handleError('request'))
+        catchError(this.handleError('request')),
       );
   }
 }

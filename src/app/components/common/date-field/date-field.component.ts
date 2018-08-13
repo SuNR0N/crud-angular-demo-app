@@ -4,18 +4,18 @@ import {
   Input,
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR,
-  NG_VALIDATORS,
   ControlValueAccessor,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
   Validator,
 } from '@angular/forms';
 import {
-  NgbDateStruct,
   NgbDateAdapter,
+  NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 
-import { NgbDateStringAdapter } from './ngb-date-string-adapter';
 import { FieldComponent } from '../field/field.component';
+import { NgbDateStringAdapter } from './ngb-date-string-adapter';
 
 @Component({
   // tslint:disable-next-line:use-host-property-decorator
@@ -26,7 +26,7 @@ import { FieldComponent } from '../field/field.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DateFieldComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,

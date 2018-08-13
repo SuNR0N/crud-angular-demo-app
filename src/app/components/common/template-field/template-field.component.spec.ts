@@ -8,7 +8,7 @@ describe('TemplateFieldComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TemplateFieldComponent ]
+      declarations: [ TemplateFieldComponent ],
     })
     .compileComponents();
   }));

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,10 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  Router,
   ActivatedRoute,
+  Router,
 } from '@angular/router';
-import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 
@@ -21,24 +21,24 @@ import {
   ResourceService,
 } from '../../../api';
 import {
-  ICategoryDTO,
-  IPublisherDTO,
-  IAuthorDTO,
-  IBookUpdateDTO,
-  IBookDTO,
-} from '../../../interfaces/dtos';
-import {
-  isbn10Validator,
-  isbn13Validator,
-} from '../validators';
-import {
   isbn10Checksum,
   isbn10Length,
   isbn13Checksum,
   isbn13Length,
 } from '../../../constants/validation-errors';
-import { BookResolver } from '../guards/book-resolver.service';
+import {
+  IAuthorDTO,
+  IBookDTO,
+  IBookUpdateDTO,
+  ICategoryDTO,
+  IPublisherDTO,
+} from '../../../interfaces/dtos';
 import { BaseComponent } from '../../common/base/base.component';
+import { BookResolver } from '../guards/book-resolver.service';
+import {
+  isbn10Validator,
+  isbn13Validator,
+} from '../validators';
 
 @Component({
   selector: 'app-edit-book',

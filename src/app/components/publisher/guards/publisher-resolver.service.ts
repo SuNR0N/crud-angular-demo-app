@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import {
-  Resolve,
   ActivatedRouteSnapshot,
+  Resolve,
   Router,
 } from '@angular/router';
 import {
-  tap,
   map,
+  tap,
 } from 'rxjs/operators';
 
-import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import { PublisherService } from '../../../api/publisher.service';
+import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 
 @Injectable()
 export class PublisherResolver implements Resolve<IPublisherDTO> {

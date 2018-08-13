@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import {
-  Routes,
   RouterModule,
+  Routes,
 } from '@angular/router';
 
 import {
+  BookResolver,
   CreateBookComponent,
   EditBookComponent,
   ListBooksComponent,
   ViewBookComponent,
 } from '.';
-import { BookResolver } from './guards/book-resolver.service';
 
 const bookRoutes: Routes = [
   {
@@ -39,6 +39,6 @@ const bookRoutes: Routes = [
 
 @NgModule({
   imports: [ RouterModule.forChild(bookRoutes) ],
-  exports: [ RouterModule ]
+  exports: [ RouterModule ],
 })
 export class BookRoutingModule { }

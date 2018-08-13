@@ -8,7 +8,7 @@ describe('ViewPublisherComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewPublisherComponent ]
+      declarations: [ ViewPublisherComponent ],
     })
     .compileComponents();
   }));

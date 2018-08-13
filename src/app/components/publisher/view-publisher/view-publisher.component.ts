@@ -1,8 +1,8 @@
 import {
   Component,
   OnInit,
-  ViewChild,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -12,8 +12,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 
-import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import { ResourceService } from '../../../api/resource.service';
+import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import {
   BaseComponent,
   ConfirmationModalComponent,

@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   catchError,
   tap,
 } from 'rxjs/operators';
 
-import { IProfileDTO } from '../interfaces/dtos/ProfileDTO';
 import { API_PREFIX } from '../config/config';
+import { IProfileDTO } from '../interfaces/dtos/ProfileDTO';
 import { MessageService } from '../services/message.service';
 import { BaseService } from './base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService extends BaseService {
   private authUrl = `${API_PREFIX}/auth`;
@@ -28,7 +28,7 @@ export class AuthService extends BaseService {
     return this.http.get<IProfileDTO>(`${this.authUrl}/profile`)
       .pipe(
         tap((_) => this.log('fetched profile')),
-        catchError(this.handleError('getProfile'))
+        catchError(this.handleError('getProfile')),
       );
   }
 
@@ -36,7 +36,7 @@ export class AuthService extends BaseService {
     return this.http.post(`${this.authUrl}/logout`, null, { responseType: 'text' })
       .pipe(
         tap((_) => this.log('logged out')),
-        catchError(this.handleError('logOut'))
+        catchError(this.handleError('logOut')),
       );
   }
 }

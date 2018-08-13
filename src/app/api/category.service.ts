@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   catchError,
@@ -11,16 +11,16 @@ import {
   tap,
 } from 'rxjs/operators';
 
+import { API_PREFIX } from '../config/config';
 import {
   ICategoryDTO,
   INewCategoryDTO,
 } from '../interfaces/dtos';
-import { API_PREFIX } from '../config/config';
 import { MessageService } from '../services/message.service';
 import { BaseService } from './base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService extends BaseService {
   private categoriesUrl = `${API_PREFIX}/categories`;
@@ -40,7 +40,7 @@ export class CategoryService extends BaseService {
     return this.http.get<ICategoryDTO[]>(this.categoriesUrl, { params })
       .pipe(
         tap((_) => this.log('fetched categories')),
-        catchError(this.handleError('getCategories'))
+        catchError(this.handleError('getCategories')),
       );
   }
 
@@ -48,7 +48,7 @@ export class CategoryService extends BaseService {
     return this.http.get<ICategoryDTO>(`${this.categoriesUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched category id=${id}`)),
-        catchError(this.handleError(`getCategory id=${id}`))
+        catchError(this.handleError(`getCategory id=${id}`)),
       );
   }
 
@@ -64,7 +64,7 @@ export class CategoryService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createCategory category=${category}`))
+        catchError(this.handleError(`createCategory category=${category}`)),
       );
   }
 }

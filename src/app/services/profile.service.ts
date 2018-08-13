@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { IProfileDTO } from '../interfaces/dtos/ProfileDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService {
   private profile = new BehaviorSubject<IProfileDTO>(null);

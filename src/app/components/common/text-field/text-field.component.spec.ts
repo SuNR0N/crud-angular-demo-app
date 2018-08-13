@@ -8,7 +8,7 @@ describe('TextFieldComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TextFieldComponent ]
+      declarations: [ TextFieldComponent ],
     })
     .compileComponents();
   }));

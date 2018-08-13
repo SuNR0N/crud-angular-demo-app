@@ -1,10 +1,10 @@
 import {
   Component,
+  EventEmitter,
   Input,
   Output,
-  EventEmitter,
-  ViewChild,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

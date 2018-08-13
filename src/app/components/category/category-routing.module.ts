@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import {
-  Routes,
   RouterModule,
+  Routes,
 } from '@angular/router';
 
 import {
+  CategoryResolver,
   CreateCategoryComponent,
   EditCategoryComponent,
   ListCategoriesComponent,
   ViewCategoryComponent,
 } from '.';
-import { CategoryResolver } from './guards/category-resolver.service';
 
 const categoryRoutes: Routes = [
   {
@@ -39,6 +39,6 @@ const categoryRoutes: Routes = [
 
 @NgModule({
   imports: [ RouterModule.forChild(categoryRoutes) ],
-  exports: [ RouterModule ]
+  exports: [ RouterModule ],
 })
 export class CategoryRoutingModule { }

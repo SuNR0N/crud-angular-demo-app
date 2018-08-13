@@ -2,6 +2,11 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import {
   debounceTime,
@@ -9,17 +14,12 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
-import {
-  Router,
-  ActivatedRoute,
-} from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
-import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import {
   PublisherService,
   ResourceService,
 } from '../../../api';
+import { IPublisherDTO } from '../../../interfaces/dtos/PublisherDTO';
 import {
   ProfileService,
   SpinnerService,

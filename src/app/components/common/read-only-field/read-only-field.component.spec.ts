@@ -8,7 +8,7 @@ describe('ReadOnlyFieldComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReadOnlyFieldComponent ]
+      declarations: [ ReadOnlyFieldComponent ],
     })
     .compileComponents();
   }));

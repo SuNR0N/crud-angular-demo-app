@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   catchError,
@@ -11,16 +11,16 @@ import {
   tap,
 } from 'rxjs/operators';
 
-import {
-  IPublisherDTO,
-  INewPublisherDTO,
-} from '../interfaces/dtos';
 import { API_PREFIX } from '../config/config';
+import {
+  INewPublisherDTO,
+  IPublisherDTO,
+} from '../interfaces/dtos';
 import { MessageService } from '../services/message.service';
 import { BaseService } from './base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PublisherService extends BaseService {
   private publishersUrl = `${API_PREFIX}/publishers`;
@@ -40,7 +40,7 @@ export class PublisherService extends BaseService {
     return this.http.get<IPublisherDTO[]>(this.publishersUrl, { params })
       .pipe(
         tap((_) => this.log('fetched publishers')),
-        catchError(this.handleError('getPublishers'))
+        catchError(this.handleError('getPublishers')),
       );
   }
 
@@ -48,7 +48,7 @@ export class PublisherService extends BaseService {
     return this.http.get<IPublisherDTO>(`${this.publishersUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched publisher id=${id}`)),
-        catchError(this.handleError(`getPublisher id=${id}`))
+        catchError(this.handleError(`getPublisher id=${id}`)),
       );
   }
 
@@ -64,7 +64,7 @@ export class PublisherService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createPublisher publisher=${publisher}`))
+        catchError(this.handleError(`createPublisher publisher=${publisher}`)),
       );
   }
 }

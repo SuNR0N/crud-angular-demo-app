@@ -8,7 +8,7 @@ describe('EditBookComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditBookComponent ]
+      declarations: [ EditBookComponent ],
     })
     .compileComponents();
   }));

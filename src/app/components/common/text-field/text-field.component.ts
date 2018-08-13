@@ -4,8 +4,8 @@ import {
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
   Validator,
 } from '@angular/forms';
 import { FieldComponent } from '../field/field.component';
@@ -19,7 +19,7 @@ import { FieldComponent } from '../field/field.component';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TextFieldComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,

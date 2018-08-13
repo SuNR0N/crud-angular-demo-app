@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
 import {
   CreatePublisherComponent,
   EditPublisherComponent,
   ListPublishersComponent,
+  PublisherResolver,
   PublisherRowComponent,
   ViewPublisherComponent,
 } from '.';
-import { PublisherResolver } from './guards/publisher-resolver.service';
-import { PublisherRoutingModule } from './publisher-routing.module';
 import { SharedModule } from '../../shared.module';
+import { PublisherRoutingModule } from './publisher-routing.module';
 
 @NgModule({
   imports: [

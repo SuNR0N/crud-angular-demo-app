@@ -1,8 +1,8 @@
 import {
   Component,
   OnInit,
-  ViewChild,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import {
   ActivatedRoute,

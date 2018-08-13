@@ -1,26 +1,26 @@
+import { Location } from '@angular/common';
 import {
   Component,
   OnInit,
 } from '@angular/core';
 import {
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
+import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
-import { Location } from '@angular/common';
-import {
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 
+import { ResourceService } from '../../../api/resource.service';
 import {
   IAuthorDTO,
   IAuthorUpdateDTO,
 } from '../../../interfaces/dtos';
-import { ResourceService } from '../../../api/resource.service';
-import { AuthorResolver } from '../guards/author-resolver.service';
 import { BaseComponent } from '../../common/base/base.component';
+import { AuthorResolver } from '../guards/author-resolver.service';
 
 @Component({
   selector: 'app-edit-author',

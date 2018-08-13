@@ -8,7 +8,7 @@ describe('PublisherRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PublisherRowComponent ]
+      declarations: [ PublisherRowComponent ],
     })
     .compileComponents();
   }));

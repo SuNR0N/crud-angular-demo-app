@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import {
-  Routes,
   RouterModule,
+  Routes,
 } from '@angular/router';
 
 import {
   CreatePublisherComponent,
   EditPublisherComponent,
   ListPublishersComponent,
+  PublisherResolver,
   ViewPublisherComponent,
 } from '.';
-import { PublisherResolver } from './guards/publisher-resolver.service';
 
 const publisherRoutes: Routes = [
   {
@@ -39,6 +39,6 @@ const publisherRoutes: Routes = [
 
 @NgModule({
   imports: [ RouterModule.forChild(publisherRoutes) ],
-  exports: [ RouterModule ]
+  exports: [ RouterModule ],
 })
 export class PublisherRoutingModule { }

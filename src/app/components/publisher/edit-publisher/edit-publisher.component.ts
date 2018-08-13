@@ -1,26 +1,26 @@
+import { Location } from '@angular/common';
 import {
   Component,
   OnInit,
 } from '@angular/core';
 import {
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
+import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
-import { Location } from '@angular/common';
-import {
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 
-import {
-  IPublisherDTO,
-  INewPublisherDTO,
-} from '../../../interfaces/dtos';
-import { PublisherResolver } from '../guards/publisher-resolver.service';
 import { ResourceService } from '../../../api/resource.service';
+import {
+  INewPublisherDTO,
+  IPublisherDTO,
+} from '../../../interfaces/dtos';
 import { BaseComponent } from '../../common/base/base.component';
+import { PublisherResolver } from '../guards/publisher-resolver.service';
 
 @Component({
   selector: 'app-edit-publisher',

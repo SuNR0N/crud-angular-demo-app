@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
 import {
+  BookResolver,
   BookRowComponent,
   CreateBookComponent,
   EditBookComponent,
   ListBooksComponent,
   ViewBookComponent,
 } from '.';
-import { BookRoutingModule } from './book-routing.module';
 import { SharedModule } from '../../shared.module';
-import { BookResolver } from './guards/book-resolver.service';
+import { BookRoutingModule } from './book-routing.module';
 
 @NgModule({
   imports: [

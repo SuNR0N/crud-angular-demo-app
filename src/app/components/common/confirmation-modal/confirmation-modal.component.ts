@@ -1,10 +1,10 @@
 import {
+  AfterViewInit,
   Component,
   Input,
-  AfterViewInit,
+  TemplateRef,
   ViewChild,
   ViewContainerRef,
-  TemplateRef,
 } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 

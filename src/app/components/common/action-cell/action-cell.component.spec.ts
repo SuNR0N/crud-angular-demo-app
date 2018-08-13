@@ -8,7 +8,7 @@ describe('ActionCellComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActionCellComponent ]
+      declarations: [ ActionCellComponent ],
     })
     .compileComponents();
   }));

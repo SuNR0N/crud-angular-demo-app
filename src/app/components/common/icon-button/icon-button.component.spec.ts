@@ -8,7 +8,7 @@ describe('IconButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IconButtonComponent ]
+      declarations: [ IconButtonComponent ],
     })
     .compileComponents();
   }));

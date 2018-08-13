@@ -1,12 +1,12 @@
 import {
+  HttpEvent,
+  HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpHandler,
-  HttpEvent,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
 
 import { SpinnerService } from '../services/spinner.service';
 
@@ -20,8 +20,8 @@ export class PendingRequestInterceptor implements HttpInterceptor {
       tap(() => {}, () => {},
         () => {
           this.spinnerService.removeRequest(request);
-        }
-      )
+        },
+      ),
     );
   }
 }

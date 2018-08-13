@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
 import {
+  CategoryResolver,
   CategoryRowComponent,
   CreateCategoryComponent,
   EditCategoryComponent,
   ListCategoriesComponent,
   ViewCategoryComponent,
 } from '.';
-import { CategoryResolver } from './guards/category-resolver.service';
-import { CategoryRoutingModule } from './category-routing.module';
 import { SharedModule } from '../../shared.module';
+import { CategoryRoutingModule } from './category-routing.module';
 
 @NgModule({
   imports: [

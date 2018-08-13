@@ -8,7 +8,7 @@ describe('ViewAuthorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewAuthorComponent ]
+      declarations: [ ViewAuthorComponent ],
     })
     .compileComponents();
   }));

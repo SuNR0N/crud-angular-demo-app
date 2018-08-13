@@ -8,7 +8,7 @@ describe('AuthorRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthorRowComponent ]
+      declarations: [ AuthorRowComponent ],
     })
     .compileComponents();
   }));

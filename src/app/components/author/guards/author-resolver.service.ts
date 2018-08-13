@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import {
-  Resolve,
   ActivatedRouteSnapshot,
+  Resolve,
   Router,
 } from '@angular/router';
 import {
-  tap,
   map,
+  tap,
 } from 'rxjs/operators';
 
-import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
 import { AuthorService } from '../../../api/author.service';
+import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
 
 @Injectable()
 export class AuthorResolver implements Resolve<IAuthorDTO> {

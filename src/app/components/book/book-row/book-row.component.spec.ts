@@ -8,7 +8,7 @@ describe('BookRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookRowComponent ]
+      declarations: [ BookRowComponent ],
     })
     .compileComponents();
   }));

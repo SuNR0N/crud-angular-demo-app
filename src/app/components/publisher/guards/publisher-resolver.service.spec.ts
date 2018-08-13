@@ -1,11 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { PublisherResolver } from './publisher-resolver.service';
 
 describe('PublisherResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PublisherResolver]
+      providers: [PublisherResolver],
     });
   });
 

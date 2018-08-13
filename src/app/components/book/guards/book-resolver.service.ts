@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import {
-  Resolve,
   ActivatedRouteSnapshot,
+  Resolve,
   Router,
 } from '@angular/router';
 import {
-  tap,
   map,
+  tap,
 } from 'rxjs/operators';
 
-import { IBookDTO } from '../../../interfaces/dtos/BookDTO';
 import { BookService } from '../../../api/book.service';
+import { IBookDTO } from '../../../interfaces/dtos/BookDTO';
 
 @Injectable()
 export class BookResolver implements Resolve<IBookDTO> {

@@ -2,6 +2,11 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import {
   debounceTime,
@@ -9,20 +14,15 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
-import {
-  Router,
-  ActivatedRoute,
-} from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
 import {
   BookService,
   ResourceService,
 } from '../../../api';
 import {
+  IBookDTO,
   IHATEOASLink,
   IPageableCollectionDTO,
-  IBookDTO,
 } from '../../../interfaces';
 import {
   ProfileService,

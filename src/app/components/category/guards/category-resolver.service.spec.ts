@@ -1,11 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { CategoryResolver } from './category-resolver.service';
 
 describe('CategoryResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CategoryResolver]
+      providers: [CategoryResolver],
     });
   });
 

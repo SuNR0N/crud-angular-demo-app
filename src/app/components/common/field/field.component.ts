@@ -3,10 +3,10 @@ import {
   Input,
 } from '@angular/core';
 import {
-  ControlValueAccessor,
-  Validator,
   AbstractControl,
+  ControlValueAccessor,
   FormControl,
+  Validator,
 } from '@angular/forms';
 
 const defaultErrorDefs: { [key: string]: string } = {

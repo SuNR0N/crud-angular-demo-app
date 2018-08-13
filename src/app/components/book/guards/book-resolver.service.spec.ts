@@ -1,11 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { BookResolver } from './book-resolver.service';
 
 describe('BookResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BookResolver]
+      providers: [BookResolver],
     });
   });
 

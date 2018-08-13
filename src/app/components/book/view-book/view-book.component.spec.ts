@@ -8,7 +8,7 @@ describe('ViewBookComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewBookComponent ]
+      declarations: [ ViewBookComponent ],
     })
     .compileComponents();
   }));

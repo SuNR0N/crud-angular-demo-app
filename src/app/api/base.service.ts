@@ -1,6 +1,6 @@
 import {
-  HttpHeaders,
   HttpErrorResponse,
+  HttpHeaders,
 } from '@angular/common/http';
 import {
   Observable,

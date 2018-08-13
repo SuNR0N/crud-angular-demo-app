@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   catchError,
@@ -11,16 +11,16 @@ import {
   tap,
 } from 'rxjs/operators';
 
+import { API_PREFIX } from '../config/config';
 import {
   IAuthorDTO,
   INewAuthorDTO,
 } from '../interfaces/dtos';
-import { API_PREFIX } from '../config/config';
 import { MessageService } from '../services/message.service';
 import { BaseService } from './base.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorService extends BaseService {
   private authorsUrl = `${API_PREFIX}/authors`;
@@ -40,7 +40,7 @@ export class AuthorService extends BaseService {
     return this.http.get<IAuthorDTO[]>(this.authorsUrl, { params })
       .pipe(
         tap((_) => this.log('fetched authors')),
-        catchError(this.handleError('getAuthors'))
+        catchError(this.handleError('getAuthors')),
       );
   }
 
@@ -48,7 +48,7 @@ export class AuthorService extends BaseService {
     return this.http.get<IAuthorDTO>(`${this.authorsUrl}/${id}`)
       .pipe(
         tap((_) => this.log(`fetched author id=${id}`)),
-        catchError(this.handleError(`getAuthor id=${id}`))
+        catchError(this.handleError(`getAuthor id=${id}`)),
       );
   }
 
@@ -64,7 +64,7 @@ export class AuthorService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createAuthor author=${author}`))
+        catchError(this.handleError(`createAuthor author=${author}`)),
       );
   }
 }

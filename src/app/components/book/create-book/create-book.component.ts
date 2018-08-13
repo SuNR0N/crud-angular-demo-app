@@ -12,27 +12,27 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   AuthorService,
-  CategoryService,
   BookService,
+  CategoryService,
   PublisherService,
 } from '../../../api';
-import {
-  ICategoryDTO,
-  INewBookDTO,
-  IPublisherDTO,
-  IAuthorDTO,
-} from '../../../interfaces/dtos';
-import {
-  isbn10Validator,
-  isbn13Validator,
-} from '../validators';
 import {
   isbn10Checksum,
   isbn10Length,
   isbn13Checksum,
   isbn13Length,
 } from '../../../constants/validation-errors';
+import {
+  IAuthorDTO,
+  ICategoryDTO,
+  INewBookDTO,
+  IPublisherDTO,
+} from '../../../interfaces/dtos';
 import { BaseComponent } from '../../common/base/base.component';
+import {
+  isbn10Validator,
+  isbn13Validator,
+} from '../validators';
 
 @Component({
   selector: 'app-create-book',

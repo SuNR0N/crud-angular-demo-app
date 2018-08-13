@@ -1,11 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { AuthorService } from './author.service';
 
 describe('AuthorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AuthorService]
+      providers: [AuthorService],
     });
   });
 

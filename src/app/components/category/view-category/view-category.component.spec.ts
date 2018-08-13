@@ -8,7 +8,7 @@ describe('ViewCategoryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewCategoryComponent ]
+      declarations: [ ViewCategoryComponent ],
     })
     .compileComponents();
   }));
