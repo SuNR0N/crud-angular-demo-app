@@ -17,10 +17,9 @@ export class PendingRequestInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.spinnerService.addRequest(request);
     return next.handle(request).pipe(
-      tap(() => {}, () => {},
-        () => {
-          this.spinnerService.removeRequest(request);
-        },
+      tap(null,
+        () => this.spinnerService.removeRequest(request),
+        () => this.spinnerService.removeRequest(request),
       ),
     );
   }

@@ -55,6 +55,7 @@ export class AuthorService extends BaseService {
   createAuthor(author: INewAuthorDTO) {
     return this.http.post(this.authorsUrl, author, this.httpOptions)
       .pipe(
+        tap((_) => this.log(`created author=${JSON.stringify(author)}`)),
         map((response: HttpResponse<any>) => {
           const locationRegExp = /\/(\d{1,})$/;
           const locationHeaderValue = response.headers.get('Location');
@@ -64,7 +65,7 @@ export class AuthorService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createAuthor author=${author}`)),
+        catchError(this.handleError(`createAuthor author=${JSON.stringify(author)}`)),
       );
   }
 }

@@ -4,6 +4,7 @@ import {
   CanActivate,
   Router,
 } from '@angular/router';
+
 import { ProfileService } from '../services/profile.service';
 
 @Injectable()

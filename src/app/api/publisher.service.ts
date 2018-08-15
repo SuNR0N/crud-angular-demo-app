@@ -55,6 +55,7 @@ export class PublisherService extends BaseService {
   createPublisher(publisher: INewPublisherDTO) {
     return this.http.post(this.publishersUrl, publisher, this.httpOptions)
       .pipe(
+        tap((_) => this.log(`created publisher=${JSON.stringify(publisher)}`)),
         map((response: HttpResponse<any>) => {
           const locationRegExp = /\/(\d{1,})$/;
           const locationHeaderValue = response.headers.get('Location');
@@ -64,7 +65,7 @@ export class PublisherService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createPublisher publisher=${publisher}`)),
+        catchError(this.handleError(`createPublisher publisher=${JSON.stringify(publisher)}`)),
       );
   }
 }

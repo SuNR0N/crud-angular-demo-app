@@ -1,15 +1,29 @@
-import { inject, TestBed } from '@angular/core/testing';
-
 import { MessageService } from './message.service';
 
 describe('MessageService', () => {
+  let messageService: MessageService;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [MessageService],
+    messageService = new MessageService();
+  });
+
+  describe('add', () => {
+    it('should add the provided message to the messages', () => {
+      messageService.add('foo');
+
+      expect(messageService.messages).toContain('foo');
+      expect(messageService.messages.length).toBe(1);
     });
   });
 
-  it('should be created', inject([MessageService], (service: MessageService) => {
-    expect(service).toBeTruthy();
-  }));
+  describe('clear', () => {
+    it('should remove all messages', () => {
+      messageService.add('foo');
+      messageService.add('bar');
+
+      messageService.clear();
+
+      expect(messageService.messages).toEqual([]);
+    });
+  });
 });

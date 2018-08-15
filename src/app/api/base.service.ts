@@ -16,15 +16,13 @@ export class BaseService {
     responseType: 'text' as 'text',
   };
 
-  constructor(
-    private messageService: MessageService,
-  ) { }
+  constructor(private messageService: MessageService) { }
 
-  protected handleError (operation = 'operation') {
-    return (response: HttpErrorResponse): Observable<any> => {
-      console.error(response);
-      this.log(`${operation} failed: ${response.message}`);
-      return throwError(response.error);
+  protected handleError(operation = 'operation') {
+    return (error: HttpErrorResponse | Error): Observable<any> => {
+      console.error(error);
+      this.log(`${operation} failed: ${error.message}`);
+      return throwError(error instanceof HttpErrorResponse ? error.error : error.message);
     };
   }
 

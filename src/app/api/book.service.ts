@@ -56,6 +56,7 @@ export class BookService extends BaseService {
   createBook(book: INewBookDTO) {
     return this.http.post(this.booksUrl, book, this.httpOptions)
       .pipe(
+        tap((_) => this.log(`created book=${JSON.stringify(book)}`)),
         map((response: HttpResponse<any>) => {
           const locationRegExp = /\/(\d{1,})$/;
           const locationHeaderValue = response.headers.get('Location');
@@ -65,7 +66,7 @@ export class BookService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createBook book=${book}`)),
+        catchError(this.handleError(`createBook book=${JSON.stringify(book)}`)),
       );
   }
 }

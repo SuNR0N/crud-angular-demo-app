@@ -33,7 +33,7 @@ export class AuthService extends BaseService {
   }
 
   logOut(): Observable<string> {
-    return this.http.post(`${this.authUrl}/logout`, null, { responseType: 'text' })
+    return this.http.post(`${this.authUrl}/logout`, null)
       .pipe(
         tap((_) => this.log('logged out')),
         catchError(this.handleError('logOut')),

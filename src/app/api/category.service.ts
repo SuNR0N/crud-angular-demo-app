@@ -55,6 +55,7 @@ export class CategoryService extends BaseService {
   createCategory(category: INewCategoryDTO) {
     return this.http.post(this.categoriesUrl, category, this.httpOptions)
       .pipe(
+        tap((_) => this.log(`created category=${JSON.stringify(category)}`)),
         map((response: HttpResponse<any>) => {
           const locationRegExp = /\/(\d{1,})$/;
           const locationHeaderValue = response.headers.get('Location');
@@ -64,7 +65,7 @@ export class CategoryService extends BaseService {
           }
           return parseInt(locationRegExpExec[1], 10);
         }),
-        catchError(this.handleError(`createCategory category=${category}`)),
+        catchError(this.handleError(`createCategory category=${JSON.stringify(category)}`)),
       );
   }
 }
