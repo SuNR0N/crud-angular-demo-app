@@ -1,29 +1,29 @@
-<td class="col-1">{{ author.id }}</td>
-<td class="col-sm-7 col-6 d-block d-md-none">{{ author.fullName }}</td>
-<td class="col-md-3 d-none d-md-block">{{ author.firstName }}</td>
-<td class="col-lg-3 col-md-2 d-none d-md-block">{{ author.middleName }}</td>
-<td class="col-md-3 d-none d-md-block">{{ author.lastName }}</td>
+<td class="col-1">{{ author?.id }}</td>
+<td class="col-sm-7 col-6 d-block d-md-none">{{ author?.fullName }}</td>
+<td class="col-md-3 d-none d-md-block">{{ author?.firstName }}</td>
+<td class="col-lg-3 col-md-2 d-none d-md-block">{{ author?.middleName }}</td>
+<td class="col-md-3 d-none d-md-block">{{ author?.lastName }}</td>
 <td
   appActionCell
   class="col-lg-2 col-md-3 col-sm-4 col-5"
 >
   <button
     appIconButton
-    *ngIf="author._links.self"
+    *ngIf="author?._links.self"
     (click)="viewAuthor()"
     class="btn btn-sm btn-outline-primary"
     symbol="eye-regular"
   ></button>
   <button
     appIconButton
-    *ngIf="author._links.update"
+    *ngIf="author?._links.update"
     (click)="editAuthor()"
     class="btn btn-sm btn-outline-secondary"
     symbol="edit-regular"
   ></button>
   <button
     appIconButton
-    *ngIf="author._links.delete"
+    *ngIf="author?._links.delete"
     (click)="showConfirmation()"
     class="btn btn-sm btn-outline-danger"
     symbol="trash-alt-regular"
@@ -31,5 +31,5 @@
 </td>
 
 <ng-template #confirmationText>
-  Are you sure you want to delete <strong>{{ author.fullName }}</strong>&nbsp;<i>(ID: {{ author.id }})</i> ?
+  Are you sure you want to delete <strong>{{ author?.fullName }}</strong>&nbsp;<i>(ID: {{ author?.id }})</i> ?
 </ng-template>

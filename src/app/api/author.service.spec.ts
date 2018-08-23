@@ -15,49 +15,51 @@ import { AuthorService } from './author.service';
 
 describe('AuthorService', () => {
   let authorService: AuthorService;
-  let httpClientSpy: {
+  let httpClientStub: {
     get: jasmine.Spy,
     post: jasmine.Spy,
   };
-  let messageServiceSpy: jasmine.Spy;
+  let messageServiceStub: {
+    add: jasmine.Spy,
+  };
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post']);
-    messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
-    authorService = new AuthorService(httpClientSpy as any, messageServiceSpy as any);
+    httpClientStub = jasmine.createSpyObj('HttpClient', ['get', 'post']);
+    messageServiceStub = jasmine.createSpyObj('MessageService', ['add']);
+    authorService = new AuthorService(httpClientStub as any, messageServiceStub as any);
   });
 
   describe('getAuthors', () => {
     const authorsMock: IAuthorDTO[] = [];
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.get.and.returnValue(of(authorsMock));
+      httpClientStub.get.and.returnValue(of(authorsMock));
 
       authorService.getAuthors().subscribe();
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/v1/authors', jasmine.anything());
+      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/authors', jasmine.anything());
     });
 
     it('should call the URL with a query param if it is provided', () => {
-      httpClientSpy.get.and.returnValue(of(authorsMock));
+      httpClientStub.get.and.returnValue(of(authorsMock));
 
       authorService.getAuthors('foo').subscribe();
 
-      const options = httpClientSpy.get.calls.mostRecent().args[1];
+      const options = httpClientStub.get.calls.mostRecent().args[1];
       expect(options.params.get('q')).toBe('foo');
     });
 
     it('should return the authors', () => {
-      httpClientSpy.get.and.returnValue(of(authorsMock));
+      httpClientStub.get.and.returnValue(of(authorsMock));
 
       authorService.getAuthors().subscribe(
         (authors) => expect(authors).toBe(authorsMock),
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientSpy.get.and.returnValue(of(authorsMock));
+      httpClientStub.get.and.returnValue(of(authorsMock));
       const logSpy = spyOn(authorService as any, 'log').and.callThrough();
 
       authorService.getAuthors().subscribe();
@@ -67,7 +69,7 @@ describe('AuthorService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.get.and.returnValue(of(authorsMock));
+      httpClientStub.get.and.returnValue(of(authorsMock));
       const handleErrorSpy = spyOn(authorService as any, 'handleError').and.callThrough();
 
       authorService.getAuthors().subscribe();
@@ -77,7 +79,7 @@ describe('AuthorService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.get.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
 
       authorService.getAuthors().subscribe(
         null,
@@ -90,24 +92,24 @@ describe('AuthorService', () => {
     const authorMock = {} as IAuthorDTO;
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.get.and.returnValue(of(authorMock));
+      httpClientStub.get.and.returnValue(of(authorMock));
 
       authorService.getAuthor(1).subscribe();
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/v1/authors/1');
+      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/authors/1');
     });
 
     it('should return the author', () => {
-      httpClientSpy.get.and.returnValue(of(authorMock));
+      httpClientStub.get.and.returnValue(of(authorMock));
 
       authorService.getAuthor(1).subscribe(
         (author) => expect(author).toBe(authorMock),
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientSpy.get.and.returnValue(of(authorMock));
+      httpClientStub.get.and.returnValue(of(authorMock));
       const logSpy = spyOn(authorService as any, 'log').and.callThrough();
 
       authorService.getAuthor(1).subscribe();
@@ -117,7 +119,7 @@ describe('AuthorService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.get.and.returnValue(of(authorMock));
+      httpClientStub.get.and.returnValue(of(authorMock));
       const handleErrorSpy = spyOn(authorService as any, 'handleError').and.callThrough();
 
       authorService.getAuthor(1).subscribe();
@@ -127,7 +129,7 @@ describe('AuthorService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.get.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
 
       authorService.getAuthor(1).subscribe(
         null,
@@ -143,15 +145,15 @@ describe('AuthorService', () => {
     } as HttpResponse<any>;
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
 
       authorService.createAuthor(newAuthorMock).subscribe();
 
-      expect(httpClientSpy.post).toHaveBeenCalledWith('/api/v1/authors', newAuthorMock, jasmine.anything());
+      expect(httpClientStub.post).toHaveBeenCalledWith('/api/v1/authors', newAuthorMock, jasmine.anything());
     });
 
     it('should return the id of the created entity', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
 
       authorService.createAuthor(newAuthorMock).subscribe(
         (id) => expect(id).toBe(3),
@@ -159,7 +161,7 @@ describe('AuthorService', () => {
     });
 
     it('should log a message', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
       const logSpy = spyOn(authorService as any, 'log').and.callThrough();
 
       authorService.createAuthor(newAuthorMock).subscribe();
@@ -169,7 +171,7 @@ describe('AuthorService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
       const handleErrorSpy = spyOn(authorService as any, 'handleError').and.callThrough();
 
       authorService.createAuthor(newAuthorMock).subscribe();
@@ -179,7 +181,7 @@ describe('AuthorService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.post.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.post.and.returnValue(throwError(new Error('Error')));
 
       authorService.createAuthor(newAuthorMock).subscribe(
         null,
@@ -191,7 +193,7 @@ describe('AuthorService', () => {
       const httpResponseMockWithoutHeaders = {
         headers: new HttpHeaders(),
       } as HttpResponse<any>;
-      httpClientSpy.post.and.returnValue(of(httpResponseMockWithoutHeaders));
+      httpClientStub.post.and.returnValue(of(httpResponseMockWithoutHeaders));
 
       authorService.createAuthor(newAuthorMock).subscribe(
         null,
@@ -205,7 +207,7 @@ describe('AuthorService', () => {
           Location: '/api/v1/authors/foo',
         }),
       } as HttpResponse<any>;
-      httpClientSpy.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
+      httpClientStub.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
 
       authorService.createAuthor(newAuthorMock).subscribe(
         null,

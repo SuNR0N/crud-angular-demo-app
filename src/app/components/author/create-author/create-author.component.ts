@@ -29,7 +29,7 @@ export class CreateAuthorComponent extends BaseComponent {
   });
 
   constructor(
-    private authorSerive: AuthorService,
+    private authorService: AuthorService,
     private fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
@@ -45,7 +45,7 @@ export class CreateAuthorComponent extends BaseComponent {
     const newAuthor: INewAuthorDTO = {
       ...this.createAuthorForm.value,
     };
-    this.authorSerive.createAuthor(newAuthor)
+    this.authorService.createAuthor(newAuthor)
       .pipe(takeUntil(this.destroyed$))
       .subscribe(
         () => this.router.navigate([ 'authors' ]),

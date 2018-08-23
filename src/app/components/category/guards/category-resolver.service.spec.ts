@@ -1,15 +1,31 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { Subject } from 'rxjs';
 
+import { IProfileDTO } from '../../../interfaces/dtos/ProfileDTO';
 import { CategoryResolver } from './category-resolver.service';
 
 describe('CategoryResolver', () => {
+  let categoryResolver: CategoryResolver;
+  let categoryServiceStub: { getCategory: jasmine.Spy };
+  let profileServiceStub: { getProfile: jasmine.Spy };
+  let routerStub: { navigate: jasmine.Spy };
+  let subject: Subject<IProfileDTO>;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [CategoryResolver],
-    });
+    subject = new Subject();
+    categoryServiceStub = jasmine.createSpyObj('CategoryService', ['getCategory']);
+    profileServiceStub = jasmine.createSpyObj('ProfileService', ['getProfile']);
+    routerStub = jasmine.createSpyObj('Router', ['navigate']);
+    profileServiceStub.getProfile.and.returnValue(subject.asObservable());
+    categoryResolver = new CategoryResolver(
+      categoryServiceStub as any,
+      profileServiceStub as any,
+      routerStub as any,
+    );
   });
 
-  it('should be created', inject([CategoryResolver], (service: CategoryResolver) => {
-    expect(service).toBeTruthy();
-  }));
+  describe('setCategory', () => {
+    it('should set the underlying category', () => {
+      //
+    });
+  });
 });

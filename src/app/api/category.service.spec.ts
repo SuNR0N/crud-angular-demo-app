@@ -15,49 +15,51 @@ import { CategoryService } from './category.service';
 
 describe('CategoryService', () => {
   let categoryService: CategoryService;
-  let httpClientSpy: {
+  let httpClientStub: {
     get: jasmine.Spy,
     post: jasmine.Spy,
   };
-  let messageServiceSpy: jasmine.Spy;
+  let messageServiceStub: {
+    add: jasmine.Spy,
+  };
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post']);
-    messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
-    categoryService = new CategoryService(httpClientSpy as any, messageServiceSpy as any);
+    httpClientStub = jasmine.createSpyObj('HttpClient', ['get', 'post']);
+    messageServiceStub = jasmine.createSpyObj('MessageService', ['add']);
+    categoryService = new CategoryService(httpClientStub as any, messageServiceStub as any);
   });
 
   describe('getCategories', () => {
     const categoriesMock: ICategoryDTO[] = [];
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.get.and.returnValue(of(categoriesMock));
+      httpClientStub.get.and.returnValue(of(categoriesMock));
 
       categoryService.getCategories().subscribe();
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/v1/categories', jasmine.anything());
+      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/categories', jasmine.anything());
     });
 
     it('should call the URL with a query param if it is provided', () => {
-      httpClientSpy.get.and.returnValue(of(categoriesMock));
+      httpClientStub.get.and.returnValue(of(categoriesMock));
 
       categoryService.getCategories('foo').subscribe();
 
-      const options = httpClientSpy.get.calls.mostRecent().args[1];
+      const options = httpClientStub.get.calls.mostRecent().args[1];
       expect(options.params.get('q')).toBe('foo');
     });
 
     it('should return the categories', () => {
-      httpClientSpy.get.and.returnValue(of(categoriesMock));
+      httpClientStub.get.and.returnValue(of(categoriesMock));
 
       categoryService.getCategories().subscribe(
         (categories) => expect(categories).toBe(categoriesMock),
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientSpy.get.and.returnValue(of(categoriesMock));
+      httpClientStub.get.and.returnValue(of(categoriesMock));
       const logSpy = spyOn(categoryService as any, 'log').and.callThrough();
 
       categoryService.getCategories().subscribe();
@@ -67,7 +69,7 @@ describe('CategoryService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.get.and.returnValue(of(categoriesMock));
+      httpClientStub.get.and.returnValue(of(categoriesMock));
       const handleErrorSpy = spyOn(categoryService as any, 'handleError').and.callThrough();
 
       categoryService.getCategories().subscribe();
@@ -77,7 +79,7 @@ describe('CategoryService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.get.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
 
       categoryService.getCategories().subscribe(
         null,
@@ -90,24 +92,24 @@ describe('CategoryService', () => {
     const categoryMock = {} as ICategoryDTO;
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.get.and.returnValue(of(categoryMock));
+      httpClientStub.get.and.returnValue(of(categoryMock));
 
       categoryService.getCategory(1).subscribe();
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/v1/categories/1');
+      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/categories/1');
     });
 
     it('should return the category', () => {
-      httpClientSpy.get.and.returnValue(of(categoryMock));
+      httpClientStub.get.and.returnValue(of(categoryMock));
 
       categoryService.getCategory(1).subscribe(
         (category) => expect(category).toBe(categoryMock),
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientSpy.get.and.returnValue(of(categoryMock));
+      httpClientStub.get.and.returnValue(of(categoryMock));
       const logSpy = spyOn(categoryService as any, 'log').and.callThrough();
 
       categoryService.getCategory(1).subscribe();
@@ -117,7 +119,7 @@ describe('CategoryService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.get.and.returnValue(of(categoryMock));
+      httpClientStub.get.and.returnValue(of(categoryMock));
       const handleErrorSpy = spyOn(categoryService as any, 'handleError').and.callThrough();
 
       categoryService.getCategory(1).subscribe();
@@ -127,7 +129,7 @@ describe('CategoryService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.get.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
 
       categoryService.getCategory(1).subscribe(
         null,
@@ -143,15 +145,15 @@ describe('CategoryService', () => {
     } as HttpResponse<any>;
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
 
       categoryService.createCategory(newCategoryMock).subscribe();
 
-      expect(httpClientSpy.post).toHaveBeenCalledWith('/api/v1/categories', newCategoryMock, jasmine.anything());
+      expect(httpClientStub.post).toHaveBeenCalledWith('/api/v1/categories', newCategoryMock, jasmine.anything());
     });
 
     it('should return the id of the created entity', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
 
       categoryService.createCategory(newCategoryMock).subscribe(
         (id) => expect(id).toBe(3),
@@ -159,7 +161,7 @@ describe('CategoryService', () => {
     });
 
     it('should log a message', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
       const logSpy = spyOn(categoryService as any, 'log').and.callThrough();
 
       categoryService.createCategory(newCategoryMock).subscribe();
@@ -169,7 +171,7 @@ describe('CategoryService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
       const handleErrorSpy = spyOn(categoryService as any, 'handleError').and.callThrough();
 
       categoryService.createCategory(newCategoryMock).subscribe();
@@ -179,7 +181,7 @@ describe('CategoryService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.post.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.post.and.returnValue(throwError(new Error('Error')));
 
       categoryService.createCategory(newCategoryMock).subscribe(
         null,
@@ -191,7 +193,7 @@ describe('CategoryService', () => {
       const httpResponseMockWithoutHeaders = {
         headers: new HttpHeaders(),
       } as HttpResponse<any>;
-      httpClientSpy.post.and.returnValue(of(httpResponseMockWithoutHeaders));
+      httpClientStub.post.and.returnValue(of(httpResponseMockWithoutHeaders));
 
       categoryService.createCategory(newCategoryMock).subscribe(
         null,
@@ -205,7 +207,7 @@ describe('CategoryService', () => {
           Location: '/api/v1/categories/foo',
         }),
       } as HttpResponse<any>;
-      httpClientSpy.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
+      httpClientStub.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
 
       categoryService.createCategory(newCategoryMock).subscribe(
         null,

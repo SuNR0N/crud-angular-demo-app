@@ -13,7 +13,7 @@ import {
 } from '.';
 import { AuthGuard } from '../../guards/auth-guard.service';
 
-const authorRoutes: Routes = [
+export const authorRoutes: Routes = [
   {
     path: '',
     component: ListAuthorsComponent,

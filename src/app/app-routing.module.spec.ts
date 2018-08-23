@@ -24,7 +24,7 @@ import {
 import { routes } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-fdescribe('AppRoutingModule', () => {
+describe('AppRoutingModule', () => {
   @Component({ template: 'authors' })
   class AuthorsComponent {}
 

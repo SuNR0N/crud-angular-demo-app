@@ -5,11 +5,11 @@ import { BaseService } from './base.service';
 
 describe('BaseService', () => {
   let baseService: any;
-  let messageServiceSpy: { add: jasmine.Spy };
+  let messageServiceStub: { add: jasmine.Spy };
 
   beforeEach(() => {
-    messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
-    baseService = new BaseService(messageServiceSpy as any);
+    messageServiceStub = jasmine.createSpyObj('MessageService', ['add']);
+    baseService = new BaseService(messageServiceStub as any);
   });
 
   describe('handleError', () => {
@@ -18,7 +18,10 @@ describe('BaseService', () => {
     it('should have a default operation', () => {
       const logSpy = spyOn(baseService, 'log').and.callThrough();
       const handler = baseService.handleError();
-      (<Observable<any>>handler(new Error())).subscribe();
+      (<Observable<any>>handler(new Error())).subscribe(
+        (_) => {},
+        (_) => {},
+      );
 
       expect(logSpy.calls.mostRecent().args[0]).toMatch(/^operation/);
     });
@@ -26,7 +29,10 @@ describe('BaseService', () => {
     it('should log the error to the console', () => {
       const errorSpy = spyOn(console, 'error');
       const handler = baseService.handleError();
-      (<Observable<any>>handler(error)).subscribe();
+      (<Observable<any>>handler(error)).subscribe(
+        (_) => {},
+        (_) => {},
+      );
 
       expect(errorSpy).toHaveBeenCalledWith(error);
     });
@@ -34,7 +40,10 @@ describe('BaseService', () => {
     it('should log the error using the logger', () => {
       const logSpy = spyOn(baseService, 'log').and.callThrough();
       const handler = baseService.handleError();
-      (<Observable<any>>handler(error)).subscribe();
+      (<Observable<any>>handler(error)).subscribe(
+        (_) => {},
+        (_) => {},
+      );
 
       expect(logSpy).toHaveBeenCalledWith('operation failed: Error');
     });
@@ -63,7 +72,7 @@ describe('BaseService', () => {
     it('should add the log message using the messageService', () => {
       baseService.log('foo');
 
-      expect(messageServiceSpy.add).toHaveBeenCalledWith('BaseService: foo');
+      expect(messageServiceStub.add).toHaveBeenCalledWith('BaseService: foo');
     });
   });
 });

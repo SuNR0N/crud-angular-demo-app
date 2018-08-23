@@ -16,16 +16,18 @@ import { BookService } from './book.service';
 
 describe('BookService', () => {
   let bookService: BookService;
-  let httpClientSpy: {
+  let httpClientStub: {
     get: jasmine.Spy,
     post: jasmine.Spy,
   };
-  let messageServiceSpy: jasmine.Spy;
+  let messageServiceStub: {
+    add: jasmine.Spy,
+  };
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post']);
-    messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
-    bookService = new BookService(httpClientSpy as any, messageServiceSpy as any);
+    httpClientStub = jasmine.createSpyObj('HttpClient', ['get', 'post']);
+    messageServiceStub = jasmine.createSpyObj('MessageService', ['add']);
+    bookService = new BookService(httpClientStub as any, messageServiceStub as any);
   });
 
   describe('getBooks', () => {
@@ -37,33 +39,33 @@ describe('BookService', () => {
     };
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.get.and.returnValue(of(collectionMock));
+      httpClientStub.get.and.returnValue(of(collectionMock));
 
       bookService.getBooks().subscribe();
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/v1/books', jasmine.anything());
+      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/books', jasmine.anything());
     });
 
     it('should call the URL with a query param if it is provided', () => {
-      httpClientSpy.get.and.returnValue(of(collectionMock));
+      httpClientStub.get.and.returnValue(of(collectionMock));
 
       bookService.getBooks('foo').subscribe();
 
-      const options = httpClientSpy.get.calls.mostRecent().args[1];
+      const options = httpClientStub.get.calls.mostRecent().args[1];
       expect(options.params.get('q')).toBe('foo');
     });
 
     it('should return the collection', () => {
-      httpClientSpy.get.and.returnValue(of(collectionMock));
+      httpClientStub.get.and.returnValue(of(collectionMock));
 
       bookService.getBooks().subscribe(
         (collection) => expect(collection).toBe(collectionMock),
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientSpy.get.and.returnValue(of(collectionMock));
+      httpClientStub.get.and.returnValue(of(collectionMock));
       const logSpy = spyOn(bookService as any, 'log').and.callThrough();
 
       bookService.getBooks().subscribe();
@@ -73,7 +75,7 @@ describe('BookService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.get.and.returnValue(of(collectionMock));
+      httpClientStub.get.and.returnValue(of(collectionMock));
       const handleErrorSpy = spyOn(bookService as any, 'handleError').and.callThrough();
 
       bookService.getBooks().subscribe();
@@ -83,7 +85,7 @@ describe('BookService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.get.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
 
       bookService.getBooks().subscribe(
         null,
@@ -96,24 +98,24 @@ describe('BookService', () => {
     const bookMock = {} as IBookDTO;
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.get.and.returnValue(of(bookMock));
+      httpClientStub.get.and.returnValue(of(bookMock));
 
       bookService.getBook(1).subscribe();
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/v1/books/1');
+      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/books/1');
     });
 
     it('should return the book', () => {
-      httpClientSpy.get.and.returnValue(of(bookMock));
+      httpClientStub.get.and.returnValue(of(bookMock));
 
       bookService.getBook(1).subscribe(
         (book) => expect(book).toBe(bookMock),
       );
-      expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
+      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientSpy.get.and.returnValue(of(bookMock));
+      httpClientStub.get.and.returnValue(of(bookMock));
       const logSpy = spyOn(bookService as any, 'log').and.callThrough();
 
       bookService.getBook(1).subscribe();
@@ -123,7 +125,7 @@ describe('BookService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.get.and.returnValue(of(bookMock));
+      httpClientStub.get.and.returnValue(of(bookMock));
       const handleErrorSpy = spyOn(bookService as any, 'handleError').and.callThrough();
 
       bookService.getBook(1).subscribe();
@@ -133,7 +135,7 @@ describe('BookService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.get.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
 
       bookService.getBook(1).subscribe(
         null,
@@ -149,15 +151,15 @@ describe('BookService', () => {
     } as HttpResponse<any>;
 
     it('should be called with the proper URL', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
 
       bookService.createBook(newBookMock).subscribe();
 
-      expect(httpClientSpy.post).toHaveBeenCalledWith('/api/v1/books', newBookMock, jasmine.anything());
+      expect(httpClientStub.post).toHaveBeenCalledWith('/api/v1/books', newBookMock, jasmine.anything());
     });
 
     it('should return the id of the created entity', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
 
       bookService.createBook(newBookMock).subscribe(
         (id) => expect(id).toBe(3),
@@ -165,7 +167,7 @@ describe('BookService', () => {
     });
 
     it('should log a message', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
       const logSpy = spyOn(bookService as any, 'log').and.callThrough();
 
       bookService.createBook(newBookMock).subscribe();
@@ -175,7 +177,7 @@ describe('BookService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientSpy.post.and.returnValue(of(httpResponseMock));
+      httpClientStub.post.and.returnValue(of(httpResponseMock));
       const handleErrorSpy = spyOn(bookService as any, 'handleError').and.callThrough();
 
       bookService.createBook(newBookMock).subscribe();
@@ -185,7 +187,7 @@ describe('BookService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientSpy.post.and.returnValue(throwError(new Error('Error')));
+      httpClientStub.post.and.returnValue(throwError(new Error('Error')));
 
       bookService.createBook(newBookMock).subscribe(
         null,
@@ -197,7 +199,7 @@ describe('BookService', () => {
       const httpResponseMockWithoutHeaders = {
         headers: new HttpHeaders(),
       } as HttpResponse<any>;
-      httpClientSpy.post.and.returnValue(of(httpResponseMockWithoutHeaders));
+      httpClientStub.post.and.returnValue(of(httpResponseMockWithoutHeaders));
 
       bookService.createBook(newBookMock).subscribe(
         null,
@@ -211,7 +213,7 @@ describe('BookService', () => {
           Location: '/api/v1/books/foo',
         }),
       } as HttpResponse<any>;
-      httpClientSpy.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
+      httpClientStub.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
 
       bookService.createBook(newBookMock).subscribe(
         null,

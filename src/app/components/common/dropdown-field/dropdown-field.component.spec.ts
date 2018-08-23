@@ -1,4 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { DropdownFieldComponent } from './dropdown-field.component';
 
@@ -8,6 +14,10 @@ describe('DropdownFieldComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        NgSelectModule,
+      ],
       declarations: [ DropdownFieldComponent ],
     })
     .compileComponents();

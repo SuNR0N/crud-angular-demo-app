@@ -1,5 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { IconComponent } from '../icon/icon.component';
 import { SignInComponent } from './sign-in.component';
 
 describe('SignInComponent', () => {
@@ -8,7 +14,11 @@ describe('SignInComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SignInComponent ],
+      imports: [ NgbModule.forRoot() ],
+      declarations: [
+        IconComponent,
+        SignInComponent,
+      ],
     })
     .compileComponents();
   }));

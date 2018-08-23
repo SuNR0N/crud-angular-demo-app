@@ -1,15 +1,31 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { Subject } from 'rxjs';
 
+import { IProfileDTO } from '../../../interfaces/dtos/ProfileDTO';
 import { BookResolver } from './book-resolver.service';
 
 describe('BookResolver', () => {
+  let bookResolver: BookResolver;
+  let bookServiceStub: { getBook: jasmine.Spy };
+  let profileServiceStub: { getProfile: jasmine.Spy };
+  let routerStub: { navigate: jasmine.Spy };
+  let subject: Subject<IProfileDTO>;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [BookResolver],
-    });
+    subject = new Subject();
+    bookServiceStub = jasmine.createSpyObj('BookService', ['getBook']);
+    profileServiceStub = jasmine.createSpyObj('ProfileService', ['getProfile']);
+    routerStub = jasmine.createSpyObj('Router', ['navigate']);
+    profileServiceStub.getProfile.and.returnValue(subject.asObservable());
+    bookResolver = new BookResolver(
+      bookServiceStub as any,
+      profileServiceStub as any,
+      routerStub as any,
+    );
   });
 
-  it('should be created', inject([BookResolver], (service: BookResolver) => {
-    expect(service).toBeTruthy();
-  }));
+  describe('setBook', () => {
+    it('should set the underlying book', () => {
+      //
+    });
+  });
 });

@@ -5,12 +5,12 @@ import { AuthGuard } from './auth-guard.service';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
-  let profileServiceSpy: { getProfile: jasmine.Spy };
-  let routerSpy: { navigate: jasmine.Spy };
+  let profileServiceStub: { getProfile: jasmine.Spy };
+  let routerStub: { navigate: jasmine.Spy };
 
   beforeEach(() => {
-    profileServiceSpy = jasmine.createSpyObj('ProfileService', ['getProfile']);
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    profileServiceStub = jasmine.createSpyObj('ProfileService', ['getProfile']);
+    routerStub = jasmine.createSpyObj('Router', ['navigate']);
   });
 
   describe('canActivate', () => {
@@ -21,15 +21,15 @@ describe('AuthGuard', () => {
     } as ActivatedRouteSnapshot;
 
     it('should return true if the user is logged in', () => {
-      profileServiceSpy.getProfile.and.returnValue(of({}));
-      authGuard = new AuthGuard(profileServiceSpy as any, routerSpy as any);
+      profileServiceStub.getProfile.and.returnValue(of({}));
+      authGuard = new AuthGuard(profileServiceStub as any, routerStub as any);
 
       expect(authGuard.canActivate(routeMock)).toBe(true);
     });
 
     it('should return false if the user is not logged in', () => {
-      profileServiceSpy.getProfile.and.returnValue(of(null));
-      authGuard = new AuthGuard(profileServiceSpy as any, routerSpy as any);
+      profileServiceStub.getProfile.and.returnValue(of(null));
+      authGuard = new AuthGuard(profileServiceStub as any, routerStub as any);
 
       expect(authGuard.canActivate(routeMock)).toBe(false);
     });
@@ -45,12 +45,12 @@ describe('AuthGuard', () => {
           path: 'create',
         },
       } as ActivatedRouteSnapshot;
-      profileServiceSpy.getProfile.and.returnValue(of(null));
-      authGuard = new AuthGuard(profileServiceSpy as any, routerSpy as any);
+      profileServiceStub.getProfile.and.returnValue(of(null));
+      authGuard = new AuthGuard(profileServiceStub as any, routerStub as any);
 
       authGuard.canActivate(editRouteMock);
 
-      expect(routerSpy.navigate).toHaveBeenCalledWith([ 'foo' ]);
+      expect(routerStub.navigate).toHaveBeenCalledWith([ 'foo' ]);
     });
   });
 });
