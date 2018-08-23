@@ -2,7 +2,7 @@ import { NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 export class MockRouter {
-  public navigate = jasmine.createSpy();
+  public navigate = jasmine.createSpy('navigate');
   private _testEvents = null;
   private subjectEvents = new BehaviorSubject<NavigationEnd>(this._testEvents);
 

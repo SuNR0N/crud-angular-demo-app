@@ -8,6 +8,10 @@ import {
 } from 'rxjs';
 
 import {
+  MockHttpClient,
+  MockMessageService,
+} from '../../test/mocks/classes';
+import {
   INewPublisherDTO,
   IPublisherDTO,
 } from '../interfaces/dtos';
@@ -15,51 +19,44 @@ import { PublisherService } from './publisher.service';
 
 describe('PublisherService', () => {
   let publisherService: PublisherService;
-  let httpClientStub: {
-    get: jasmine.Spy,
-    post: jasmine.Spy,
-  };
-  let messageServiceStub: {
-    add: jasmine.Spy,
-  };
+  let httpClientMock: MockHttpClient;
 
   beforeEach(() => {
-    httpClientStub = jasmine.createSpyObj('HttpClient', ['get', 'post']);
-    messageServiceStub = jasmine.createSpyObj('MessageService', ['add']);
-    publisherService = new PublisherService(httpClientStub as any, messageServiceStub as any);
+    httpClientMock = new MockHttpClient();
+    publisherService = new PublisherService(httpClientMock as any, new MockMessageService() as any);
   });
 
   describe('getPublishers', () => {
     const publishersMock: IPublisherDTO[] = [];
 
     it('should be called with the proper URL', () => {
-      httpClientStub.get.and.returnValue(of(publishersMock));
+      httpClientMock.get.and.returnValue(of(publishersMock));
 
       publisherService.getPublishers().subscribe();
 
-      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/publishers', jasmine.anything());
+      expect(httpClientMock.get).toHaveBeenCalledWith('/api/v1/publishers', jasmine.anything());
     });
 
     it('should call the URL with a query param if it is provided', () => {
-      httpClientStub.get.and.returnValue(of(publishersMock));
+      httpClientMock.get.and.returnValue(of(publishersMock));
 
       publisherService.getPublishers('foo').subscribe();
 
-      const options = httpClientStub.get.calls.mostRecent().args[1];
+      const options = httpClientMock.get.calls.mostRecent().args[1];
       expect(options.params.get('q')).toBe('foo');
     });
 
     it('should return the publishers', () => {
-      httpClientStub.get.and.returnValue(of(publishersMock));
+      httpClientMock.get.and.returnValue(of(publishersMock));
 
       publisherService.getPublishers().subscribe(
         (publishers) => expect(publishers).toBe(publishersMock),
       );
-      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
+      expect(httpClientMock.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientStub.get.and.returnValue(of(publishersMock));
+      httpClientMock.get.and.returnValue(of(publishersMock));
       const logSpy = spyOn(publisherService as any, 'log').and.callThrough();
 
       publisherService.getPublishers().subscribe();
@@ -69,7 +66,7 @@ describe('PublisherService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientStub.get.and.returnValue(of(publishersMock));
+      httpClientMock.get.and.returnValue(of(publishersMock));
       const handleErrorSpy = spyOn(publisherService as any, 'handleError').and.callThrough();
 
       publisherService.getPublishers().subscribe();
@@ -79,7 +76,7 @@ describe('PublisherService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
+      httpClientMock.get.and.returnValue(throwError(new Error('Error')));
 
       publisherService.getPublishers().subscribe(
         null,
@@ -92,24 +89,24 @@ describe('PublisherService', () => {
     const publisherMock = {} as IPublisherDTO;
 
     it('should be called with the proper URL', () => {
-      httpClientStub.get.and.returnValue(of(publisherMock));
+      httpClientMock.get.and.returnValue(of(publisherMock));
 
       publisherService.getPublisher(1).subscribe();
 
-      expect(httpClientStub.get).toHaveBeenCalledWith('/api/v1/publishers/1');
+      expect(httpClientMock.get).toHaveBeenCalledWith('/api/v1/publishers/1');
     });
 
     it('should return the publisher', () => {
-      httpClientStub.get.and.returnValue(of(publisherMock));
+      httpClientMock.get.and.returnValue(of(publisherMock));
 
       publisherService.getPublisher(1).subscribe(
         (publisher) => expect(publisher).toBe(publisherMock),
       );
-      expect(httpClientStub.get).toHaveBeenCalledTimes(1);
+      expect(httpClientMock.get).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientStub.get.and.returnValue(of(publisherMock));
+      httpClientMock.get.and.returnValue(of(publisherMock));
       const logSpy = spyOn(publisherService as any, 'log').and.callThrough();
 
       publisherService.getPublisher(1).subscribe();
@@ -119,7 +116,7 @@ describe('PublisherService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientStub.get.and.returnValue(of(publisherMock));
+      httpClientMock.get.and.returnValue(of(publisherMock));
       const handleErrorSpy = spyOn(publisherService as any, 'handleError').and.callThrough();
 
       publisherService.getPublisher(1).subscribe();
@@ -129,7 +126,7 @@ describe('PublisherService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientStub.get.and.returnValue(throwError(new Error('Error')));
+      httpClientMock.get.and.returnValue(throwError(new Error('Error')));
 
       publisherService.getPublisher(1).subscribe(
         null,
@@ -145,15 +142,15 @@ describe('PublisherService', () => {
     } as HttpResponse<any>;
 
     it('should be called with the proper URL', () => {
-      httpClientStub.post.and.returnValue(of(httpResponseMock));
+      httpClientMock.post.and.returnValue(of(httpResponseMock));
 
       publisherService.createPublisher(newPublisherMock).subscribe();
 
-      expect(httpClientStub.post).toHaveBeenCalledWith('/api/v1/publishers', newPublisherMock, jasmine.anything());
+      expect(httpClientMock.post).toHaveBeenCalledWith('/api/v1/publishers', newPublisherMock, jasmine.anything());
     });
 
     it('should return the id of the created entity', () => {
-      httpClientStub.post.and.returnValue(of(httpResponseMock));
+      httpClientMock.post.and.returnValue(of(httpResponseMock));
 
       publisherService.createPublisher(newPublisherMock).subscribe(
         (id) => expect(id).toBe(3),
@@ -161,7 +158,7 @@ describe('PublisherService', () => {
     });
 
     it('should log a message', () => {
-      httpClientStub.post.and.returnValue(of(httpResponseMock));
+      httpClientMock.post.and.returnValue(of(httpResponseMock));
       const logSpy = spyOn(publisherService as any, 'log').and.callThrough();
 
       publisherService.createPublisher(newPublisherMock).subscribe();
@@ -171,7 +168,7 @@ describe('PublisherService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientStub.post.and.returnValue(of(httpResponseMock));
+      httpClientMock.post.and.returnValue(of(httpResponseMock));
       const handleErrorSpy = spyOn(publisherService as any, 'handleError').and.callThrough();
 
       publisherService.createPublisher(newPublisherMock).subscribe();
@@ -181,7 +178,7 @@ describe('PublisherService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientStub.post.and.returnValue(throwError(new Error('Error')));
+      httpClientMock.post.and.returnValue(throwError(new Error('Error')));
 
       publisherService.createPublisher(newPublisherMock).subscribe(
         null,
@@ -193,7 +190,7 @@ describe('PublisherService', () => {
       const httpResponseMockWithoutHeaders = {
         headers: new HttpHeaders(),
       } as HttpResponse<any>;
-      httpClientStub.post.and.returnValue(of(httpResponseMockWithoutHeaders));
+      httpClientMock.post.and.returnValue(of(httpResponseMockWithoutHeaders));
 
       publisherService.createPublisher(newPublisherMock).subscribe(
         null,
@@ -207,7 +204,7 @@ describe('PublisherService', () => {
           Location: '/api/v1/publishers/foo',
         }),
       } as HttpResponse<any>;
-      httpClientStub.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
+      httpClientMock.post.and.returnValue(of(httpResponseMockWithInvalidHeaders));
 
       publisherService.createPublisher(newPublisherMock).subscribe(
         null,

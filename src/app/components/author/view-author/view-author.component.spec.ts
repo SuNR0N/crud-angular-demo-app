@@ -19,7 +19,9 @@ import {
 
 import {
   MockActivatedRoute,
+  MockResourceService,
   MockRouter,
+  MockToastrService,
 } from '../../../../test/mocks/classes';
 import {
   author,
@@ -31,19 +33,14 @@ import { SharedModule } from '../../../shared.module';
 import { ViewAuthorComponent } from './view-author.component';
 
 describe('ViewAuthorComponent', () => {
-  let activatedRouteStub: { testData: any };
+  let activatedRouteMock: MockActivatedRoute;
   let component: ViewAuthorComponent;
   let fixture: ComponentFixture<ViewAuthorComponent>;
-  let resourceServiceStub: { request: jasmine.Spy };
-  let routerStub: {
-    navigate: jasmine.Spy,
-    testEvents: any,
-  };
-  let toastrServiceStub: { error: jasmine.Spy };
+  let resourceServiceMock: MockResourceService;
+  let routerMock: MockRouter;
+  let toastrServiceMock: MockToastrService;
 
   beforeEach(async(() => {
-    resourceServiceStub = jasmine.createSpyObj('ResourceService', ['request']);
-    toastrServiceStub = jasmine.createSpyObj('ToastrService', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -52,21 +49,23 @@ describe('ViewAuthorComponent', () => {
       ],
       declarations: [ ViewAuthorComponent ],
       providers: [
-        { provide: ResourceService, useValue: resourceServiceStub },
+        { provide: ResourceService, useClass: MockResourceService },
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
         { provide: Router, useClass: MockRouter },
-        { provide: ToastrService, useValue: toastrServiceStub },
+        { provide: ToastrService, useClass: MockToastrService },
       ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
+    activatedRouteMock = TestBed.get(ActivatedRoute);
+    resourceServiceMock = TestBed.get(ResourceService);
+    routerMock = TestBed.get(Router);
+    toastrServiceMock = TestBed.get(ToastrService);
     fixture = TestBed.createComponent(ViewAuthorComponent);
-    activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
-    activatedRouteStub.testData = { author };
-    routerStub = fixture.debugElement.injector.get(Router) as any;
-    routerStub.testEvents = new NavigationEnd(1, '/authors/1', '/authors/1');
+    activatedRouteMock.testData = { author };
+    routerMock.testEvents = new NavigationEnd(1, '/authors/1', '/authors/1');
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -186,7 +185,7 @@ describe('ViewAuthorComponent', () => {
       .query(By.css('button[class*="btn-outline-secondary"]')).nativeElement;
     editButton.click();
 
-    expect(routerStub.navigate).toHaveBeenCalledWith([ 'edit' ], { relativeTo: activatedRouteStub });
+    expect(routerMock.navigate).toHaveBeenCalledWith([ 'edit' ], { relativeTo: activatedRouteMock });
   });
 
   it('should display a modal displaying the full name of the author when the Delete button is clicked', async(() => {
@@ -207,7 +206,7 @@ describe('ViewAuthorComponent', () => {
 
   it('should navigate to the Authors page when the deletion is confirmed', async(() => {
     component.author = authorWithDeleteLink;
-    resourceServiceStub.request.and.returnValue(of(true));
+    resourceServiceMock.request.and.returnValue(of(true));
     fixture.detectChanges();
     const deleteButton: HTMLButtonElement = fixture.debugElement
       .query(By.css('button[class*="btn-outline-danger"]'))
@@ -218,14 +217,14 @@ describe('ViewAuthorComponent', () => {
       const confirmButton: HTMLButtonElement = document.querySelector('.modal-footer button[class*="btn-outline-danger"]');
       confirmButton.click();
       fixture.whenStable().then(() => {
-        expect(routerStub.navigate).toHaveBeenCalledWith([ 'authors' ]);
+        expect(routerMock.navigate).toHaveBeenCalledWith([ 'authors' ]);
       });
     });
   }));
 
   it('should display an error if the deletion fails', () => {
     component.author = authorWithDeleteLink;
-    resourceServiceStub.request.and.returnValue(throwError('Error'));
+    resourceServiceMock.request.and.returnValue(throwError('Error'));
     fixture.detectChanges();
     const deleteButton: HTMLButtonElement = fixture.debugElement
       .query(By.css('button[class*="btn-outline-danger"]'))
@@ -236,7 +235,7 @@ describe('ViewAuthorComponent', () => {
       const confirmButton: HTMLButtonElement = document.querySelector('.modal-footer button[class*="btn-outline-danger"]');
       confirmButton.click();
       fixture.whenStable().then(() => {
-        expect(toastrServiceStub.error).toHaveBeenCalledWith('Error');
+        expect(toastrServiceMock.error).toHaveBeenCalledWith('Error');
       });
     });
   });

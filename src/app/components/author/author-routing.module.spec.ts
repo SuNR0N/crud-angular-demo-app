@@ -12,6 +12,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
+import {
+  MockAuthGuard,
+  MockAuthorResolver,
+  MockToastrService,
+} from '../../../test/mocks/classes';
 import { AppComponent } from '../../app.component';
 import { AuthGuard } from '../../guards/auth-guard.service';
 import { authorRoutes } from './author-routing.module';
@@ -19,16 +24,11 @@ import { AuthorModule } from './author.module';
 import { AuthorResolver } from './guards/author-resolver.service';
 
 describe('AuthorRoutingModule', () => {
-  let authorResolverStub: { resolve: jasmine.Spy };
-  let authGuardStub: { canActivate: jasmine.Spy };
+  let authGuardMock: MockAuthGuard;
   let router: Router;
   let fixture: ComponentFixture<AppComponent>;
-  let toastrServiceStub: { error: jasmine.Spy };
 
   beforeEach(() => {
-    authGuardStub = jasmine.createSpyObj('AuthGuard', ['canActivate']);
-    authorResolverStub = jasmine.createSpyObj('AuthorResolver', ['resolve']);
-    toastrServiceStub = jasmine.createSpyObj('ToastrService', ['error']);
     TestBed.configureTestingModule({
       imports: [
         AuthorModule,
@@ -38,13 +38,14 @@ describe('AuthorRoutingModule', () => {
       ],
       declarations: [ AppComponent ],
       providers: [
-        { provide: AuthGuard, useValue: authGuardStub },
-        { provide: AuthorResolver, useValue: authorResolverStub },
-        { provide: ToastrService, useValue: toastrServiceStub },
+        { provide: AuthGuard, useClass: MockAuthGuard },
+        { provide: AuthorResolver, useClass: MockAuthorResolver },
+        { provide: ToastrService, useClass: MockToastrService },
       ],
       schemas: [ NO_ERRORS_SCHEMA ],
     });
 
+    authGuardMock = TestBed.get(AuthGuard);
     router = TestBed.get(Router);
     fixture = TestBed.createComponent(AppComponent);
   });
@@ -60,7 +61,7 @@ describe('AuthorRoutingModule', () => {
   }));
 
   it('should load the CreateAuthorComponent when an authenticated user navigates to "/create"', fakeAsync(() => {
-    authGuardStub.canActivate.and.returnValue(true);
+    authGuardMock.canActivate.and.returnValue(true);
     router.navigate(['create']);
     tick();
     const component: HTMLElement = fixture.debugElement
@@ -71,7 +72,7 @@ describe('AuthorRoutingModule', () => {
   }));
 
   it('should not load the ListAuthorsComponent when an unauthenticated user navigates to "/create"', fakeAsync(() => {
-    authGuardStub.canActivate.and.returnValue(false);
+    authGuardMock.canActivate.and.returnValue(false);
     router.navigate(['create']);
     tick();
     const component = fixture.debugElement

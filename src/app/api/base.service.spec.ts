@@ -1,15 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { MockMessageService } from '../../test/mocks/classes/message.service.mock';
 import { BaseService } from './base.service';
 
 describe('BaseService', () => {
   let baseService: any;
-  let messageServiceStub: { add: jasmine.Spy };
+  let messageServiceMock: MockMessageService;
 
   beforeEach(() => {
-    messageServiceStub = jasmine.createSpyObj('MessageService', ['add']);
-    baseService = new BaseService(messageServiceStub as any);
+    messageServiceMock = new MockMessageService();
+    baseService = new BaseService(messageServiceMock as any);
   });
 
   describe('handleError', () => {
@@ -72,7 +73,7 @@ describe('BaseService', () => {
     it('should add the log message using the messageService', () => {
       baseService.log('foo');
 
-      expect(messageServiceStub.add).toHaveBeenCalledWith('BaseService: foo');
+      expect(messageServiceMock.add).toHaveBeenCalledWith('BaseService: foo');
     });
   });
 });

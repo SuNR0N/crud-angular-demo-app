@@ -8,16 +8,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
+import { MockToastrService } from '../../../../test/mocks/classes';
 import { SharedModule } from '../../../shared.module';
 import { ViewCategoryComponent } from './view-category.component';
 
 describe('ViewCategoryComponent', () => {
   let component: ViewCategoryComponent;
   let fixture: ComponentFixture<ViewCategoryComponent>;
-  let toastrServiceStub: { error: jasmine.Spy };
 
   beforeEach(async(() => {
-    toastrServiceStub = jasmine.createSpyObj('ToastrService', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -27,7 +26,7 @@ describe('ViewCategoryComponent', () => {
       ],
       declarations: [ ViewCategoryComponent ],
       providers: [
-        { provide: ToastrService, useValue: toastrServiceStub },
+        { provide: ToastrService, useClass: MockToastrService },
       ],
     })
     .compileComponents();

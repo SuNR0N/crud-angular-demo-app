@@ -1,16 +1,20 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { of } from 'rxjs';
 
+import {
+  MockProfileService,
+  MockRouter,
+} from '../../test/mocks/classes';
 import { AuthGuard } from './auth-guard.service';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
-  let profileServiceStub: { getProfile: jasmine.Spy };
-  let routerStub: { navigate: jasmine.Spy };
+  let profileServiceMock: MockProfileService;
+  let routerMock: MockRouter;
 
   beforeEach(() => {
-    profileServiceStub = jasmine.createSpyObj('ProfileService', ['getProfile']);
-    routerStub = jasmine.createSpyObj('Router', ['navigate']);
+    profileServiceMock = new MockProfileService();
+    routerMock = new MockRouter();
   });
 
   describe('canActivate', () => {
@@ -21,15 +25,15 @@ describe('AuthGuard', () => {
     } as ActivatedRouteSnapshot;
 
     it('should return true if the user is logged in', () => {
-      profileServiceStub.getProfile.and.returnValue(of({}));
-      authGuard = new AuthGuard(profileServiceStub as any, routerStub as any);
+      profileServiceMock.getProfile.and.returnValue(of({}));
+      authGuard = new AuthGuard(profileServiceMock as any, routerMock as any);
 
       expect(authGuard.canActivate(routeMock)).toBe(true);
     });
 
     it('should return false if the user is not logged in', () => {
-      profileServiceStub.getProfile.and.returnValue(of(null));
-      authGuard = new AuthGuard(profileServiceStub as any, routerStub as any);
+      profileServiceMock.getProfile.and.returnValue(of(null));
+      authGuard = new AuthGuard(profileServiceMock as any, routerMock as any);
 
       expect(authGuard.canActivate(routeMock)).toBe(false);
     });
@@ -45,12 +49,12 @@ describe('AuthGuard', () => {
           path: 'create',
         },
       } as ActivatedRouteSnapshot;
-      profileServiceStub.getProfile.and.returnValue(of(null));
-      authGuard = new AuthGuard(profileServiceStub as any, routerStub as any);
+      profileServiceMock.getProfile.and.returnValue(of(null));
+      authGuard = new AuthGuard(profileServiceMock as any, routerMock as any);
 
       authGuard.canActivate(editRouteMock);
 
-      expect(routerStub.navigate).toHaveBeenCalledWith([ 'foo' ]);
+      expect(routerMock.navigate).toHaveBeenCalledWith([ 'foo' ]);
     });
   });
 });

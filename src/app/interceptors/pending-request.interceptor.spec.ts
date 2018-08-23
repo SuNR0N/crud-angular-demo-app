@@ -4,47 +4,48 @@ import {
   throwError,
 } from 'rxjs';
 
+import {
+  MockHttpHandler,
+  MockSpinnerService,
+} from '../../test/mocks/classes';
 import { PendingRequestInterceptor } from './pending-request.interceptor';
 
 describe('PendingRequestInterceptor', () => {
-  let httpHandlerStub: { handle: jasmine.Spy };
+  let httpHandlerMock: MockHttpHandler;
   let pendingRequestInterceptor: PendingRequestInterceptor;
-  let spinnerServiceStub: {
-    addRequest: jasmine.Spy,
-    removeRequest: jasmine.Spy,
-  };
+  let spinnerServiceMock: MockSpinnerService;
 
   beforeEach(() => {
-    httpHandlerStub = jasmine.createSpyObj('HttpHandler', ['handle']);
-    spinnerServiceStub = jasmine.createSpyObj('SpinnerService', ['addRequest', 'removeRequest']);
-    pendingRequestInterceptor = new PendingRequestInterceptor(spinnerServiceStub as any);
+    httpHandlerMock = new MockHttpHandler();
+    spinnerServiceMock = new MockSpinnerService();
+    pendingRequestInterceptor = new PendingRequestInterceptor(spinnerServiceMock as any);
   });
 
   describe('intercept', () => {
     const requestMock = {} as HttpRequest<any>;
 
     it('should add the request to the pending requests', () => {
-      httpHandlerStub.handle.and.returnValue(of({}));
-      pendingRequestInterceptor.intercept(requestMock, httpHandlerStub);
+      httpHandlerMock.handle.and.returnValue(of({}));
+      pendingRequestInterceptor.intercept(requestMock, httpHandlerMock);
 
-      expect(spinnerServiceStub.addRequest).toHaveBeenCalledWith(requestMock);
+      expect(spinnerServiceMock.addRequest).toHaveBeenCalledWith(requestMock);
     });
 
     it('should should remove the request from the pending requests if it succeeds', () => {
-      httpHandlerStub.handle.and.returnValue(of({}));
-      pendingRequestInterceptor.intercept(requestMock, httpHandlerStub).subscribe();
+      httpHandlerMock.handle.and.returnValue(of({}));
+      pendingRequestInterceptor.intercept(requestMock, httpHandlerMock).subscribe();
 
-      expect(spinnerServiceStub.removeRequest).toHaveBeenCalledWith(requestMock);
+      expect(spinnerServiceMock.removeRequest).toHaveBeenCalledWith(requestMock);
     });
 
     it('should should remove the request from the pending requests if it fails', () => {
-      httpHandlerStub.handle.and.returnValue(throwError(new Error('Error')));
-      pendingRequestInterceptor.intercept(requestMock, httpHandlerStub).subscribe(
+      httpHandlerMock.handle.and.returnValue(throwError(new Error('Error')));
+      pendingRequestInterceptor.intercept(requestMock, httpHandlerMock).subscribe(
         (_) => {},
         (_) => {},
       );
 
-      expect(spinnerServiceStub.removeRequest).toHaveBeenCalledWith(requestMock);
+      expect(spinnerServiceMock.removeRequest).toHaveBeenCalledWith(requestMock);
     });
   });
 });

@@ -19,7 +19,10 @@ import {
 
 import {
   MockActivatedRoute,
+  MockAuthorResolver,
+  MockLocation,
   MockRouter,
+  MockToastrService,
 } from '../../../../test/mocks/classes';
 import { author } from '../../../../test/mocks/data/authors.mock';
 import { IAuthorDTO } from '../../../interfaces/dtos/AuthorDTO';
@@ -28,21 +31,15 @@ import { AuthorResolver } from '../guards/author-resolver.service';
 import { EditAuthorComponent } from './edit-author.component';
 
 describe('EditAuthorComponent', () => {
-  let activatedRouteStub: { testData: any };
+  let activatedRouteMock: MockActivatedRoute;
   let component: EditAuthorComponent;
   let fixture: ComponentFixture<EditAuthorComponent>;
-  let authorResolverStub: { setAuthor: jasmine.Spy };
-  let locationStub: { back: jasmine.Spy };
-  let routerStub: {
-    navigate: jasmine.Spy,
-    testEvents: any,
-  };
-  let toastrServiceStub: { error: jasmine.Spy };
+  let authorResolverMock: MockAuthorResolver;
+  let locationMock: MockLocation;
+  let routerMock: MockRouter;
+  let toastrServiceMock: MockToastrService;
 
   beforeEach(async(() => {
-    authorResolverStub = jasmine.createSpyObj('AuthorResolver', ['setAuthor']);
-    locationStub = jasmine.createSpyObj('Location', ['back']);
-    toastrServiceStub = jasmine.createSpyObj('ToastrService', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -51,21 +48,24 @@ describe('EditAuthorComponent', () => {
       declarations: [ EditAuthorComponent ],
       providers: [
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
-        { provide: AuthorResolver, useValue: authorResolverStub },
+        { provide: AuthorResolver, useClass: MockAuthorResolver },
         { provide: Router, useClass: MockRouter },
-        { provide: ToastrService, useValue: toastrServiceStub },
-        { provide: Location, useValue: locationStub },
+        { provide: ToastrService, useClass: MockToastrService },
+        { provide: Location, useClass: MockLocation },
       ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
+    authorResolverMock = TestBed.get(AuthorResolver);
+    locationMock = TestBed.get(Location);
+    toastrServiceMock = TestBed.get(ToastrService);
+    activatedRouteMock = TestBed.get(ActivatedRoute);
+    routerMock = TestBed.get(Router);
     fixture = TestBed.createComponent(EditAuthorComponent);
-    activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
-    activatedRouteStub.testData = { author };
-    routerStub = fixture.debugElement.injector.get(Router) as any;
-    routerStub.testEvents = new NavigationEnd(1, '/authors/1/edit', '/authors/1/edit');
+    activatedRouteMock.testData = { author };
+    routerMock.testEvents = new NavigationEnd(1, '/authors/1/edit', '/authors/1/edit');
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -194,7 +194,7 @@ describe('EditAuthorComponent', () => {
       .nativeElement;
     cancelButton.click();
 
-    expect(locationStub.back).toHaveBeenCalled();
+    expect(locationMock.back).toHaveBeenCalled();
   });
 
   describe('given the Save button is clicked', () => {
@@ -250,14 +250,14 @@ describe('EditAuthorComponent', () => {
       });
 
       it('should set the updated author in the resolver', () => {
-        expect(authorResolverStub.setAuthor).toHaveBeenCalledWith(updatedAuthorMock);
+        expect(authorResolverMock.setAuthor).toHaveBeenCalledWith(updatedAuthorMock);
       });
 
       it('should navigate to the parent route', () => {
-        const [ commands, extras ] = routerStub.navigate.calls.mostRecent().args;
+        const [ commands, extras ] = routerMock.navigate.calls.mostRecent().args;
 
         expect(commands).toEqual([ '../' ]);
-        expect(extras).toEqual({ relativeTo: activatedRouteStub });
+        expect(extras).toEqual({ relativeTo: activatedRouteMock });
       });
     });
 
@@ -265,7 +265,7 @@ describe('EditAuthorComponent', () => {
       requestSpy.and.returnValue(throwError('Error'));
       saveButton.click();
 
-      expect(toastrServiceStub.error).toHaveBeenCalledWith('Error');
+      expect(toastrServiceMock.error).toHaveBeenCalledWith('Error');
     });
   });
 });

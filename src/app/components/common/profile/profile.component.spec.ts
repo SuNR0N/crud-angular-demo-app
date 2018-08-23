@@ -7,15 +7,14 @@ import {
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrService } from 'ngx-toastr';
 
+import { MockToastrService } from '../../../../test/mocks/classes';
 import { ProfileComponent } from './profile.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
-  let toastrServiceStub: { error: jasmine.Spy };
 
   beforeEach(async(() => {
-    toastrServiceStub = jasmine.createSpyObj('ToastrService', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -23,7 +22,7 @@ describe('ProfileComponent', () => {
       ],
       declarations: [ ProfileComponent ],
       providers: [
-        { provide: ToastrService, useValue: toastrServiceStub },
+        { provide: ToastrService, useClass: MockToastrService },
       ],
     })
     .compileComponents();

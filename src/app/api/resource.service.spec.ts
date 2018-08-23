@@ -3,20 +3,20 @@ import {
   throwError,
 } from 'rxjs';
 
+import {
+  MockHttpClient,
+  MockMessageService,
+} from '../../test/mocks/classes';
 import { IHATEOASLink } from '../interfaces/HATEOASLink';
 import { ResourceService } from './resource.service';
 
 describe('ResourceService', () => {
   let resourceService: ResourceService;
-  let httpClientStub: { request: jasmine.Spy };
-  let messageServiceStub: {
-    add: jasmine.Spy,
-  };
+  let httpClientMock: MockHttpClient;
 
   beforeEach(() => {
-    httpClientStub = jasmine.createSpyObj('HttpClient', ['request']);
-    messageServiceStub = jasmine.createSpyObj('MessageService', ['add']);
-    resourceService = new ResourceService(httpClientStub as any, messageServiceStub as any);
+    httpClientMock = new MockHttpClient();
+    resourceService = new ResourceService(httpClientMock as any, new MockMessageService() as any);
   });
 
   describe('request', () => {
@@ -27,44 +27,44 @@ describe('ResourceService', () => {
     const responseMock = {};
 
     it('should be called with the proper URL and method', () => {
-      httpClientStub.request.and.returnValue(of(responseMock));
+      httpClientMock.request.and.returnValue(of(responseMock));
 
       resourceService.request(linkMock).subscribe();
 
-      const [ method, url ] = httpClientStub.request.calls.mostRecent().args;
+      const [ method, url ] = httpClientMock.request.calls.mostRecent().args;
       expect(method).toBe('DELETE');
       expect(url).toBe('/foo/bar/1337');
     });
 
     it('should set the content type header if it is called with a data', () => {
-      httpClientStub.request.and.returnValue(of(responseMock));
+      httpClientMock.request.and.returnValue(of(responseMock));
 
       resourceService.request(linkMock, 'foo').subscribe();
 
-      const options = httpClientStub.request.calls.mostRecent().args[2];
+      const options = httpClientMock.request.calls.mostRecent().args[2];
       expect(options.headers.get('Content-Type')).toBe('application/json');
     });
 
     it('should set the body if it is called with a data', () => {
-      httpClientStub.request.and.returnValue(of(responseMock));
+      httpClientMock.request.and.returnValue(of(responseMock));
 
       resourceService.request(linkMock, 'foo').subscribe();
 
-      const options = httpClientStub.request.calls.mostRecent().args[2];
+      const options = httpClientMock.request.calls.mostRecent().args[2];
       expect(options.body).toBe('foo');
     });
 
     it('should return the response', () => {
-      httpClientStub.request.and.returnValue(of(responseMock));
+      httpClientMock.request.and.returnValue(of(responseMock));
 
       resourceService.request(linkMock).subscribe(
         (data) => expect(data).toBe(responseMock),
       );
-      expect(httpClientStub.request).toHaveBeenCalledTimes(1);
+      expect(httpClientMock.request).toHaveBeenCalledTimes(1);
     });
 
     it('should log a message', () => {
-      httpClientStub.request.and.returnValue(of(responseMock));
+      httpClientMock.request.and.returnValue(of(responseMock));
       const logSpy = spyOn(resourceService as any, 'log').and.callThrough();
 
       resourceService.request(linkMock).subscribe();
@@ -74,7 +74,7 @@ describe('ResourceService', () => {
     });
 
     it('should set the error operation', () => {
-      httpClientStub.request.and.returnValue(of(responseMock));
+      httpClientMock.request.and.returnValue(of(responseMock));
       const handleErrorSpy = spyOn(resourceService as any, 'handleError').and.callThrough();
 
       resourceService.request(linkMock).subscribe();
@@ -84,7 +84,7 @@ describe('ResourceService', () => {
     });
 
     it('should handle the error', () => {
-      httpClientStub.request.and.returnValue(throwError(new Error('Error')));
+      httpClientMock.request.and.returnValue(throwError(new Error('Error')));
 
       resourceService.request(linkMock).subscribe(
         null,

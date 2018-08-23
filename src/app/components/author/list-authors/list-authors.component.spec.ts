@@ -22,7 +22,12 @@ import {
 
 import {
   MockActivatedRoute,
+  MockAuthorService,
+  MockProfileService,
+  MockResourceService,
   MockRouter,
+  MockSpinnerService,
+  MockToastrService,
 } from '../../../../test/mocks/classes';
 import { authorWithDeleteLink } from '../../../../test/mocks/data';
 import {
@@ -58,25 +63,17 @@ describe('ListAuthorsComponent', () => {
       },
     },
   ];
-  let activatedRouteStub: { testQueryParamMap: any };
-  let authorServiceStub: { getAuthors: jasmine.Spy };
+  let activatedRouteMock: MockActivatedRoute;
+  let authorServiceMock: MockAuthorService;
   let component: ListAuthorsComponent;
   let fixture: ComponentFixture<ListAuthorsComponent>;
-  let profileServiceStub: { getProfile: jasmine.Spy };
-  let resourceServiceStub: { request: jasmine.Spy };
-  let routerStub: {
-    navigate: jasmine.Spy,
-    testEvents: any,
-  };
-  let spinnerServiceStub: { matches: jasmine.Spy };
-  let toastrServiceStub: { error: jasmine.Spy };
+  let profileServiceMock: MockProfileService;
+  let resourceServiceMock: MockResourceService;
+  let routerMock: MockRouter;
+  let spinnerServiceMock: MockSpinnerService;
+  let toastrServiceMock: MockToastrService;
 
   beforeEach(async(() => {
-    authorServiceStub = jasmine.createSpyObj('AuthorService', ['getAuthors']);
-    profileServiceStub = jasmine.createSpyObj('ProfileService', ['getProfile']);
-    resourceServiceStub = jasmine.createSpyObj('ResourceService', ['request']);
-    spinnerServiceStub = jasmine.createSpyObj('SpinnerService', ['matches']);
-    toastrServiceStub = jasmine.createSpyObj('Toastr', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -88,24 +85,29 @@ describe('ListAuthorsComponent', () => {
         ListAuthorsComponent,
       ],
       providers: [
-        { provide: AuthorService, useValue: authorServiceStub },
+        { provide: AuthorService, useClass: MockAuthorService },
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
-        { provide: ProfileService, useValue: profileServiceStub },
-        { provide: ResourceService, useValue: resourceServiceStub },
+        { provide: ProfileService, useClass: MockProfileService },
+        { provide: ResourceService, useClass: MockResourceService },
         { provide: Router, useClass: MockRouter },
-        { provide: SpinnerService, useValue: spinnerServiceStub },
-        { provide: ToastrService, useValue: toastrServiceStub },
+        { provide: SpinnerService, useClass: MockSpinnerService },
+        { provide: ToastrService, useClass: MockToastrService },
       ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    authorServiceStub.getAuthors.and.returnValue(of(authorsMock));
+    activatedRouteMock = TestBed.get(ActivatedRoute);
+    authorServiceMock = TestBed.get(AuthorService);
+    profileServiceMock = TestBed.get(ProfileService);
+    resourceServiceMock = TestBed.get(ResourceService);
+    routerMock = TestBed.get(Router);
+    spinnerServiceMock = TestBed.get(SpinnerService);
+    toastrServiceMock = TestBed.get(ToastrService);
+    authorServiceMock.getAuthors.and.returnValue(of(authorsMock));
     fixture = TestBed.createComponent(ListAuthorsComponent);
-    activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
-    routerStub = fixture.debugElement.injector.get(Router) as any;
-    routerStub.testEvents = new NavigationEnd(1, '/authors', '/authors');
+    routerMock.testEvents = new NavigationEnd(1, '/authors', '/authors');
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -123,7 +125,7 @@ describe('ListAuthorsComponent', () => {
   });
 
   it('should enable the Create button if the profile exists', () => {
-    profileServiceStub.getProfile.and.returnValue(of({}));
+    profileServiceMock.getProfile.and.returnValue(of({}));
     fixture.detectChanges();
     const createButton: HTMLButtonElement = fixture.debugElement
       .query(By.css('button[text="Create New Author"]'))
@@ -133,27 +135,27 @@ describe('ListAuthorsComponent', () => {
   });
 
   it('should navigate to the Create page when the Create button is clicked', () => {
-    profileServiceStub.getProfile.and.returnValue(of({}));
+    profileServiceMock.getProfile.and.returnValue(of({}));
     fixture.detectChanges();
     const createButton: HTMLButtonElement = fixture.debugElement
       .query(By.css('button[text="Create New Author"]'))
       .nativeElement;
     createButton.click();
 
-    expect(routerStub.navigate).toHaveBeenCalledWith(['create'], { relativeTo: activatedRouteStub });
+    expect(routerMock.navigate).toHaveBeenCalledWith(['create'], { relativeTo: activatedRouteMock });
   });
 
   describe('ngOnInit', () => {
     it('should call the getAuthors function with the query param if it exists', () => {
-      activatedRouteStub.testQueryParamMap = { q: 'foo' };
-      routerStub.testEvents = new NavigationEnd(1, '/authors', '/authors');
+      activatedRouteMock.testQueryParamMap = { q: 'foo' };
+      routerMock.testEvents = new NavigationEnd(1, '/authors', '/authors');
       fixture.detectChanges();
 
-      expect(authorServiceStub.getAuthors).toHaveBeenCalledWith('foo');
+      expect(authorServiceMock.getAuthors).toHaveBeenCalledWith('foo');
     });
 
     it('should call the getAuthors function without param if the query param does not exist', () => {
-      expect(authorServiceStub.getAuthors).toHaveBeenCalledWith(null);
+      expect(authorServiceMock.getAuthors).toHaveBeenCalledWith(null);
     });
 
     it('should display as many rows the number of returned authors', () => {
@@ -164,18 +166,18 @@ describe('ListAuthorsComponent', () => {
     });
 
     it('should raise a toastr error if the service call fails', () => {
-      authorServiceStub.getAuthors.and.returnValue(throwError('Error'));
+      authorServiceMock.getAuthors.and.returnValue(throwError('Error'));
       fixture = TestBed.createComponent(ListAuthorsComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
 
-      expect(toastrServiceStub.error).toHaveBeenCalledWith('Error');
+      expect(toastrServiceMock.error).toHaveBeenCalledWith('Error');
     });
   });
 
   describe('given the requests are pending', () => {
     beforeEach(() => {
-      spinnerServiceStub.matches.and.returnValue(true);
+      spinnerServiceMock.matches.and.returnValue(true);
       fixture.detectChanges();
     });
 
@@ -196,7 +198,7 @@ describe('ListAuthorsComponent', () => {
 
   describe('given the requests are not pending', () => {
     beforeEach(() => {
-      spinnerServiceStub.matches.and.returnValue(false);
+      spinnerServiceMock.matches.and.returnValue(false);
       fixture.detectChanges();
     });
 
@@ -229,11 +231,11 @@ describe('ListAuthorsComponent', () => {
       input.dispatchEvent(new Event('keyup'));
       tick(500);
 
-      expect(authorServiceStub.getAuthors).toHaveBeenCalledWith('Foo');
+      expect(authorServiceMock.getAuthors).toHaveBeenCalledWith('Foo');
     }));
 
     it('should display as many rows the number of returned authors', fakeAsync(() => {
-      authorServiceStub.getAuthors.and.returnValue(of([]));
+      authorServiceMock.getAuthors.and.returnValue(of([]));
       input.value = 'Foo';
       input.dispatchEvent(new Event('keyup'));
       tick(500);
@@ -246,12 +248,12 @@ describe('ListAuthorsComponent', () => {
     }));
 
     it('should raise a toastr error if the service call fails', fakeAsync(() => {
-      authorServiceStub.getAuthors.and.returnValue(throwError('Error'));
+      authorServiceMock.getAuthors.and.returnValue(throwError('Error'));
       input.value = 'Foo';
       input.dispatchEvent(new Event('keyup'));
       tick(500);
 
-      expect(toastrServiceStub.error).toHaveBeenCalledWith('Error');
+      expect(toastrServiceMock.error).toHaveBeenCalledWith('Error');
     }));
   });
 
@@ -272,12 +274,12 @@ describe('ListAuthorsComponent', () => {
 
     describe('given the request fails', () => {
       beforeEach(async(() => {
-        resourceServiceStub.request.and.returnValue(throwError('Error'));
+        resourceServiceMock.request.and.returnValue(throwError('Error'));
         deleteAuthor();
       }));
 
       it('should raise a toastr error', () => {
-        expect(toastrServiceStub.error).toHaveBeenCalledWith('Error');
+        expect(toastrServiceMock.error).toHaveBeenCalledWith('Error');
       });
     });
 
@@ -289,12 +291,12 @@ describe('ListAuthorsComponent', () => {
       });
 
       beforeEach(async(() => {
-        resourceServiceStub.request.and.returnValue(of(true));
+        resourceServiceMock.request.and.returnValue(of(true));
         deleteAuthor();
       }));
 
       it('should call the request with the delete link', () => {
-        expect(resourceServiceStub.request).toHaveBeenCalledWith(firstAuthor._links.delete);
+        expect(resourceServiceMock.request).toHaveBeenCalledWith(firstAuthor._links.delete);
       });
 
       it('should should remove the deleted author from the list if the service call succeeds', () => {

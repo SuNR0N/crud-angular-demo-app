@@ -1,25 +1,30 @@
 import { Subject } from 'rxjs';
 
+import {
+  MockProfileService,
+  MockPublisherService,
+  MockRouter,
+} from '../../../../test/mocks/classes';
 import { IProfileDTO } from '../../../interfaces/dtos/ProfileDTO';
 import { PublisherResolver } from './publisher-resolver.service';
 
 describe('PublisherResolver', () => {
   let publisherResolver: PublisherResolver;
-  let publisherServiceStub: { getPublisher: jasmine.Spy };
-  let profileServiceStub: { getProfile: jasmine.Spy };
-  let routerStub: { navigate: jasmine.Spy };
+  let publisherServiceMock: MockPublisherService;
+  let profileServiceMock: MockProfileService;
+  let routerMock: MockRouter;
   let subject: Subject<IProfileDTO>;
 
   beforeEach(() => {
     subject = new Subject();
-    publisherServiceStub = jasmine.createSpyObj('PublisherService', ['getPublisher']);
-    profileServiceStub = jasmine.createSpyObj('ProfileService', ['getProfile']);
-    routerStub = jasmine.createSpyObj('Router', ['navigate']);
-    profileServiceStub.getProfile.and.returnValue(subject.asObservable());
+    publisherServiceMock = new MockPublisherService();
+    profileServiceMock = new MockProfileService();
+    routerMock = new MockRouter();
+    profileServiceMock.getProfile.and.returnValue(subject.asObservable());
     publisherResolver = new PublisherResolver(
-      profileServiceStub as any,
-      publisherServiceStub as any,
-      routerStub as any,
+      profileServiceMock as any,
+      publisherServiceMock as any,
+      routerMock as any,
     );
   });
 

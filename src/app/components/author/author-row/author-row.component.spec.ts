@@ -28,9 +28,7 @@ describe('AuthorRowComponent', () => {
         RouterTestingModule,
         SharedModule,
       ],
-      declarations: [
-        AuthorRowComponent,
-      ],
+      declarations: [ AuthorRowComponent ],
     })
     .compileComponents();
   }));

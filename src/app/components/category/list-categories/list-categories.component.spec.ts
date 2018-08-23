@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import {
   MockActivatedRoute,
   MockRouter,
+  MockToastrService,
 } from '../../../../test/mocks/classes';
 import { SharedModule } from '../../../shared.module';
 import { CategoryRowComponent } from '../category-row/category-row.component';
@@ -21,10 +22,8 @@ import { ListCategoriesComponent } from './list-categories.component';
 describe('ListCategoriesComponent', () => {
   let component: ListCategoriesComponent;
   let fixture: ComponentFixture<ListCategoriesComponent>;
-  let toastrServiceStub: { error: jasmine.Spy };
 
   beforeEach(async(() => {
-    toastrServiceStub = jasmine.createSpyObj('Toastr', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -37,7 +36,7 @@ describe('ListCategoriesComponent', () => {
       providers: [
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
         { provide: Router, useClass: MockRouter },
-        { provide: ToastrService, useValue: toastrServiceStub },
+        { provide: ToastrService, useClass: MockToastrService },
       ],
     })
     .compileComponents();

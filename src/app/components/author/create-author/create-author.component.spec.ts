@@ -12,16 +12,16 @@ import {
   throwError,
 } from 'rxjs';
 
+import { MockToastrService } from '../../../../test/mocks/classes/toastr.service.mock';
 import { SharedModule } from '../../../shared.module';
 import { CreateAuthorComponent } from './create-author.component';
 
 describe('CreateAuthorComponent', () => {
   let component: CreateAuthorComponent;
   let fixture: ComponentFixture<CreateAuthorComponent>;
-  let toastrServiceStub: { error: jasmine.Spy };
+  let toastrServiceMock: MockToastrService;
 
   beforeEach(async(() => {
-    toastrServiceStub = jasmine.createSpyObj('ToastrService', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -30,13 +30,14 @@ describe('CreateAuthorComponent', () => {
       ],
       declarations: [ CreateAuthorComponent ],
       providers: [
-        { provide: ToastrService, useValue: toastrServiceStub },
+        { provide: ToastrService, useClass: MockToastrService },
       ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
+    toastrServiceMock = TestBed.get(ToastrService);
     fixture = TestBed.createComponent(CreateAuthorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -153,6 +154,6 @@ describe('CreateAuthorComponent', () => {
       .nativeElement;
     saveButton.click();
 
-    expect(toastrServiceStub.error).toHaveBeenCalledWith('Error');
+    expect(toastrServiceMock.error).toHaveBeenCalledWith('Error');
   });
 });

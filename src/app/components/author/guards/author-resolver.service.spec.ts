@@ -4,6 +4,12 @@ import {
   Subject,
 } from 'rxjs';
 
+import {
+  MockActivatedRouteSnapshot,
+  MockAuthorService,
+  MockProfileService,
+  MockRouter,
+} from '../../../../test/mocks/classes';
 import { author } from '../../../../test/mocks/data/authors.mock';
 import {
   IAuthorDTO,
@@ -13,21 +19,21 @@ import { AuthorResolver } from './author-resolver.service';
 
 describe('AuthorResolver', () => {
   let authorResolver: AuthorResolver;
-  let authorServiceStub: { getAuthor: jasmine.Spy };
-  let profileServiceStub: { getProfile: jasmine.Spy };
-  let routerStub: { navigate: jasmine.Spy };
+  let authorServiceMock: MockAuthorService;
+  let profileServiceMock: MockProfileService;
+  let routerMock: MockRouter;
   let subject: Subject<IProfileDTO>;
 
   beforeEach(() => {
     subject = new Subject();
-    authorServiceStub = jasmine.createSpyObj('AuthorService', ['getAuthor']);
-    profileServiceStub = jasmine.createSpyObj('ProfileService', ['getProfile']);
-    routerStub = jasmine.createSpyObj('Router', ['navigate']);
-    profileServiceStub.getProfile.and.returnValue(subject.asObservable());
+    authorServiceMock = new MockAuthorService();
+    profileServiceMock = new MockProfileService();
+    routerMock = new MockRouter();
+    profileServiceMock.getProfile.and.returnValue(subject.asObservable());
     authorResolver = new AuthorResolver(
-      authorServiceStub as any,
-      profileServiceStub as any,
-      routerStub as any,
+      authorServiceMock as any,
+      profileServiceMock as any,
+      routerMock as any,
     );
   });
 
@@ -40,47 +46,29 @@ describe('AuthorResolver', () => {
   });
 
   describe('resolve', () => {
-    let routeStub: {
-      paramMap: {
-        get: jasmine.Spy,
-      },
-      params: {
-        id: any,
-      },
-      routeConfig: {
-        path: string,
-      },
-    };
+    let routeMock: MockActivatedRouteSnapshot;
 
     beforeEach(() => {
-      routeStub = {
-        paramMap: {
-          get: jasmine.createSpy(),
-        },
-        params: {
-          id: author.id,
-        },
-        routeConfig: {
-          path: '',
-        },
-      };
+      routeMock = new MockActivatedRouteSnapshot({
+        paramMap: { id: String(author.id )},
+        params: { id: author.id },
+        routeConfig: { path: '' },
+      });
     });
 
     it('should call the service if it has no author stored', () => {
-      routeStub.paramMap.get.and.returnValue(String(author.id));
-      authorServiceStub.getAuthor.and.returnValue(of(author));
-      authorResolver.resolve(routeStub as any);
+      authorServiceMock.getAuthor.and.returnValue(of(author));
+      authorResolver.resolve(routeMock as any);
 
-      expect(authorServiceStub.getAuthor).toHaveBeenCalledWith(author.id);
+      expect(authorServiceMock.getAuthor).toHaveBeenCalledWith(author.id);
     });
 
     it('should return the stored author if it matches its id', () => {
       authorResolver.setAuthor(author);
-      routeStub.paramMap.get.and.returnValue(String(author.id));
-      const expectedAuthor = authorResolver.resolve(routeStub as any);
+      const expectedAuthor = authorResolver.resolve(routeMock as any);
 
       expect(expectedAuthor).toBe(author);
-      expect(authorServiceStub.getAuthor).not.toHaveBeenCalled();
+      expect(authorServiceMock.getAuthor).not.toHaveBeenCalled();
     });
 
     it('should call the service if the stored author has a mismatching id', () => {
@@ -88,29 +76,27 @@ describe('AuthorResolver', () => {
         ...author,
         id: 1,
       };
-      authorServiceStub.getAuthor.and.returnValue(of(otherAuthor));
+      authorServiceMock.getAuthor.and.returnValue(of(otherAuthor));
       authorResolver.setAuthor(author);
-      routeStub.paramMap.get.and.returnValue('1');
-      authorResolver.resolve(routeStub as any);
+      routeMock.testParamMap = { id: '1' };
+      authorResolver.resolve(routeMock as any);
 
-      expect(authorServiceStub.getAuthor).toHaveBeenCalledWith(1);
+      expect(authorServiceMock.getAuthor).toHaveBeenCalledWith(1);
     });
 
     it('should call the service if the stored author gets cleared', () => {
       authorResolver.setAuthor(author);
-      routeStub.paramMap.get.and.returnValue(String(author.id));
-      authorServiceStub.getAuthor.and.returnValue(of(author));
+      authorServiceMock.getAuthor.and.returnValue(of(author));
       subject.next(null);
-      authorResolver.resolve(routeStub as any);
+      authorResolver.resolve(routeMock as any);
 
-      expect(authorServiceStub.getAuthor).toHaveBeenCalledWith(author.id);
+      expect(authorServiceMock.getAuthor).toHaveBeenCalledWith(author.id);
     });
 
     it('should return the fetched author if the service was called', () => {
-      routeStub.paramMap.get.and.returnValue(String(author.id));
-      authorServiceStub.getAuthor.and.returnValue(of(author));
+      authorServiceMock.getAuthor.and.returnValue(of(author));
       let expectedAuthor: IAuthorDTO;
-      (<Observable<IAuthorDTO>>authorResolver.resolve(routeStub as any)).subscribe(
+      (<Observable<IAuthorDTO>>authorResolver.resolve(routeMock as any)).subscribe(
         (value) => expectedAuthor = value,
       );
 
@@ -118,16 +104,15 @@ describe('AuthorResolver', () => {
     });
 
     it('should return null and navigate back if the route matches the edit path but the author has no update link', () => {
-      routeStub.paramMap.get.and.returnValue(String(author.id));
-      authorServiceStub.getAuthor.and.returnValue(of(author));
-      routeStub.routeConfig.path = ':id/edit';
+      authorServiceMock.getAuthor.and.returnValue(of(author));
+      routeMock.testRouteConfig = { path: ':id/edit' };
       let expectedAuthor: IAuthorDTO;
-      (<Observable<IAuthorDTO>>authorResolver.resolve(routeStub as any)).subscribe(
+      (<Observable<IAuthorDTO>>authorResolver.resolve(routeMock as any)).subscribe(
         (value) => expectedAuthor = value,
       );
 
       expect(expectedAuthor).toBeNull();
-      expect(routerStub.navigate).toHaveBeenCalledWith([ 'authors', author.id ]);
+      expect(routerMock.navigate).toHaveBeenCalledWith([ 'authors', author.id ]);
     });
   });
 });

@@ -15,7 +15,10 @@ import { ToastrService } from 'ngx-toastr';
 
 import {
   MockActivatedRoute,
+  MockBookResolver,
+  MockLocation,
   MockRouter,
+  MockToastrService,
 } from '../../../../test/mocks/classes';
 import { book } from '../../../../test/mocks/data/books.mock';
 import { SharedModule } from '../../../shared.module';
@@ -23,21 +26,12 @@ import { BookResolver } from '../guards/book-resolver.service';
 import { EditBookComponent } from './edit-book.component';
 
 describe('EditBookComponent', () => {
-  let activatedRouteStub: { testData: any };
-  let bookResolverStub: { setBook: jasmine.Spy };
+  let activatedRouteMock: MockActivatedRoute;
   let component: EditBookComponent;
   let fixture: ComponentFixture<EditBookComponent>;
-  let locationStub: { back: jasmine.Spy };
-  let routerStub: {
-    navigate: jasmine.Spy,
-    testEvents: any,
-  };
-  let toastrServiceStub: { error: jasmine.Spy };
+  let routerMock: MockRouter;
 
   beforeEach(async(() => {
-    bookResolverStub = jasmine.createSpyObj('BookResolver', ['setBook']);
-    locationStub = jasmine.createSpyObj('Location', ['back']);
-    toastrServiceStub = jasmine.createSpyObj('ToastrService', ['error']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -47,22 +41,22 @@ describe('EditBookComponent', () => {
       declarations: [ EditBookComponent ],
       providers: [
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
-        { provide: BookResolver, useValue: bookResolverStub },
+        { provide: BookResolver, useClass: MockBookResolver },
         { provide: Router, useClass: MockRouter },
-        { provide: ToastrService, useValue: toastrServiceStub },
-        { provide: Location, useValue: locationStub },
+        { provide: ToastrService, useClass: MockToastrService },
+        { provide: Location, useClass: MockLocation },
       ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
+    activatedRouteMock = TestBed.get(ActivatedRoute);
+    routerMock = TestBed.get(Router);
     fixture = TestBed.createComponent(EditBookComponent);
     component = fixture.componentInstance;
-    activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
-    activatedRouteStub.testData = { book };
-    routerStub = fixture.debugElement.injector.get(Router) as any;
-    routerStub.testEvents = new NavigationEnd(1, '/books/1/edit', '/books/1/edit');
+    activatedRouteMock.testData = { book };
+    routerMock.testEvents = new NavigationEnd(1, '/books/1/edit', '/books/1/edit');
     fixture.detectChanges();
   });
 
